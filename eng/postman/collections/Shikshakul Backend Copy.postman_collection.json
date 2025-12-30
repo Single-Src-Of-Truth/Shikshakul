@@ -1,0 +1,2292 @@
+{
+  "info": {
+    "_postman_id": "2f17152a-80fb-41cb-98ab-e53db0cddfd2",
+    "name": "Shikshakul Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "IAM-Service",
+      "item": [
+        {
+          "name": "Health-APIs",
+          "item": [
+            {
+              "name": "ping-iams",
+              "id": "06613459-fb45-42b1-a5fb-7c63282d936d",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{iamServiceBaseUrl}}/api/public/health",
+                  "host": [
+                    "{{iamServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "public",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "dd0d5ab5-b75f-43d7-8ff7-a8f860af3a3d"
+        },
+        {
+          "name": "OAuth2-APIs",
+          "item": [
+            {
+              "name": "Authorization Code + PKCE",
+              "item": [
+                {
+                  "name": "Authorization Endpoint",
+                  "id": "89c8e0dd-3974-4dca-be8f-a8ceab94ac5f",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{iamServiceBaseUrl}}/oauth2/authorize",
+                      "host": [
+                        "{{iamServiceBaseUrl}}"
+                      ],
+                      "path": [
+                        "oauth2",
+                        "authorize"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Token Endpoint",
+                  "id": "97acc36b-56f9-4e44-a199-60b97e138625",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{iamServiceBaseUrl}}/oauth2/token",
+                      "host": [
+                        "{{iamServiceBaseUrl}}"
+                      ],
+                      "path": [
+                        "oauth2",
+                        "token"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "id": "7c5105ed-d590-4e14-b213-5cf53b45b45b"
+            },
+            {
+              "name": "oidc-discovery",
+              "id": "e4ac336c-edbc-4005-a4b4-2a8de5689c4f",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{iamServiceBaseUrl}}/.well-known/openid-configuration",
+                  "host": [
+                    "{{iamServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    ".well-known",
+                    "openid-configuration"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "5e136f58-329c-4ed4-b1a8-d685f425e013"
+        },
+        {
+          "name": "Tenent-APIs",
+          "item": [
+            {
+              "name": "Create a Tenant with Admin",
+              "id": "79940921-fe51-455e-95b1-f54bc26fa6ca",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "MDX-Secret",
+                    "value": "com.modulixinfotech.iams.shikshakul"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Demo School\",\n    \"domain\": \"demo.kmps.in\",\n    \"description\": \"Demo school for testing\",\n    \"contactEmail\": \"contact@demo.kmps.in\",\n    \"contactPhone\": \"9876543210\",\n    \"adminEmail\": \"admin@demo.kmps.in\",\n    \"adminPassword\": \"Admin@123\",\n    \"adminFirstName\": \"John\",\n    \"adminLastName\": \"Doe\"\n  }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{iamServiceBaseUrl}}/api/tenants",
+                  "host": [
+                    "{{iamServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tenants"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "68a7ab6e-f794-4c89-badd-b21fe62a77d9"
+        },
+        {
+          "name": "Auth-APIs",
+          "item": [
+            {
+              "name": "Login as Admin",
+              "id": "c01e952a-3753-49b9-ba0e-6ec90c5927fd",
+              "request": {
+                "auth": {
+                  "type": "basic",
+                  "basic": [
+                    {
+                      "key": "username",
+                      "value": "admin@demo.kmps.in",
+                      "type": "string"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Admin@123",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:9000/api/users/me",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9000",
+                  "path": [
+                    "api",
+                    "users",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "390f74a2-6bba-486d-8873-468885339784"
+        }
+      ],
+      "id": "8f6c5460-2d97-4520-85fd-ff55bd6f9d8b"
+    },
+    {
+      "name": "ACAD-Service",
+      "item": [
+        {
+          "name": "01. Academic Setup",
+          "item": [
+            {
+              "name": "Create Academic Year",
+              "id": "98d348e9-3cbe-4c0f-b799-91613ed05022",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"2024-2025\",\n    \"start_date\": \"2024-04-01T00:00:00Z\",\n    \"end_date\": \"2025-03-31T23:59:59Z\",\n    \"is_current\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/academic-years",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "academic-years"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Current Academic Year",
+              "id": "cbb48104-00e3-4f4d-a5f4-dc318f3bd436",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/academic-years/current",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "academic-years",
+                    "current"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Years",
+              "id": "683d42f4-0613-443c-a054-39c0a8988217",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/academic-years",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "academic-years"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Academic Year",
+              "id": "3280d793-fb2f-44cc-9e9c-be157327021d",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"is_current\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/academic-years/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "academic-years",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d5eddf45-2ab7-4efc-b9bd-80defbda8691"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Academic Year",
+              "id": "167253c7-a88b-45df-8050-757681684b98",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/academic-years/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "academic-years",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "5c0eaf8d-743a-4022-917b-0b94fadbdc64"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Class",
+              "id": "e3568b65-ff25-4158-8444-4ff09f70b4a5",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Class 10\",\n    \"sort_order\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Classes",
+              "id": "589459d2-656a-42f9-8c06-c388d13fb829",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Section",
+              "id": "60960085-395e-4afb-9b78-0bda63770b67",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Section A\",\n    \"capacity\": 40\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes/:class_id/sections",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes",
+                    ":class_id",
+                    "sections"
+                  ],
+                  "variable": [
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Sections By Class",
+              "id": "7af7a826-1ba8-444b-aa39-cd728c634664",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes/:class_id/sections",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes",
+                    ":class_id",
+                    "sections"
+                  ],
+                  "variable": [
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Subject",
+              "id": "7274d71b-5b55-4894-bd4d-888cf1746c8e",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Mathematics\",\n    \"code\": \"MATH100\",\n    \"type\": \"THEORY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/subjects",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "subjects"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Subjects",
+              "id": "ca255ccf-e65b-473c-8462-9b5961b785f9",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/subjects",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "subjects"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Subject",
+              "id": "b585bbe1-fd2a-4ac6-9be7-5fd99945cae4",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Physics\",\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/subjects/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "subjects",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "381834af-f8ca-429b-840f-27da9c281ea3"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Assign Subject To Class",
+              "id": "5e5a52d3-fe5e-4984-b324-fce81f37eb8a",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"subjects\": [\n        {\n            \"subject_id\": \"a5582c00-86eb-4806-8f05-cba7a589137e\",\n            \"is_optional\": false,\n            \"weekly_lectures\": 5\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes/:class_id/subjects",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes",
+                    ":class_id",
+                    "subjects"
+                  ],
+                  "variable": [
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Unassign Subject From Class",
+              "id": "6b5cabd1-6516-4b59-89a7-201c0ab939e3",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/setup/classes/:class_id/subjects/:subject_id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "setup",
+                    "classes",
+                    ":class_id",
+                    "subjects",
+                    ":subject_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "class_id",
+                      "value": "6d2053af-20e0-4282-8485-07d97b73dbcd"
+                    },
+                    {
+                      "key": "subject_id",
+                      "value": "9dcf50a2-12a8-4249-895e-7d9f5d59de66"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "a944a432-7e98-42ee-af1f-15856931998b"
+        },
+        {
+          "name": "02. Student Management",
+          "item": [
+            {
+              "name": "Create Schema",
+              "id": "68653be1-6abf-49b3-a474-92f5b2abd4c7",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n    {\n        \"key\": \"father_name\",\n        \"label\": \"Father's Name\",\n        \"type\": \"text\",\n        \"required\": true\n    }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/schema",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    "schema"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Active Schema",
+              "id": "f3a7111f-1d92-4524-9e47-54f91b5e5f41",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/schema",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    "schema"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Submit Application",
+              "id": "33529abb-26db-4a24-a8fb-294df85f4437",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"first_name\": \"Rahul\",\n    \"last_name\": \"Kumar\",\n    \"email\": \"rahul@example.com\",\n    \"mobile\": \"9876543210\",\n    \"profile_data\": {\n        \"father_name\": \"Ramesh Kumar\"\n    },\n    \"documents\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/onboard",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    "onboard"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Students",
+              "id": "c6cbfcb2-0a89-4cc0-8aaa-49278afdc8e5",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "PENDING",
+                      "description": "Filter by PENDING or APPROVED",
+                      "disabled": true
+                    },
+                    {
+                      "key": "class_id",
+                      "value": "6d2053af-20e0-4282-8485-07d97b73dbcd",
+                      "description": "Optional Class Filter",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Student By ID",
+              "id": "fde0585a-84f6-477e-86ea-2ebaca9b21ae",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Student",
+              "id": "dde59379-238a-4756-bc12-b61d96dcffe7",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"first_name\": \"Rahul (Updated)\",\n    \"profile_data\": {\n        \"father_name\": \"Ramesh Kumar Singh\"\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d4831269-9eca-4fe2-922c-6e14a2ca4813"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve/Reject Student",
+              "id": "7a65d493-c517-4c18-bd86-9f8cca30a6cf",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action\": \"APPROVE\",\n    \"section_id\": \"07f3c78b-770f-45e1-b661-30d9e70147ba\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/:id/approve",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    ":id",
+                    "approve"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Student",
+              "id": "57f008ce-345d-46bf-af86-c9a493a5720f",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/students/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "students",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "2c74773f-28c4-468e-9821-f867ef6216dd"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "d761230a-2e30-43ac-b646-b1e58c2b94ad"
+        },
+        {
+          "name": "03. Teacher Management",
+          "item": [
+            {
+              "name": "Create Schema",
+              "id": "60232a76-3316-4830-9656-31ef17ec6582",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n    {\n        \"key\": \"qualification\",\n        \"label\": \"Qualification\",\n        \"type\": \"text\",\n        \"required\": true\n    }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/schema",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    "schema"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Active Schema",
+              "id": "7bcfbbcb-dad3-4137-b202-ff70f2558f80",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/schema",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    "schema"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Onboard Teacher",
+              "id": "17d68fcb-56f6-41f1-875d-3572ed60dacc",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"first_name\": \"Anita\",\n    \"last_name\": \"Roy\",\n    \"email\": \"anita@example.com\",\n    \"mobile\": \"9876543222\",\n    \"profile_data\": {\n        \"qualification\": \"M.Sc Math\"\n    },\n    \"documents\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/onboard",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    "onboard"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Teachers",
+              "id": "ff74ec63-5d95-43cf-bab9-9ef6a784c058",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Teacher By ID",
+              "id": "7e1abb02-abb4-424f-ace4-f8ad441959af",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "9a996037-c64d-4143-9358-ec7084b090ae"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Teacher",
+              "id": "395363fd-84eb-4392-8583-dec99d7b4267",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"first_name\": \"Anita (Updated)\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "9a996037-c64d-4143-9358-ec7084b090ae"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Approve/Reject Teacher",
+              "id": "802baf30-6421-4c59-810b-28dff35580d5",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action\": \"APPROVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/:id/approve",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    ":id",
+                    "approve"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "9432a724-e83f-4721-88cf-de8a473b350b"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Teacher",
+              "id": "028a8e46-7de7-4987-af93-852509c54e63",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/teachers/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "teachers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "bb1bca97-e220-472a-a841-04bd87b51e23"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "4b6fb391-564d-4000-9d95-ad7b27a425c5"
+        },
+        {
+          "name": "04. Staff Allocation",
+          "item": [
+            {
+              "name": "Assign Class Teacher",
+              "id": "e1828cd5-d1cb-491f-ab69-1dd4ac2fed8f",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"teacher_id\": \"9432a724-e83f-4721-88cf-de8a473b350b\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/sections/:section_id/class-teacher",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "sections",
+                    ":section_id",
+                    "class-teacher"
+                  ],
+                  "variable": [
+                    {
+                      "key": "section_id",
+                      "value": "07f3c78b-770f-45e1-b661-30d9e70147ba"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Assign Subject Teacher",
+              "id": "8dd771bd-ed37-41c3-889a-63d9a1b86e75",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"subject_id\": \"a5582c00-86eb-4806-8f05-cba7a589137e\",\n    \"teacher_id\": \"9432a724-e83f-4721-88cf-de8a473b350b\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/sections/:section_id/subject-teachers",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "sections",
+                    ":section_id",
+                    "subject-teachers"
+                  ],
+                  "variable": [
+                    {
+                      "key": "section_id",
+                      "value": "07f3c78b-770f-45e1-b661-30d9e70147ba"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Allocations",
+              "id": "3df502e4-bd23-4a54-b63b-3ce23c2f8257",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/sections/:section_id/allocations?academic_year_id=7ce09cef-131b-4b14-bda3-8eb5d62499fd",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "sections",
+                    ":section_id",
+                    "allocations"
+                  ],
+                  "query": [
+                    {
+                      "key": "academic_year_id",
+                      "value": "7ce09cef-131b-4b14-bda3-8eb5d62499fd"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "section_id",
+                      "value": "07f3c78b-770f-45e1-b661-30d9e70147ba"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "c42440c2-54c2-47d8-bcad-9af350721cfd"
+        },
+        {
+          "name": "05. Fee Management",
+          "item": [
+            {
+              "name": "Create Fee Head",
+              "id": "1b121d5f-c11a-4049-bfba-9aa29ebaa114",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Library Fee\",\n    \"type\": \"RECURRING\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/heads",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "heads"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Heads",
+              "id": "2af9e06e-37cd-4ffd-ae0e-ef3056d194b4",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/heads",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "heads"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Fee Head",
+              "id": "d9cf1734-f7a5-42d4-b231-96161b0d1e6d",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Tuition Fee Updated\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/heads/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "heads",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d9f552db-6f4b-4e2b-b854-324f013624da"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Fee Head",
+              "id": "8eee1486-010c-4793-b30d-a44368a0e001",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/heads/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "heads",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d9f552db-6f4b-4e2b-b854-324f013624da"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Fee Structure",
+              "id": "855b4961-9fb5-4200-baa3-110004decc23",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"fee_head_id\": \"f34ea7cf-d7f9-4f7e-85c7-e41735afd4fc\",\n    \"amount\": 1000,\n    \"frequency\": \"MONTHLY\",\n    \"due_date_day\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/structure",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "structure"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Structure By Class",
+              "id": "81146e94-6b0c-41fd-9a7b-77a7baddad2a",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/structure?class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9&academic_year_id=7ce09cef-131b-4b14-bda3-8eb5d62499fd",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "structure"
+                  ],
+                  "query": [
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    },
+                    {
+                      "key": "academic_year_id",
+                      "value": "7ce09cef-131b-4b14-bda3-8eb5d62499fd"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Fee Structure",
+              "id": "c7bfaa93-8d31-4dee-aa91-b12103d642c7",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\": 5500\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/structure/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "structure",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d86f1d83-9417-4e54-bd52-93b5e4089749"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Fee Structure",
+              "id": "31f83f4c-5d19-465a-9858-f607236cc5d5",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/structure/:id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "structure",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "d86f1d83-9417-4e54-bd52-93b5e4089749"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Generate Demands",
+              "id": "99066c09-3de7-4520-8e71-038d50aa0e88",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"month\": 4,\n    \"year\": 2025\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/generate-demands",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "generate-demands"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Collect Fee",
+              "id": "2aa69b8c-0e82-4c66-aae7-95e36a9d0daf",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"student_fee_id\": \"e14e541f-2c08-46bd-88f6-88738b72b525\",\n    \"amount\": 1000,\n    \"payment_mode\": \"CASH\",\n    \"remarks\": \"Paid by father\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/collect",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "collect"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Student Dues",
+              "id": "d1c66fcc-e8bb-494c-8eec-2697d9f6c056",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/students/:student_id/dues",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "students",
+                    ":student_id",
+                    "dues"
+                  ],
+                  "variable": [
+                    {
+                      "key": "student_id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Transaction History",
+              "id": "bb880bd0-c3cc-48d5-a951-eb50447ec55b",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/fees/students/:student_id/history",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "fees",
+                    "students",
+                    ":student_id",
+                    "history"
+                  ],
+                  "variable": [
+                    {
+                      "key": "student_id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "a9b6c2f8-ce2e-458f-8621-135f6141bdd5"
+        },
+        {
+          "name": "06. Timetable",
+          "item": [
+            {
+              "name": "Create Routine",
+              "id": "6fc20bb1-f04b-419f-af68-2bf652ab870e",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"section_id\": \"07f3c78b-770f-45e1-b661-30d9e70147ba\",\n    \"subject_id\": \"a5582c00-86eb-4806-8f05-cba7a589137e\",\n    \"teacher_id\": \"9432a724-e83f-4721-88cf-de8a473b350b\",\n    \"day_of_week\": \"TUESDAY\",\n    \"start_time\": \"09:00\",\n    \"end_time\": \"10:00\",\n    \"room_number\": \"A-101\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/timetables",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "timetables"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Routine",
+              "id": "9a81d14f-a83a-42c6-b337-b06168e1e075",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/timetables?section_id=07f3c78b-770f-45e1-b661-30d9e70147ba",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "timetables"
+                  ],
+                  "query": [
+                    {
+                      "key": "section_id",
+                      "value": "07f3c78b-770f-45e1-b661-30d9e70147ba"
+                    },
+                    {
+                      "key": "teacher_id",
+                      "value": "9432a724-e83f-4721-88cf-de8a473b350b",
+                      "disabled": true
+                    },
+                    {
+                      "key": "day",
+                      "value": "MONDAY",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Routine",
+              "id": "7f408d2b-24ce-4417-abc9-72427999e6f3",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/timetables/:routine_id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "timetables",
+                    ":routine_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "routine_id",
+                      "value": "63a7555a-8943-43d5-aee2-3a6ea5891dcd"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "079dca75-1794-43a2-91e0-6c0c6ed3fc90"
+        },
+        {
+          "name": "07. Examination Setup",
+          "item": [
+            {
+              "name": "Create Exam Term",
+              "id": "0f52161b-c9c7-4cbe-9fd3-6b53737223aa",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"name\": \"First Terminal Exam\",\n    \"start_date\": \"2025-04-01T00:00:00Z\",\n    \"end_date\": \"2025-04-15T00:00:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/terms",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "terms"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Exam Terms",
+              "id": "10208966-e84c-4f0b-a408-218d910fc8aa",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/terms?academic_year_id=7ce09cef-131b-4b14-bda3-8eb5d62499fd",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "terms"
+                  ],
+                  "query": [
+                    {
+                      "key": "academic_year_id",
+                      "value": "7ce09cef-131b-4b14-bda3-8eb5d62499fd"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Exam Schedule",
+              "id": "b477b24b-f89e-4e82-be8f-453f2405b90e",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"exam_term_id\": \"150d6f1c-037a-4cd5-9d42-41d90df41254\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"subject_id\": \"a5582c00-86eb-4806-8f05-cba7a589137e\",\n    \"exam_date\": \"2025-04-06T00:00:00Z\",\n    \"start_time\": \"09:00\",\n    \"duration_min\": 90,\n    \"max_marks\": 100,\n    \"pass_marks\": 33\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "schedules"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Exam Schedule",
+              "id": "8e5d07a2-19a6-44e2-9620-e116ccb0d5ed",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules?term_id=150d6f1c-037a-4cd5-9d42-41d90df41254&class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "schedules"
+                  ],
+                  "query": [
+                    {
+                      "key": "term_id",
+                      "value": "150d6f1c-037a-4cd5-9d42-41d90df41254"
+                    },
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Exam Schedule",
+              "id": "a82f048e-3e1e-411e-880d-83136b1b1d74",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules/:schedule_id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "schedules",
+                    ":schedule_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "schedule_id",
+                      "value": "3e21c613-308f-454d-80c6-85340745771c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "fb0e1fac-60b5-4c8f-ac7d-8b9bb362119f"
+        },
+        {
+          "name": "08. Evaluation (Marks Entry)",
+          "item": [
+            {
+              "name": "Get Mark Sheet (Evaluation Grid)",
+              "id": "41dddd7e-b89b-4709-b4a2-bb0720b6afad",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules/:schedule_id/marks",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "schedules",
+                    ":schedule_id",
+                    "marks"
+                  ],
+                  "variable": [
+                    {
+                      "key": "schedule_id",
+                      "value": "01b206bd-5340-4718-9026-056a3a291c59"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Submit Marks",
+              "id": "1dbc494c-4335-4b62-b5a6-f3cffa8b08a4",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// {\n//     \"exam_schedule_id\": \"01b206bd-5340-4718-9026-056a3a291c59\",\n//     \"finalize\": false,\n//     \"marks\": [\n//         {\n//             \"student_id\": \"65da67cf-8772-44de-b5d1-e8d21ca4106c\",\n//             \"marks_obtained\": 85.5,\n//             \"is_absent\": false,\n//             \"remarks\": \"Good performance\"\n//         }\n//     ]\n// }\n\n{\n    \"exam_schedule_id\": \"01b206bd-5340-4718-9026-056a3a291c59\",\n    \"finalize\": true,\n    \"marks\": [\n        {\n            \"student_id\": \"65da67cf-8772-44de-b5d1-e8d21ca4106c\",\n            \"marks_obtained\": 85.5,\n            \"is_absent\": false,\n            \"remarks\": \"Good performance\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/exams/marks",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "exams",
+                    "marks"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "db8b1bfa-384d-46fb-a33a-dd5d4102b04d"
+        },
+        {
+          "name": "09. Result & Report Card",
+          "item": [
+            {
+              "name": "Generate Results",
+              "id": "6e6960f3-1155-4a05-9432-3cca50d24ac2",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"exam_term_id\": \"150d6f1c-037a-4cd5-9d42-41d90df41254\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/results/generate",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "results",
+                    "generate"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Publish/Unpublish Results",
+              "id": "b9a96d3f-8279-4e22-98eb-0724b65165f6",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"exam_term_id\": \"150d6f1c-037a-4cd5-9d42-41d90df41254\",\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"publish\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/results/publish",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "results",
+                    "publish"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Report Card (Student Result)",
+              "id": "3e6d0be3-b554-429c-a1ae-94a620c401f6",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/results/students/:student_id?term_id=150d6f1c-037a-4cd5-9d42-41d90df41254",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "results",
+                    "students",
+                    ":student_id"
+                  ],
+                  "query": [
+                    {
+                      "key": "term_id",
+                      "value": "150d6f1c-037a-4cd5-9d42-41d90df41254"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "student_id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "c13fa6cf-203d-4210-86e7-039cd4e88d26"
+        },
+        {
+          "name": "10. Student Attendance",
+          "item": [
+            {
+              "name": "Get Class Attendance Register",
+              "id": "449703da-696d-495e-9a10-39b1cd2c1674",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/attendance/section/:section_id?date=2025-12-25",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "attendance",
+                    "section",
+                    ":section_id"
+                  ],
+                  "query": [
+                    {
+                      "key": "date",
+                      "value": "2025-12-25"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "section_id",
+                      "value": "07f3c78b-770f-45e1-b661-30d9e70147ba"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Mark Attendance",
+              "id": "aad76fb0-71df-436e-bf86-a13f36f916ef",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"class_id\": \"7bf409d1-6c3a-4a0f-8569-f072e7fe9da9\",\n    \"section_id\": \"07f3c78b-770f-45e1-b661-30d9e70147ba\",\n    \"date\": \"2025-12-25T00:00:00Z\",\n    \"students\": [\n        {\n            \"student_id\": \"65da67cf-8772-44de-b5d1-e8d21ca4106c\",\n            \"status\": \"LATE\",\n            \"remarks\": \"Arrived 15 minutes late\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/attendance",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "attendance"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Student Attendance History",
+              "id": "881135ad-4d59-4615-ba0b-10e06eee4557",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/attendance/student/:student_id?start=2025-12-01&end=2025-12-31",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "attendance",
+                    "student",
+                    ":student_id"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "2025-12-01"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2025-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "student_id",
+                      "value": "65da67cf-8772-44de-b5d1-e8d21ca4106c"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "c14db29c-4989-4131-95d5-3e97213a96a5"
+        },
+        {
+          "name": "11. ID & Certificate Management",
+          "item": [
+            {
+              "name": "Get ID Cards Data",
+              "id": "7604780c-3c9c-46ad-9e03-8cb6dd502593",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/certificates/id-cards?class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "certificates",
+                    "id-cards"
+                  ],
+                  "query": [
+                    {
+                      "key": "class_id",
+                      "value": "7bf409d1-6c3a-4a0f-8569-f072e7fe9da9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Generate Transfer Certificate (TC)",
+              "id": "8aa9e764-401c-4401-9a27-49a651624b5e",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"student_id\": \"65da67cf-8772-44de-b5d1-e8d21ca4106c\",\n    \"leaving_date\": \"2026-03-31T00:00:00Z\",\n    \"reason\": \"Relocation due to parent job transfer\",\n    \"conduct\": \"EXCELLENT\",\n    \"remarks\": \"Outstanding student with exemplary behavior and academic performance. No dues pending.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/certificates/tc",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "certificates",
+                    "tc"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Generate Bonafide Certificate",
+              "id": "7b4b1f1c-4b6b-4a6a-a78e-f080bfe23d63",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"student_id\": \"65da67cf-8772-44de-b5d1-e8d21ca4106c\",\n    \"purpose\": \"Scholarship application\",\n    \"remarks\": \"Student is eligible for merit-based scholarship\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/certificates/bonafide",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "certificates",
+                    "bonafide"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "5b9342fe-df25-4c48-b43c-5f8bdda1158e"
+        },
+        {
+          "name": "12. School Calendar",
+          "item": [
+            {
+              "name": "Get Calendar Events",
+              "id": "fb6582b4-9c00-49b7-a4ff-ec01e83a43b9",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/calendar/events?month=2&year=2026",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "calendar",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "month",
+                      "value": "2",
+                      "uuid": "5c7a382e-4a6b-412a-84cf-471dabf709b9"
+                    },
+                    {
+                      "key": "year",
+                      "value": "2026",
+                      "uuid": "ab3efb55-b1ce-4766-9c56-41fff15c2d42"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Calendar Event",
+              "id": "d9f609ec-28b5-40c3-9f65-d10b00da1d8a",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"academic_year_id\": \"7ce09cef-131b-4b14-bda3-8eb5d62499fd\",\n    \"title\": \"Republic Day\",\n    \"description\": \"National Holiday - Republic Day Celebration\",\n    \"event_type\": \"HOLIDAY\",\n    \"start_date\": \"2026-01-26T00:00:00Z\",\n    \"end_date\": \"2026-01-26T23:59:59Z\",\n    \"is_holiday\": true\n}\n\n/*\n\n{\n  \"academic_year_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"title\": \"Diwali Break\",\n  \"description\": \"Diwali festival holidays\",\n  \"event_type\": \"HOLIDAY\",\n  \"start_date\": \"2025-11-01T00:00:00Z\",\n  \"end_date\": \"2025-11-05T23:59:59Z\",\n  \"is_holiday\": true\n}\n\n{\n  \"academic_year_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"title\": \"Annual Sports Day\",\n  \"description\": \"Inter-house sports competition and prize distribution\",\n  \"event_type\": \"EVENT\",\n  \"start_date\": \"2026-02-10T09:00:00Z\",\n  \"end_date\": \"2026-02-10T17:00:00Z\",\n  \"is_holiday\": false\n}\n\n\n\n*/",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/calendar/events",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "calendar",
+                    "events"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Calendar Event",
+              "id": "14a688b3-1937-4467-bfd4-d1f2f5d5f9ae",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/calendar/events/:event_id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "calendar",
+                    "events",
+                    ":event_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "event_id",
+                      "value": "7c6937cb-3114-4a3c-9639-28d74ef12901"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Calendar Events",
+              "id": "d4ed035e-dea0-4bec-a6a8-7110efe0b73e",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"Annual Sports Day Updated\",\n    \"description\": \"Inter-house sports competition and prize distribution\",\n    \"event_type\": \"EVENT\",\n    \"start_date\": \"2026-02-10T09:00:00Z\",\n    \"end_date\": \"2026-02-10T17:00:00Z\",\n    \"is_holiday\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{acadServiceBaseUrl}}/academics/calendar/events/:event_id",
+                  "host": [
+                    "{{acadServiceBaseUrl}}"
+                  ],
+                  "path": [
+                    "academics",
+                    "calendar",
+                    "events",
+                    ":event_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "event_id",
+                      "value": "48a45686-d182-4a75-927d-5764c9dfac56",
+                      "uuid": "431802a5-4d54-4f31-ae84-9e7938311150"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "4ff31bcf-6b16-435b-8b4a-5058bb731447"
+        }
+      ],
+      "id": "4507f9ea-bf45-415c-84ff-5a2bacf3a531",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{accessToken}}",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "0ce3a74a-5352-4a78-8706-59ac8fab57d5",
+      "key": "iamServiceBaseUrl",
+      "value": "http://localhost:9000",
+      "type": "string"
+    },
+    {
+      "id": "db33c656-b683-471d-8396-2bcedf7a4da7",
+      "key": "acadServiceBaseUrl",
+      "value": "http://localhost:8081/api/v1",
+      "type": "string"
+    }
+  ]
+}

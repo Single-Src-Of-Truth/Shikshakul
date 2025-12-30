@@ -1,0 +1,125 @@
+# ============================================
+# Environment & Secrets
+# ============================================
+**/.env
+**/.env.*
+**/config.env
+**/*secrets*.yml
+**/*secrets*.yaml
+**/application-secrets.yml
+**/application-secrets.yaml
+
+# ============================================
+# Go (academics-service)
+# ============================================
+# Binaries
+eng/academics-service/bin/
+eng/academics-service/*.exe
+eng/academics-service/*.dll
+eng/academics-service/*.so
+eng/academics-service/*.dylib
+
+# Test binary, built with `go test -c`
+eng/academics-service/*.test
+
+# Output of the go coverage tool
+eng/academics-service/*.out
+
+# Go workspace file
+eng/academics-service/go.work
+
+# Dependency directories
+eng/academics-service/vendor/
+
+# ============================================
+# Java/Spring Boot (iam-service)
+# ============================================
+eng/iam-service/target/
+eng/iam-service/.mvn/
+eng/iam-service/mvnw
+eng/iam-service/mvnw.cmd
+
+# Package Files
+eng/iam-service/*.jar
+eng/iam-service/*.war
+eng/iam-service/*.nar
+eng/iam-service/*.ear
+eng/iam-service/*.zip
+eng/iam-service/*.tar.gz
+eng/iam-service/*.rar
+
+# Spring Boot
+eng/iam-service/HELP.md
+eng/iam-service/.apt_generated
+eng/iam-service/.classpath
+eng/iam-service/.factorypath
+eng/iam-service/.project
+eng/iam-service/.settings
+eng/iam-service/.springBeans
+eng/iam-service/.sts4-cache
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# GoLand
+.idea/
+
+# Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+
+# ============================================
+# OS Files
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ============================================
+# Logs
+# ============================================
+*.log
+logs/
+*.log.*
+
+# ============================================
+# Database
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# Build artifacts
+# ============================================
+dist/
+build/
+*.o
+*.a
