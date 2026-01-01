@@ -14,7 +14,7 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 echo 'Running Linters (Simulated)...'
-                echo 'Checking for forbidden files (.env, .pem)...' [cite: 55]
+                echo 'Checking for forbidden files (.env, .pem)...'
             }
         }
 
