@@ -1,0 +1,20 @@
+<div class="notice-wrapper">
+  <div class="widget-header">
+    <h3>Recent Notices</h3>
+    <a href="javascript:void(0)" class="view-all">View All</a>
+  </div>
+
+  <div class="notice-list">
+    <div class="notice-item" *ngFor="let notice of notices">
+      <div class="date-badge" [ngClass]="notice.type">
+        <span class="month">{{ notice.month }}</span>
+        <span class="day">{{ notice.day }}</span>
+      </div>
+
+      <div class="content">
+        <h4 class="title">{{ notice.title }}</h4>
+        <p class="desc">{{ notice.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

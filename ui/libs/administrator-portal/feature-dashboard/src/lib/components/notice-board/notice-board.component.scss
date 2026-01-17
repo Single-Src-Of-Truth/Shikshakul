@@ -1,0 +1,194 @@
+.notice-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .view-all {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--royal-blue);
+    text-decoration: none;
+  }
+}
+
+.notice-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notice-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--bg-app); /* Subtle separator */
+  &:last-child {
+    border-bottom: none;
+  }
+  &:hover {
+    background: #fafafa;
+  }
+
+  .date-badge {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .notice-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .widget-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .view-all {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--royal-blue);
+        text-decoration: none;
+      }
+    }
+
+    .notice-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notice-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--bg-app);
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover {
+        background: #fafafa;
+      }
+
+      .date-badge {
+        min-width: 48px;
+        height: 48px;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+
+        .month {
+          font-size: 10px;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+        .day {
+          font-size: 18px;
+          font-weight: 600;
+        }
+
+        /* Theme colors */
+        &.info {
+          background: var(--royal-blue-light);
+          color: var(--royal-blue);
+        }
+        &.warning {
+          background: var(--bg-warning);
+          color: var(--color-warning);
+        }
+        &.urgent {
+          background: var(--bg-danger);
+          color: var(--color-danger);
+        }
+      }
+
+      .content {
+        .title {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin-bottom: 4px;
+        }
+        .desc {
+          font-size: 12px;
+          color: var(--text-secondary);
+          line-height: 1.4;
+        }
+      }
+    }
+    justify-content: center;
+
+    .month {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .day {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    &.info {
+      background: var(--royal-blue-light);
+      color: var(--royal-blue);
+    }
+    &.warning {
+      background: var(--bg-warning);
+      color: var(--color-warning);
+    }
+    &.urgent {
+      background: var(--bg-danger);
+      color: var(--color-danger);
+    }
+  }
+
+  .content {
+    .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.chart-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  .text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+  }
+
+  .view-report-btn {
+    background: none;
+    border: none;
+    color: var(--royal-blue);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.canvas-container {
+  flex: 1;
+  position: relative;
+  min-height: 200px;
+  width: 100%;
+}

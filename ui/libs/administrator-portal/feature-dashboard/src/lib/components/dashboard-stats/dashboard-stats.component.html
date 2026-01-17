@@ -1,0 +1,30 @@
+<div class="stats-grid">
+  <div class="stat-card" *ngFor="let stat of stats">
+    <div class="card-top">
+      <span class="label">{{ stat.label }}</span>
+      <div class="icon-box">
+        <span class="material-icons">{{ stat.icon }}</span>
+      </div>
+    </div>
+
+    <div class="card-value">
+      <h2>{{ stat.value }}</h2>
+    </div>
+
+    <div class="card-footer">
+      <span class="trend-indicator" [ngClass]="stat.trend">
+        <span class="material-icons" *ngIf="stat.trend === 'up'"
+          >trending_up</span
+        >
+        <span class="material-icons" *ngIf="stat.trend === 'down'"
+          >trending_down</span
+        >
+        <span class="material-icons" *ngIf="stat.trend === 'neutral'"
+          >remove</span
+        >
+        {{ stat.change }}
+      </span>
+      <span class="trend-label">{{ stat.trendLabel }}</span>
+    </div>
+  </div>
+</div>

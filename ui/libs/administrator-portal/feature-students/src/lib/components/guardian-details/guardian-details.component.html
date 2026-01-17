@@ -1,0 +1,56 @@
+<div class="form-card" [formGroup]="formGroup">
+  <div class="card-header">
+    <h3 class="card-title">Parent / Guardian Details</h3>
+    <span class="material-icons header-icon">people</span>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Father's Name <span class="required">*</span></label>
+      <input
+        type="text"
+        formControlName="fatherName"
+        placeholder="Mr. Name"
+        [class.invalid]="
+          formGroup.get('fatherName')?.invalid &&
+          formGroup.get('fatherName')?.touched
+        "
+      />
+    </div>
+
+    <div class="form-field">
+      <label>Mother's Name <span class="required">*</span></label>
+      <input
+        type="text"
+        formControlName="motherName"
+        placeholder="Mrs. Name"
+        [class.invalid]="
+          formGroup.get('motherName')?.invalid &&
+          formGroup.get('motherName')?.touched
+        "
+      />
+    </div>
+
+    <div class="form-field">
+      <label>Primary Mobile No. (+91) <span class="required">*</span></label>
+      <input
+        type="tel"
+        formControlName="primaryMobile"
+        placeholder="98765 43210"
+        [class.invalid]="
+          formGroup.get('primaryMobile')?.invalid &&
+          formGroup.get('primaryMobile')?.touched
+        "
+      />
+    </div>
+
+    <div class="form-field">
+      <label>Email Address</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="parent@example.com"
+      />
+    </div>
+  </div>
+</div>

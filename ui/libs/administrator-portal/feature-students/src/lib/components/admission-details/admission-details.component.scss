@@ -1,0 +1,25 @@
+.single-col {
+  grid-template-columns: 1fr; /* Stack fields vertically */
+}
+
+.readonly-input {
+  background-color: #f8fafc; /* Light grey background */
+  cursor: not-allowed;
+}
+
+.input-with-icon {
+  position: relative;
+
+  input {
+    width: 100%;
+  }
+
+  .lock-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--text-disabled);
+  }
+}

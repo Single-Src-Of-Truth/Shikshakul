@@ -17,7 +17,25 @@
     "paths": {
       "@shikshakul/auth": ["libs/auth/src/index.ts"],
       "@shikshakul/ui-kit": ["libs/ui-kit/src/index.ts"],
-      "@shikshakul/data-access": ["libs/data-access/src/index.ts"]
+      "@shikshakul/data-access": ["libs/data-access/src/index.ts"],
+      "@shikshakul/admin/feature-shell": [
+        "libs/administrator-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-dashboard": [
+        "libs/administrator-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-students": [
+        "libs/administrator-portal/feature-students/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-academics": [
+        "libs/administrator-portal/feature-academics/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-staff": [
+        "libs/administrator-portal/feature-staff/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-exams": [
+        "libs/administrator-portal/feature-exams/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

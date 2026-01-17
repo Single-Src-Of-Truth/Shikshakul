@@ -1,0 +1,45 @@
+<div class="section-container" [formGroup]="formGroup">
+  <div class="section-header">
+    <span class="material-icons icon-blue">person</span>
+    <h3>Personal Information</h3>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-field">
+      <label>First Name <span class="required">*</span></label>
+      <input type="text" formControlName="firstName" placeholder="e.g. Rahul" />
+    </div>
+    <div class="form-field">
+      <label>Last Name <span class="required">*</span></label>
+      <input type="text" formControlName="lastName" placeholder="e.g. Sharma" />
+    </div>
+    <div class="form-field">
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dob" />
+    </div>
+    <div class="form-field">
+      <label>Gender</label>
+      <select formControlName="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Father/Spouse Name</label>
+      <input
+        type="text"
+        formControlName="fatherSpouseName"
+        placeholder="Guardian's Name"
+      />
+    </div>
+    <div class="form-field">
+      <label>Aadhar Number</label>
+      <input
+        type="text"
+        formControlName="aadharNumber"
+        placeholder="12-digit UIDAI Number"
+      />
+    </div>
+  </div>
+</div>

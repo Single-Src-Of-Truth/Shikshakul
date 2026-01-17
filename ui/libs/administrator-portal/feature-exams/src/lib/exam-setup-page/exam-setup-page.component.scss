@@ -1,0 +1,44 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-header {
+  .breadcrumbs {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    .sep {
+      margin: 0 4px;
+    }
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2 parts Form, 1 part Sidebar */
+  gap: 24px;
+  align-items: start;
+
+  .side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr; /* Stack on small screens */
+  }
+}
