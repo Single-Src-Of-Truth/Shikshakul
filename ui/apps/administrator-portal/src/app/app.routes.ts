@@ -54,6 +54,20 @@ export const appRoutes: Route[] = [
             (m) => m.ExamSetupPageComponent,
           ),
       },
+      {
+        path: 'settings/roles',
+        loadComponent: () =>
+          import('@shikshakul/admin/feature-roles').then(
+            (m) => m.RoleManagementPageComponent,
+          ),
+      },
+      {
+        path: 'settings/academic-years',
+        loadComponent: () =>
+          import('@shikshakul/admin/feature-settings').then(
+            (m) => m.AcademicYearPageComponent,
+          ),
+      },
     ],
   },
 ];

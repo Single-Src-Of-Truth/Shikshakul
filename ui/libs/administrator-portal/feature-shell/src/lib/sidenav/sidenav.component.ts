@@ -49,11 +49,26 @@ export class SidenavComponent {
         { label: 'Exams', icon: 'assignment', route: '/exams/setup' },
       ],
     },
+    // {
+    //   header: 'ADMINISTRATION',
+    //   items: [
+    //     { label: 'Fees & Finance', icon: 'payments', route: '/fees' },
+    //     { label: 'Transport', icon: 'directions_bus', route: '/transport' },
+    //   ],
+    // },
     {
-      header: 'ADMINISTRATION',
+      header: 'CONFIGURATION',
       items: [
-        { label: 'Fees & Finance', icon: 'payments', route: '/fees' },
-        { label: 'Transport', icon: 'directions_bus', route: '/transport' },
+        {
+          label: 'Roles & Permissions',
+          icon: 'admin_panel_settings',
+          route: '/settings/roles',
+        },
+        {
+          label: 'Academic Years',
+          icon: 'calendar_today',
+          route: '/settings/academic-years',
+        },
       ],
     },
   ];

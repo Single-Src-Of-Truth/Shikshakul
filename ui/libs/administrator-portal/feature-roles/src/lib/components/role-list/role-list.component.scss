@@ -1,0 +1,143 @@
+.role-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: white;
+    .material-icons {
+      color: var(--text-secondary);
+      font-size: 20px;
+    }
+    input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+  .btn-primary {
+    background: var(--royal-blue);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    &:hover {
+      background: #1557b0;
+    }
+  }
+}
+
+.list-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  .badge {
+    background: #e8f0fe;
+    color: var(--royal-blue);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+}
+
+.role-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f8f9fa;
+  }
+
+  &.active {
+    background: #e8f0fe;
+    border-color: #d2e3fc;
+    .icon-box {
+      background: white;
+      color: var(--royal-blue);
+    }
+    .chevron {
+      opacity: 1;
+      color: var(--royal-blue);
+    }
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2f5;
+    color: var(--text-secondary);
+    &.blue {
+      background: #e8f0fe;
+      color: var(--royal-blue);
+    }
+    &.purple {
+      background: #f3e5f5;
+      color: #9c27b0;
+    }
+    &.orange {
+      background: #fef7e0;
+      color: #ea8600;
+    }
+  }
+
+  .info {
+    flex: 1;
+    .name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+  }
+
+  .chevron {
+    font-size: 18px;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
