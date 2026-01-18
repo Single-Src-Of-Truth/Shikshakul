@@ -1,0 +1,28 @@
+<div class="sticky-footer">
+  <div class="stats">
+    <div class="stat-item">
+      <span class="label">Total Students</span>
+      <span class="value">{{ total }}</span>
+    </div>
+    <div class="divider"></div>
+    <div class="stat-item green">
+      <span class="label">Present</span>
+      <span class="value">{{ present }}</span>
+    </div>
+    <div class="stat-item red">
+      <span class="label">Absent</span>
+      <span class="value">{{ absent }}</span>
+    </div>
+    <div class="stat-item orange">
+      <span class="label">Late</span>
+      <span class="value">{{ late }}</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-outline" (click)="cancel.emit()">Cancel</button>
+    <button class="btn-primary" (click)="save.emit()">
+      <span class="material-icons">save</span> Save Attendance
+    </button>
+  </div>
+</div>

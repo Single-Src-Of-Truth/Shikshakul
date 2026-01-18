@@ -1,0 +1,38 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">
+        Home <span class="sep">/</span> Teacher Portal
+        <span class="sep">/</span> My Classes
+      </div>
+      <h1>My Assigned Classes (2023-24)</h1>
+      <p class="subtitle">
+        Manage your daily teaching schedule, attendance, and student
+        performance.
+      </p>
+    </div>
+    <button class="btn-outline">
+      <span class="material-icons">calendar_today</span> Schedule
+    </button>
+  </header>
+
+  <shikshakul-class-stats></shikshakul-class-stats>
+
+  <div class="filter-bar">
+    <div class="controls">
+      <div class="dropdown">
+        <span class="material-icons">filter_alt</span> 2023-2024
+        <span class="material-icons arrow">arrow_drop_down</span>
+      </div>
+      <div class="dropdown">
+        All Standards <span class="material-icons arrow">arrow_drop_down</span>
+      </div>
+    </div>
+    <span class="result-text">Showing 5 assigned classes</span>
+  </div>
+
+  <div class="classes-grid">
+    <shikshakul-class-card *ngFor="let cls of classes" [classData]="cls">
+    </shikshakul-class-card>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">
+        Dashboard > Class 10-B > <strong>Aarav Patel</strong>
+      </div>
+      <h1>Student Details</h1>
+      <p class="subtitle">Viewing academic profile for Academic Year 2023-24</p>
+    </div>
+    <div class="actions">
+      <button class="btn-outline">
+        <span class="material-icons">mail</span> Contact Parent
+      </button>
+      <button class="btn-primary">
+        <span class="material-icons">download</span> Report Card
+      </button>
+    </div>
+  </header>
+
+  <shikshakul-profile-header [student]="student"></shikshakul-profile-header>
+
+  <shikshakul-performance-stats></shikshakul-performance-stats>
+
+  <div class="grid-layout">
+    <div class="main-col">
+      <shikshakul-marks-history [exams]="exams" [observation]="observation">
+      </shikshakul-marks-history>
+    </div>
+
+    <div class="side-col">
+      <shikshakul-guardian-card></shikshakul-guardian-card>
+
+      <div class="card upcoming">
+        <h3>Upcoming</h3>
+        <div class="event-item">
+          <div class="date-box"><span>MAR</span><strong>12</strong></div>
+          <div class="details">
+            <span class="title">Maths Annual Exam</span>
+            <span class="time">10:00 AM - 01:00 PM</span>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="date-box"><span>MAR</span><strong>15</strong></div>
+          <div class="details">
+            <span class="title">Science Project Sub.</span>
+            <span class="time">Deadline</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card other-details">
+        <h3>OTHER DETAILS</h3>
+        <div class="row"><span>Blood Group</span> <strong>O+</strong></div>
+        <div class="row">
+          <span>Bus Route</span> <strong>Route 5 (Morning)</strong>
+        </div>
+        <div class="row">
+          <span>Library Books</span> <strong>0 Issued</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

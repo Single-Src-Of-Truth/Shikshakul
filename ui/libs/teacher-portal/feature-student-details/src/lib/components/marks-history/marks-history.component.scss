@@ -1,0 +1,111 @@
+.card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .pill-btn {
+    background: #f1f3f4;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+}
+
+.marks-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: auto; /* Pushes observation to bottom if space */
+  th {
+    text-align: left;
+    font-size: 10px;
+    color: #9aa0a6;
+    font-weight: 700;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 14px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .bold {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .remark {
+    font-size: 12px;
+    color: var(--royal-blue);
+  }
+}
+
+.grade-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  &.green {
+    background: #e6f4ea;
+    color: #137333;
+  }
+  &.yellow {
+    background: #fef7e0;
+    color: #ea8600;
+  }
+}
+
+.observation-box {
+  margin-top: 24px;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 16px;
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .content {
+    display: flex;
+    gap: 12px;
+  }
+  .bar {
+    width: 3px;
+    background: var(--royal-blue);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+  .meta {
+    display: block;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #9aa0a6;
+  }
+}

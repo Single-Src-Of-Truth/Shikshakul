@@ -1,0 +1,114 @@
+.schedule-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f1f1f;
+  }
+  .link-btn {
+    background: none;
+    border: none;
+    color: #1a73e8;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+  }
+}
+
+.class-item {
+  display: flex;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f3f4;
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .time {
+    display: flex;
+    flex-direction: column;
+    min-width: 70px;
+    .start {
+      font-weight: 700;
+      font-size: 13px;
+      color: #1f1f1f;
+    }
+    .end {
+      font-size: 11px;
+      color: #9aa0a6;
+      margin-top: 2px;
+    }
+  }
+
+  .details {
+    flex: 1;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    color: #5f6368;
+  }
+
+  .status {
+    font-size: 12px;
+    color: #9aa0a6;
+  }
+
+  /* Active State Styling */
+  &.active {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    border: none;
+    margin-bottom: 8px;
+    .live-badge {
+      background: #e6f4ea;
+      color: #137333;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .time {
+      border-right: 2px solid #1a73e8;
+      padding-right: 16px;
+      margin-right: 4px;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 260px; /* Offset for sidebar */
+  background: white;
+  border-top: 1px solid var(--border-color);
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+
+  @media (max-width: 1024px) {
+    left: 72px;
+  } /* Collapsed state adjustment handled by layout generally, but fixed here for simplicity */
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  .divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-color);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    .value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    &.green .value {
+      color: #137333;
+    }
+    &.red .value {
+      color: #d93025;
+    }
+    &.orange .value {
+      color: #ea8600;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  button {
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-outline {
+    background: white;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+  .btn-primary {
+    background: var(--royal-blue);
+    color: white;
+    border: none;
+  }
+}
