@@ -1,0 +1,40 @@
+<div class="profile-card">
+  <div class="main-info">
+    <div class="avatar-wrapper">
+      <div class="avatar-icon-placeholder">
+        <span class="material-icons">person</span>
+      </div>
+      <span class="status-dot"></span>
+    </div>
+
+    <div class="text-content">
+      <div class="name-row">
+        <h2>{{ student?.name }}</h2>
+        <span class="status-badge">ACTIVE</span>
+      </div>
+      <p class="sub-text">
+        {{ student?.class }} | Roll No: {{ student?.rollNo }} | House:
+        <span class="red-text">{{ student?.house }}</span>
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="label">ADMISSION NO</span>
+          <span class="value">{{ student?.admissionNo }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">DATE OF BIRTH</span>
+          <span class="value">{{ student?.dob }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">BOARD REG NO</span>
+          <span class="value">{{ student?.boardRegNo }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">CATEGORY</span>
+          <span class="value">{{ student?.category }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

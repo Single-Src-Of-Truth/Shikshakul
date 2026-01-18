@@ -1,0 +1,102 @@
+<div class="table-card">
+  <div class="table-top-bar">
+    <div class="title">
+      <h3>Student List</h3>
+      <span class="sub"
+        >Max Marks: Theory ({{ maxTheory }}), Practical ({{
+          maxPractical
+        }})</span
+      >
+    </div>
+    <div class="stats-pill">
+      <span
+        >Total Students: <strong>{{ students.length }}</strong></span
+      >
+      <span class="divider">|</span>
+      <span class="green"
+        >Present: <strong>{{ students.length - 1 }}</strong></span
+      >
+      <span class="divider">|</span>
+      <span class="red">Absent: <strong>1</strong></span>
+    </div>
+  </div>
+
+  <div class="grid-header">
+    <div class="col-roll">ROLL</div>
+    <div class="col-name">STUDENT NAME</div>
+    <div class="col-mark center">THEORY (80)</div>
+    <div class="col-mark center">PRAC (20)</div>
+    <div class="col-total">TOTAL</div>
+    <div class="col-grade">GRADE</div>
+    <div class="col-remark">REMARKS</div>
+    <div class="col-absent">ABSENT</div>
+  </div>
+
+  <div
+    class="grid-row"
+    *ngFor="let s of students"
+    [class.absent-row]="s.isAbsent"
+  >
+    <div class="col-roll">{{ s.rollNo }}</div>
+
+    <div class="col-name">{{ s.name }}</div>
+
+    <div class="col-mark center input-wrapper">
+      <input
+        type="number"
+        [(ngModel)]="s.theory"
+        (input)="calculateTotal(s)"
+        [disabled]="s.isAbsent"
+        [class.error]="s.theory > maxTheory"
+      />
+      <span class="error-tooltip" *ngIf="s.theory > maxTheory"
+        >Max {{ maxTheory }}</span
+      >
+    </div>
+
+    <div class="col-mark center input-wrapper">
+      <input
+        type="number"
+        [(ngModel)]="s.practical"
+        (input)="calculateTotal(s)"
+        [disabled]="s.isAbsent"
+        [class.error]="s.practical > maxPractical"
+      />
+    </div>
+
+    <div class="col-total">{{ s.isAbsent ? '-' : s.total || '-' }}</div>
+
+    <div class="col-grade">
+      <span
+        class="grade-badge"
+        [ngClass]="{
+          green: s.grade?.startsWith('A'),
+          blue: s.grade?.startsWith('B'),
+          red: s.grade === 'AB' || s.grade === 'Error',
+        }"
+      >
+        {{ s.grade || '-' }}
+      </span>
+    </div>
+
+    <div class="col-remark">
+      <input
+        type="text"
+        [(ngModel)]="s.remark"
+        [placeholder]="s.isAbsent ? 'Reason...' : 'Add remark...'"
+        [class.red-text]="s.isAbsent"
+      />
+    </div>
+
+    <div class="col-absent">
+      <label class="toggle-switch">
+        <input
+          type="checkbox"
+          [checked]="s.isAbsent"
+          (change)="toggleAbsent(s)"
+        />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+</div>

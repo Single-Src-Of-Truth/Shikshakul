@@ -1,0 +1,36 @@
+<div class="app-container">
+  <shikshakul-teacher-sidenav
+    [collapsed]="isSidebarCollapsed"
+    (toggleCollapse)="toggleSidebar()"
+  >
+  </shikshakul-teacher-sidenav>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <h2 class="page-title">Teacher Dashboard</h2>
+
+      <div class="search-bar">
+        <span class="material-icons">search</span>
+        <input
+          type="text"
+          placeholder="Search classes, students, or tasks..."
+        />
+      </div>
+
+      <div class="top-actions">
+        <div class="date-badge">
+          <span class="material-icons">calendar_today</span>
+          <span>2023-2024</span>
+        </div>
+        <button class="icon-btn">
+          <span class="material-icons">notifications</span>
+          <span class="notification-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-scrollable">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
