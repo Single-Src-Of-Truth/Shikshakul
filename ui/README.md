@@ -1,4 +1,4 @@
-# Shikshakul {SKL} 🎓
+# Shikshakul {SKL}
 
 > The Next-Gen School Management & IAM Platform.
 
@@ -18,9 +18,40 @@ The project is built using **Nx** and **Angular**, separating concerns into thre
 
 ### Shared Libraries
 
+- `libs/administrator-portal`: Includes components related to admin portal
 - `libs/auth`: Identity & Access Management (Login, Roles, Guards).
 - `libs/ui-kit`: The Shikshakul Design System (Buttons, Layouts, Themes).
 - `libs/data-access`: Core API services, Interfaces, and State.
+
+---
+
+## Workflow: Adding a New Feature
+
+Follow this standard process to add a new feature (e.g., `feature-staff`) to the Administrator Portal.
+
+### 1. Create the Feature Library
+
+Create a container library for the feature. This keeps the domain logic isolated.
+
+```bash
+npx nx g @nx/angular:lib libs/administrator-portal/feature-NAME --importPath=@shikshakul/admin/feature-NAME
+```
+
+### 2. Create the Main Page
+
+Create the main "smart" component (the page) that will act as the route entry point. Note: Use --export so it can be used in the routing module.
+
+```bash
+npx nx g @nx/angular:component libs/administrator-portal/feature-NAME/src/lib/PAGE-NAME-page --export
+```
+
+### 3. Create Sub-Components (Dumb Components)
+
+Create smaller, reusable UI components inside a components folder within the library.
+
+```bash
+npx nx g @nx/angular:component libs/administrator-portal/feature-NAME/src/lib/components/COMPONENT-NAME
+```
 
 ---
 
