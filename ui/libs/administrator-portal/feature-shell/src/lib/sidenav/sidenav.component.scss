@@ -1,0 +1,217 @@
+/* VARIABLES */
+:host {
+  --sidenav-width: 260px;
+  --sidenav-collapsed-width: 72px;
+  --royal-blue: #1a73e8;
+  --text-primary: #1f1f1f;
+  --text-secondary: #5f6368;
+  --bg-surface: #ffffff;
+  --bg-hover: #f5f5f5;
+  --border-color: #e0e0e0;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: var(--sidenav-width);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow-x: hidden;
+  white-space: nowrap;
+
+  /* COLLAPSED STATE LOGIC */
+  &.collapsed {
+    width: var(--sidenav-collapsed-width);
+    cursor: pointer;
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    .brand-header {
+      padding: 0;
+      justify-content: center;
+    }
+    .nav-menu {
+      padding: 16px 8px;
+    }
+    a {
+      justify-content: center;
+      padding: 0;
+    }
+  }
+}
+
+/* 1. BRAND HEADER */
+.brand-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-color);
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    .full-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .icon-circle {
+        width: 32px;
+        height: 32px;
+        background: #e8f0fe;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--royal-blue);
+      }
+      .text h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+      .text span {
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+    }
+    .short-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--royal-blue);
+    }
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    &:hover {
+      color: var(--royal-blue);
+    }
+  }
+}
+
+/* 2. MENU AREA */
+.nav-menu {
+  flex: 1;
+  padding: 16px 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* GROUP STYLING (The Simplified Look) */
+.menu-group {
+  margin-bottom: 12px;
+
+  /* The Header Text (e.g., ACADEMICS) */
+  .group-header {
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9aa0a6; /* Lighter grey */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* The Divider Line (Only shown when collapsed) */
+  .group-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 8px 12px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    margin-bottom: 2px;
+  }
+
+  /* Link Styling */
+  a {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+
+    .material-icons {
+      font-size: 22px;
+      min-width: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .label {
+      margin-left: 12px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    &:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    &.active {
+      background: #e8f0fe;
+      color: var(--royal-blue);
+      .material-icons {
+        color: var(--royal-blue);
+      }
+    }
+  }
+}
+
+/* 3. FOOTER */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #7e57c2;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      .name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .role {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+.sidenav-container.collapsed .sidebar-footer {
+  justify-content: center;
+  .info {
+    display: none;
+  }
+}

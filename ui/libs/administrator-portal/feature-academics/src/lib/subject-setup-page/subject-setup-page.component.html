@@ -1,0 +1,107 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text-group">
+      <div class="breadcrumbs">
+        Home <span class="sep">/</span> Academics
+        <span class="sep">/</span> Subject Setup
+      </div>
+      <h1>Subject Setup</h1>
+      <p class="subtitle">
+        Manage and configure academic subjects for the 2024-2025 Session.
+      </p>
+    </div>
+    <button class="btn-primary">
+      <span class="material-icons">add</span> Add New Subject
+    </button>
+  </header>
+
+  <shikshakul-subject-stats></shikshakul-subject-stats>
+
+  <div class="content-card">
+    <div class="controls-bar">
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input
+          type="text"
+          placeholder="Search by name, code or department..."
+        />
+      </div>
+
+      <div class="actions">
+        <select class="type-select">
+          <option>All Types</option>
+          <option>Theory</option>
+          <option>Practical</option>
+        </select>
+
+        <button class="icon-btn-square">
+          <span class="material-icons">filter_list</span>
+        </button>
+        <button class="icon-btn-square">
+          <span class="material-icons">download</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="data-table">
+      <div class="table-header">
+        <div class="col check"><input type="checkbox" /></div>
+        <div class="col name">SUBJECT NAME</div>
+        <div class="col code">CODE</div>
+        <div class="col type">TYPE</div>
+        <div class="col category">CATEGORY</div>
+        <div class="col created">CREATED BY</div>
+      </div>
+
+      <div class="table-row" *ngFor="let sub of subjects">
+        <div class="col check"><input type="checkbox" /></div>
+
+        <div class="col name">
+          <div class="subject-icon" [ngClass]="sub.color">{{ sub.icon }}</div>
+          <span class="text">{{ sub.name }}</span>
+        </div>
+
+        <div class="col code">
+          <span class="code-badge">{{ sub.code }}</span>
+        </div>
+
+        <div class="col type">
+          <span
+            class="type-badge"
+            [class.theory]="sub.type === 'Theory'"
+            [class.practical]="sub.type === 'Practical'"
+            [class.coscho]="sub.type === 'Co-Scholastic'"
+          >
+            {{ sub.type }}
+          </span>
+        </div>
+
+        <div class="col category">{{ sub.category }}</div>
+
+        <div class="col created">
+          <div class="avatar-xs">{{ sub.createdBy.charAt(0) }}</div>
+          <span>{{ sub.createdBy }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination-footer">
+      <span class="result-text"
+        >Showing <strong>1</strong> to <strong>4</strong> of
+        <strong>42</strong> results</span
+      >
+      <div class="pages">
+        <button class="page-btn">
+          <span class="material-icons">chevron_left</span>
+        </button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">...</button>
+        <button class="page-btn">8</button>
+        <button class="page-btn">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

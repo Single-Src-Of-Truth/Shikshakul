@@ -1,0 +1,38 @@
+.input-prefix {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: var(--royal-blue);
+    box-shadow: 0 0 0 3px var(--royal-blue-light);
+  }
+
+  .prefix {
+    background: #f8fafc;
+    padding: 10px 12px;
+    border-right: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+
+    /* Remove default focus since parent handles it */
+    &:focus {
+      box-shadow: none;
+      border: none;
+    }
+  }
+}

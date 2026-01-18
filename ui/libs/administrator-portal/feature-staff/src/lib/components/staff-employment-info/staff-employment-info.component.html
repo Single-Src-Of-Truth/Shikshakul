@@ -1,0 +1,34 @@
+<div class="section-container" [formGroup]="formGroup">
+  <div class="section-header">
+    <span class="material-icons icon-blue">work</span>
+    <h3>Employment Information</h3>
+  </div>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Employee ID</label>
+      <input
+        type="text"
+        formControlName="employeeId"
+        placeholder="Auto-generated if blank"
+        readonly
+        style="background: #f8fafc"
+      />
+    </div>
+    <div class="form-field">
+      <label>Department</label>
+      <select formControlName="department">
+        <option>Select Department</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Designation</label>
+      <select formControlName="designation">
+        <option>Select Role</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Date of Joining</label>
+      <input type="date" formControlName="dateOfJoining" />
+    </div>
+  </div>
+</div>

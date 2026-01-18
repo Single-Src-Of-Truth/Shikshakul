@@ -1,0 +1,34 @@
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="top">
+      <span class="label">CURRENT SESSION</span>
+      <div class="icon-box green">
+        <span class="material-icons">calendar_today</span>
+      </div>
+    </div>
+    <div class="value">{{ currentYear }}</div>
+    <div class="status active"><span class="dot"></span> Active Now</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="top">
+      <span class="label">UPCOMING SESSION</span>
+      <div class="icon-box blue">
+        <span class="material-icons">update</span>
+      </div>
+    </div>
+    <div class="value">{{ upcomingYear }}</div>
+    <div class="status info">Starts in 45 days</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="top">
+      <span class="label">TOTAL ARCHIVES</span>
+      <div class="icon-box orange">
+        <span class="material-icons">folder_open</span>
+      </div>
+    </div>
+    <div class="value">{{ totalArchives }} Years</div>
+    <div class="status plain">Stored securely</div>
+  </div>
+</div>

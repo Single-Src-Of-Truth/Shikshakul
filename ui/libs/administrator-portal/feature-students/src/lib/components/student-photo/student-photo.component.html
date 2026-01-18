@@ -1,0 +1,34 @@
+<div class="form-card photo-card">
+  <h3 class="card-title">Student Photo</h3>
+
+  <div class="photo-upload-container">
+    <div class="photo-circle">
+      <img
+        *ngIf="imagePreview"
+        [src]="imagePreview"
+        alt="Student Photo"
+        class="preview-img"
+      />
+      <span *ngIf="!imagePreview" class="material-icons placeholder-icon"
+        >image</span
+      >
+    </div>
+
+    <input
+      type="file"
+      #fileInput
+      (change)="onFileSelected($event)"
+      accept=".jpg,.jpeg,.png"
+      hidden
+    />
+
+    <button class="edit-btn" (click)="fileInput.click()">
+      <span class="material-icons">edit</span>
+    </button>
+  </div>
+
+  <div class="upload-info">
+    <p>Allowed *.jpeg, *.jpg, *.png</p>
+    <p>Max size of 3 MB</p>
+  </div>
+</div>

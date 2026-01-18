@@ -1,0 +1,64 @@
+.photo-section {
+  display: flex;
+  flex-direction: column; /* CHANGE: Stack vertically */
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+
+  .photo-circle {
+    width: 120px; /* Bigger circle */
+    height: 120px;
+    border-radius: 50%;
+    background: #e0d4c5;
+    border: 4px solid white;
+    box-shadow: 0 0 0 1px var(--border-color); /* Subtle ring */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+
+    .icon {
+      color: white;
+      font-size: 48px;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .text-info {
+    h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-secondary);
+      max-width: 200px;
+      margin: 0 auto;
+    }
+  }
+
+  .upload-btn {
+    background: white;
+    border: 1px solid var(--royal-blue);
+    color: var(--royal-blue);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    &:hover {
+      background: #e8f0fe;
+    }
+  }
+}

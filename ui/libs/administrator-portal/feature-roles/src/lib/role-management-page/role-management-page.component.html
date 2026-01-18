@@ -1,0 +1,33 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="breadcrumbs">
+      Home <span class="sep">/</span> Configuration
+      <span class="sep">/</span> Roles & Permissions
+    </div>
+    <h1>Role & Permission Management</h1>
+    <p class="subtitle">
+      Configure access levels for administrative staff, teachers (PGT/TGT), and
+      non-teaching staff.
+    </p>
+  </header>
+
+  <div class="content-grid">
+    <div class="left-col">
+      <shikshakul-role-list
+        [roles]="roles"
+        [selectedRoleId]="selectedRoleId"
+        (selectRole)="onRoleSelect($event)"
+      >
+      </shikshakul-role-list>
+    </div>
+
+    <div class="right-col">
+      <shikshakul-permission-detail
+        [role]="selectedRole"
+        [permissionGroups]="permissionGroups"
+        (save)="onSave()"
+      >
+      </shikshakul-permission-detail>
+    </div>
+  </div>
+</div>

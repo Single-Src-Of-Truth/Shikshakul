@@ -1,0 +1,36 @@
+<div class="role-sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <span class="material-icons">search</span>
+      <input type="text" placeholder="Search roles..." />
+    </div>
+    <button class="btn-primary full-width" (click)="createRole.emit()">
+      <span class="material-icons">add</span> Create New Role
+    </button>
+  </div>
+
+  <div class="list-label">
+    <span>ACTIVE ROLES</span>
+    <span class="badge">{{ roles.length }} Total</span>
+  </div>
+
+  <div class="role-items">
+    <div
+      class="role-card"
+      *ngFor="let role of roles"
+      [class.active]="role.id === selectedRoleId"
+      (click)="selectRole.emit(role.id)"
+    >
+      <div class="icon-box" [ngClass]="role.colorClass">
+        <span class="material-icons">{{ role.icon }}</span>
+      </div>
+
+      <div class="info">
+        <h4 class="name">{{ role.name }}</h4>
+        <span class="desc">{{ role.description }}</span>
+      </div>
+
+      <span class="material-icons chevron">chevron_right</span>
+    </div>
+  </div>
+</div>

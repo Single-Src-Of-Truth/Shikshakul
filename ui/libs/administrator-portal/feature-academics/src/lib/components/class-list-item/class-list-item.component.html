@@ -1,0 +1,44 @@
+<div class="class-card">
+  <div class="info-group">
+    <div class="header-row">
+      <h3 class="class-name">{{ classData.name }}</h3>
+      <span class="stream-badge" [ngClass]="classData.stream.toLowerCase()">
+        {{ classData.stream }}
+      </span>
+    </div>
+    <p class="description">{{ classData.description }}</p>
+  </div>
+
+  <div class="sections-group">
+    <span class="label">SECTIONS</span>
+    <div class="chips-container">
+      <div class="section-chip" *ngFor="let section of classData.sections">
+        <span class="text">{{ section }}</span>
+        <button class="remove-btn" (click)="removeSection.emit(section)">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <button class="add-section-btn" (click)="addSection.emit()">
+        <span class="material-icons">add</span>
+        Add Section
+      </button>
+    </div>
+  </div>
+
+  <div class="actions-group">
+    <div class="student-count">
+      <span class="count">{{ classData.studentCount }}</span>
+      <span class="label">Students</span>
+    </div>
+
+    <div class="btn-row">
+      <button class="icon-btn edit" (click)="edit.emit()">
+        <span class="material-icons">edit</span>
+      </button>
+      <button class="icon-btn delete" (click)="delete.emit()">
+        <span class="material-icons">delete</span>
+      </button>
+    </div>
+  </div>
+</div>

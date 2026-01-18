@@ -1,0 +1,87 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">
+        Home <span class="sep">/</span> Settings
+        <span class="sep">/</span> Academic Years
+      </div>
+      <h1>Academic Year Management</h1>
+      <p class="subtitle">
+        Manage current and future academic sessions. Only one year can be active
+        at a time.
+      </p>
+    </div>
+    <button class="btn-primary">
+      <span class="material-icons">add</span> Create New Year
+    </button>
+  </header>
+
+  <shikshakul-academic-year-stats></shikshakul-academic-year-stats>
+
+  <div class="content-box">
+    <div class="controls-bar">
+      <h3>All Academic Years</h3>
+      <div class="actions">
+        <button class="btn-outline">
+          <span class="material-icons">filter_list</span> Filter
+        </button>
+        <button class="btn-outline">
+          <span class="material-icons">download</span> Export
+        </button>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 30%">ACADEMIC YEAR</th>
+          <th>START DATE</th>
+          <th>END DATE</th>
+          <th>STATUS</th>
+          <th style="width: 10%">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let year of years">
+          <td>
+            <div class="year-info">
+              <span class="name">{{ year.name }}</span>
+              <span class="sub" *ngIf="year.sub">{{ year.sub }}</span>
+            </div>
+          </td>
+          <td class="date-cell">{{ year.startDate }}</td>
+          <td class="date-cell">{{ year.endDate }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="year.statusClass">
+              <span class="dot" *ngIf="year.statusClass !== 'archived'"></span>
+              {{ year.status }}
+            </span>
+          </td>
+          <td>
+            <button class="icon-btn">
+              <span class="material-icons">more_vert</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination-footer">
+      <span class="text">Showing 1 to 4 of 10 results</span>
+      <div class="pages">
+        <button class="page-btn">Previous</button>
+        <button class="page-btn">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-alert">
+    <span class="material-icons icon">info</span>
+    <p>
+      Activating a new academic year will automatically archive the current one.
+      This action affects all student records, fee structures, and attendance
+      modules. Please ensure all grading for the current term is finalized
+      before switching.
+    </p>
+  </div>
+</div>

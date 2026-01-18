@@ -1,0 +1,55 @@
+<div class="section-container" [formGroup]="formGroup">
+  <div class="section-header">
+    <span class="material-icons icon-blue">call</span>
+    <h3>Contact Details</h3>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Mobile Number <span class="required">*</span></label>
+      <div class="input-prefix">
+        <span class="prefix">+91</span>
+        <input type="text" formControlName="mobile" placeholder="9876543210" />
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Email Address</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="staff@school.edu.in"
+      />
+    </div>
+
+    <div class="form-field full-width">
+      <label>Current Address</label>
+      <input
+        type="text"
+        formControlName="currentAddress"
+        placeholder="House No, Street, Locality"
+      />
+    </div>
+
+    <div class="form-field">
+      <label>State</label
+      ><select formControlName="state">
+        <option>Select State</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>City</label
+      ><input type="text" formControlName="city" placeholder="e.g. Mumbai" />
+    </div>
+    <div class="form-field">
+      <label>Pincode</label
+      ><input type="text" formControlName="pincode" placeholder="e.g. 400001" />
+    </div>
+
+    <div class="full-width checkbox-row">
+      <input type="checkbox" formControlName="isPermanentSame" id="permCheck" />
+      <label for="permCheck" class="checkbox-label"
+        >Permanent Address is same as Current Address</label
+      >
+    </div>
+  </div>
+</div>

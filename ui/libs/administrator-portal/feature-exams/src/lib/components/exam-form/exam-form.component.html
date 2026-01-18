@@ -1,0 +1,90 @@
+<div class="form-card" [formGroup]="examForm">
+  <div class="card-header">
+    <h3>Create New Exam</h3>
+    <span class="badge-blue">New Configuration</span>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Exam Name <span class="required">*</span></label>
+      <input
+        type="text"
+        formControlName="examName"
+        placeholder="e.g., Half-Yearly 2024"
+      />
+    </div>
+    <div class="form-field">
+      <label>Academic Year</label>
+      <select formControlName="academicYear">
+        <option>2024-2025</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Class / Grade <span class="required">*</span></label>
+      <select formControlName="classGrade">
+        <option>Select Class</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Grading System</label>
+      <select formControlName="gradingSystem">
+        <option>Marks Based (CBSE)</option>
+      </select>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="subjects-section">
+    <div class="section-header">
+      <div class="text">
+        <h4>Subject & Marks Distribution</h4>
+        <p>Define maximum and passing marks for each subject in this exam.</p>
+      </div>
+      <button class="add-btn" (click)="addSubject()">
+        <span class="material-icons">add_circle_outline</span> Add Subject
+      </button>
+    </div>
+
+    <div class="subjects-list">
+      <div class="list-header">
+        <span class="col-1">SUBJECT</span>
+        <span class="col-2">MAX MARKS</span>
+        <span class="col-3">PASS MARKS</span>
+        <span class="col-4"></span>
+      </div>
+
+      <div
+        class="list-row"
+        *ngFor="let subject of subjectsArray.controls; let i = index"
+        [formGroup]="$any(subject)"
+      >
+        <div class="col-1">
+          <select formControlName="subjectName">
+            <option value="Mathematics">Mathematics</option>
+            <option value="Science">Science</option>
+            <option value="">Select Subject...</option>
+          </select>
+        </div>
+        <div class="col-2">
+          <input type="number" formControlName="maxMarks" />
+        </div>
+        <div class="col-3">
+          <input type="number" formControlName="passMarks" />
+        </div>
+        <div class="col-4">
+          <button class="delete-btn" (click)="removeSubject(i)">
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button class="btn-outline">Cancel</button>
+    <button class="btn-primary" (click)="onSubmit()">
+      <span class="material-icons">save</span> Save Configuration
+    </button>
+  </div>
+</div>

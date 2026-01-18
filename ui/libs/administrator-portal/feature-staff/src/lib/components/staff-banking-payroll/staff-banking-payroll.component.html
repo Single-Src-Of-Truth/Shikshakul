@@ -1,0 +1,40 @@
+<div class="section-container" [formGroup]="formGroup">
+  <div class="section-header">
+    <span class="material-icons icon-blue">account_balance</span>
+    <h3>Banking & Payroll</h3>
+  </div>
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Bank Name</label
+      ><input
+        type="text"
+        formControlName="bankName"
+        placeholder="e.g. State Bank of India"
+      />
+    </div>
+    <div class="form-field">
+      <label>Account Number</label
+      ><input
+        type="text"
+        formControlName="accountNumber"
+        placeholder="XXXX-XXXX-XXXX"
+      />
+    </div>
+    <div class="form-field">
+      <label>IFSC Code</label
+      ><input
+        type="text"
+        formControlName="ifscCode"
+        placeholder="SBIN000XXXX"
+      />
+    </div>
+    <div class="form-field">
+      <label>PAN Number</label
+      ><input
+        type="text"
+        formControlName="panNumber"
+        placeholder="ABCDE1234F"
+      />
+    </div>
+  </div>
+</div>

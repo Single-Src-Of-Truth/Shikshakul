@@ -1,0 +1,50 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text-group">
+      <div class="breadcrumbs">
+        Home <span class="sep">/</span> Academics
+        <span class="sep">/</span> Class Setup
+      </div>
+      <h1>Class & Section Management</h1>
+      <p class="subtitle">
+        Configure academic hierarchy for the current session (2023-2024)
+      </p>
+    </div>
+
+    <button class="btn-primary">
+      <span class="material-icons">add</span>
+      Add New Class
+    </button>
+  </header>
+
+  <shikshakul-class-stats></shikshakul-class-stats>
+
+  <div class="list-controls">
+    <h3>All Classes</h3>
+    <div class="actions">
+      <button class="btn-outline">
+        <span class="material-icons">filter_list</span> Filter
+      </button>
+      <button class="btn-outline">
+        <span class="material-icons">sort</span> Sort
+      </button>
+    </div>
+  </div>
+
+  <div class="class-list">
+    <shikshakul-class-list-item *ngFor="let cls of classes" [classData]="cls">
+    </shikshakul-class-list-item>
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn">
+      <span class="material-icons">chevron_left</span>
+    </button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">
+      <span class="material-icons">chevron_right</span>
+    </button>
+  </div>
+</div>

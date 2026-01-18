@@ -1,0 +1,52 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="title-group">
+      <div class="breadcrumbs">
+        Home <span class="separator">/</span> Students
+        <span class="separator">/</span> Create Profile
+      </div>
+      <h1 class="page-title">Create Student Profile</h1>
+      <p class="page-subtitle">
+        Enter the details below to register a new student for the academic year
+        2024-2025.
+      </p>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-outline" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="onSubmit()">
+        <span class="material-icons">save</span>
+        Save Student
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="studentForm" class="form-layout">
+    <div class="left-column">
+      <shikshakul-student-photo
+        [parentForm]="studentForm"
+      ></shikshakul-student-photo>
+
+      <shikshakul-admission-details
+        [formGroup]="getGroup('admission')"
+      ></shikshakul-admission-details>
+    </div>
+
+    <div class="right-column">
+      <shikshakul-personal-details
+        [formGroup]="getGroup('personal')"
+      ></shikshakul-personal-details>
+
+      <shikshakul-academic-details
+        [formGroup]="getGroup('academic')"
+      ></shikshakul-academic-details>
+
+      <shikshakul-guardian-details
+        [formGroup]="getGroup('guardian')"
+      ></shikshakul-guardian-details>
+
+      <shikshakul-address-details
+        [formGroup]="getGroup('address')"
+      ></shikshakul-address-details>
+    </div>
+  </form>
+</div>
