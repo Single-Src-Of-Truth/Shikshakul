@@ -7,9 +7,8 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, app *bootstrap.Application) {
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "UP", "service": "Academics Service"})
-	})
+	r.GET("/", app.HealthCtrl.HealthCheck)
+	r.GET("/health", app.HealthCtrl.HealthCheck)
 
 	api := r.Group("/api/v1/academics")
 	api.Use(middleware.AuthMiddleware())
