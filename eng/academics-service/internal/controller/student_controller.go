@@ -166,3 +166,29 @@ func (ctrl *StudentController) ApproveStudent(c *gin.Context) {
 	}
 	response.SuccessWithMsg(c, msg, student)
 }
+
+func (ctrl *StudentController) ConfigureSequence(c *gin.Context) {
+	tenantID := c.MustGet("tenantID").(uuid.UUID)
+	var req dto.ConfigureSequenceRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	if err := ctrl.Service.ConfigureAdmissionSequence(tenantID, req); err != nil {
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	response.SuccessWithMsg(c, "Admission sequence updated", nil)
+}
+
+func (ctrl *StudentController) GetActiveStudents(c *gin.Context) {
+	tenantID := c.MustGet("tenantID").(uuid.UUID)
+	classID := c.Query("class_id")
+
+	students, err := ctrl.Service.GetActiveStudents(tenantID, classID)
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	response.Success(c, students)
+}

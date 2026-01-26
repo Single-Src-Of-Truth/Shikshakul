@@ -1,7 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/bootstrap"
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/config"
@@ -12,22 +18,39 @@ import (
 
 func main() {
 	config.LoadConfig()
-
 	app := bootstrap.InitializeApp()
 
 	if config.AppConfig.AutoMigrate {
-		log.Println("AutoMigrate is enabled. Running migrations...")
+		log.Println("Running migrations...")
 		database.Migrate()
-	} else {
-		log.Println("AutoMigrate is disabled. Skipping migrations.")
 	}
 
 	r := gin.Default()
-
 	routes.RegisterRoutes(r, app)
 
-	log.Printf("Server starting on port %s in %s mode", config.AppConfig.Port, config.AppConfig.Environment)
-	if err := r.Run(":" + config.AppConfig.Port); err != nil {
-		log.Fatal("Failed to start server:", err)
+	srv := &http.Server{
+		Addr:    ":" + config.AppConfig.Port,
+		Handler: r,
 	}
+
+	go func() {
+		log.Printf("Server starting on port %s", config.AppConfig.Port)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Listen: %s\n", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server forced to shutdown:", err)
+	}
+
+	log.Println("Server exited properly")
 }

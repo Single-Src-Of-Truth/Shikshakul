@@ -30,6 +30,7 @@ func Migrate() {
 		&domain.StudentAttendance{},
 		&domain.CertificateRecord{},
 		&domain.CalendarEvent{},
+		&domain.AdmissionSequence{},
 	)
 
 	if err != nil {

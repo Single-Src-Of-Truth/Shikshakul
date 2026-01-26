@@ -34,7 +34,7 @@ func (ctrl *HealthController) HealthCheck(c *gin.Context) {
 	}
 
 	c.JSON(httpCode, gin.H{
-		"service":   "Academics Service(acads-pa.cleint1.sikhakul.com)",
+		"service":   "Academics Service(acads-pa.client1.shikshakul.com)",
 		"status":    status,
 		"timestamp": time.Now().Format(time.RFC3339),
 		"dependencies": gin.H{
