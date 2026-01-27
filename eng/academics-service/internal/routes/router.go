@@ -62,11 +62,11 @@ func studentRoutes(rg *gin.RouterGroup, app *bootstrap.Application) {
 
 	g.POST("/onboard", app.StudentCtrl.SubmitApplication)
 	g.GET("", middleware.RoleGuard("ADMIN", "MANAGEMENT"), app.StudentCtrl.GetAllStudents)
+	g.GET("/active", middleware.RoleGuard("ADMIN", "TEACHER", "MANAGEMENT"), app.StudentCtrl.GetActiveStudents)
 	g.GET("/:id", middleware.RoleGuard("ADMIN", "MANAGEMENT"), app.StudentCtrl.GetStudentByID)
 	g.POST("/:id/approve", middleware.RoleGuard("ADMIN"), app.StudentCtrl.ApproveStudent)
 	g.PUT("/:id", middleware.RoleGuard("ADMIN"), app.StudentCtrl.UpdateStudent)
 	g.DELETE("/:id", middleware.RoleGuard("ADMIN"), app.StudentCtrl.DeleteStudent)
-	g.GET("/active", middleware.RoleGuard("ADMIN", "TEACHER", "MANAGEMENT"), app.StudentCtrl.GetActiveStudents)
 }
 
 func teacherRoutes(rg *gin.RouterGroup, app *bootstrap.Application) {

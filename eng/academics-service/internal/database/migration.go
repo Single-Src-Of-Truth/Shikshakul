@@ -1,9 +1,9 @@
 package database
 
 import (
-	"log"
-
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/domain"
+	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/logger"
+	"go.uber.org/zap"
 )
 
 func Migrate() {
@@ -34,7 +34,7 @@ func Migrate() {
 	)
 
 	if err != nil {
-		log.Fatal("Migration Failed:", err)
+		logger.Fatal("Migration Failed", zap.Error(err))
 	}
-	log.Println("Database Migration Completed")
+	logger.Info("Database Migration Completed")
 }

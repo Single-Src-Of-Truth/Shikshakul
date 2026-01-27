@@ -2,13 +2,15 @@ package database
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/config"
+	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/logger"
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	gormLogger "gorm.io/gorm/logger"
 )
 
 var (
@@ -17,18 +19,28 @@ var (
 )
 
 func ConnectDB() {
-	var err error
-	DB, err = gorm.Open(postgres.Open(config.AppConfig.DBUrl), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to Database:", err)
+	var logLevel gormLogger.LogLevel
+	if config.AppConfig.Environment == "DEV" {
+		logLevel = gormLogger.Info
+	} else {
+		logLevel = gormLogger.Error
 	}
-	log.Println("Connected to PostgreSQL")
+
+	var err error
+	DB, err = gorm.Open(postgres.Open(config.AppConfig.DBUrl), &gorm.Config{
+		Logger: gormLogger.Default.LogMode(logLevel),
+	})
+
+	if err != nil {
+		logger.Fatal("Failed to connect to Database", zap.Error(err))
+	}
+	logger.Info("Connected to PostgreSQL", zap.String("log_level", config.AppConfig.Environment))
 }
 
 func ConnectRedis() {
 	opt, err := redis.ParseURL(config.AppConfig.RedisUrl)
 	if err != nil {
-		log.Fatal("Invalid Redis URL:", err)
+		logger.Fatal("Invalid Redis URL", zap.Error(err))
 	}
 
 	RedisClient = redis.NewClient(opt)
@@ -37,9 +49,9 @@ func ConnectRedis() {
 	defer cancel()
 
 	if _, err := RedisClient.Ping(ctx).Result(); err != nil {
-		log.Fatal("Failed to connect to Redis:", err)
+		logger.Fatal("Failed to connect to Redis", zap.Error(err))
 	}
-	log.Println("Connected to Redis")
+	logger.Info("Connected to Redis")
 }
 
 func CheckPostgres() bool {
@@ -72,4 +84,27 @@ func CheckRedis() bool {
 		return false
 	}
 	return true
+}
+
+func Close() {
+	if DB != nil {
+		sqlDB, err := DB.DB()
+		if err != nil {
+			logger.Error("Failed to get generic database object", zap.Error(err))
+		} else {
+			if err := sqlDB.Close(); err != nil {
+				logger.Error("Error closing PostgreSQL connection", zap.Error(err))
+			} else {
+				logger.Info("PostgreSQL connection closed")
+			}
+		}
+	}
+
+	if RedisClient != nil {
+		if err := RedisClient.Close(); err != nil {
+			logger.Error("Error closing Redis connection", zap.Error(err))
+		} else {
+			logger.Info("Redis connection closed")
+		}
+	}
 }

@@ -137,7 +137,17 @@ func (s *StudentService) ProcessApproval(tenantID uuid.UUID, studentID uuid.UUID
 
 	if student.Status == domain.StatusApproved {
 		tx.Rollback()
-		return nil, errors.New("student is already approved")
+		return nil, errors.New("operation failed: student is already approved (use withdrawal process to remove)")
+	}
+
+	if req.Action == "PENDING" {
+		student.Status = domain.StatusPending
+		if err := tx.Save(&student).Error; err != nil {
+			tx.Rollback()
+			return nil, err
+		}
+		tx.Commit()
+		return &student, nil
 	}
 
 	if req.Action == "REJECT" {
@@ -163,11 +173,9 @@ func (s *StudentService) ProcessApproval(tenantID uuid.UUID, studentID uuid.UUID
 	}
 
 	var seq domain.AdmissionSequence
-	err := tx.Where("tenant_id = ? AND academic_year_id = ?", tenantID, student.AcademicYearID).First(&seq).Error
-	if err != nil {
-		// Admission sequence not configured, cannot approve
+	if err := tx.Where("tenant_id = ? AND academic_year_id = ?", tenantID, student.AcademicYearID).First(&seq).Error; err != nil {
 		tx.Rollback()
-		return nil, errors.New("admission sequence not configured for the academic year")
+		return nil, errors.New("admission sequence not configured for this year")
 	}
 
 	if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&seq, "id = ?", seq.ID).Error; err != nil {
@@ -189,8 +197,18 @@ func (s *StudentService) ProcessApproval(tenantID uuid.UUID, studentID uuid.UUID
 		return nil, err
 	}
 
-	tx.Commit()
-	return s.Repo.FindStudentByID(tenantID, student.ID)
+	var finalStudent domain.Student
+	if err := tx.Preload("Class").Preload("Section").
+		Where("id = ? AND tenant_id = ?", student.ID, tenantID).
+		First(&finalStudent).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return nil, err
+	}
+	return &finalStudent, nil
 }
 
 func (s *StudentService) GetAllStudents(tenantID uuid.UUID, filter dto.StudentFilter) ([]domain.Student, error) {
@@ -221,6 +239,10 @@ func (s *StudentService) ConfigureAdmissionSequence(tenantID uuid.UUID, req dto.
 			CurrentCount:   startingCount,
 		}
 		return s.Repo.UpsertSequence(seq)
+	}
+
+	if seq.CurrentCount > 0 && seq.Prefix != req.Prefix {
+		return errors.New("cannot change prefix after admission numbers have been generated for this year")
 	}
 
 	seq.Prefix = req.Prefix
