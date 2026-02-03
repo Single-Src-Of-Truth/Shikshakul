@@ -7,9 +7,8 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, app *bootstrap.Application) {
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "UP", "service": "Academics Service"})
-	})
+	r.GET("/", app.HealthCtrl.HealthCheck)
+	r.GET("/health", app.HealthCtrl.HealthCheck)
 
 	api := r.Group("/api/v1/academics")
 	api.Use(middleware.AuthMiddleware())
@@ -59,9 +58,11 @@ func studentRoutes(rg *gin.RouterGroup, app *bootstrap.Application) {
 	g.POST("/schema", middleware.RoleGuard("ADMIN"), app.StudentCtrl.CreateSchema)
 	g.GET("/schema", app.StudentCtrl.GetActiveSchema)
 	g.DELETE("/schema", middleware.RoleGuard("ADMIN"), app.StudentCtrl.DeleteSchema)
+	g.POST("/setup/admission-sequence", middleware.RoleGuard("ADMIN"), app.StudentCtrl.ConfigureSequence)
 
 	g.POST("/onboard", app.StudentCtrl.SubmitApplication)
 	g.GET("", middleware.RoleGuard("ADMIN", "MANAGEMENT"), app.StudentCtrl.GetAllStudents)
+	g.GET("/active", middleware.RoleGuard("ADMIN", "TEACHER", "MANAGEMENT"), app.StudentCtrl.GetActiveStudents)
 	g.GET("/:id", middleware.RoleGuard("ADMIN", "MANAGEMENT"), app.StudentCtrl.GetStudentByID)
 	g.POST("/:id/approve", middleware.RoleGuard("ADMIN"), app.StudentCtrl.ApproveStudent)
 	g.PUT("/:id", middleware.RoleGuard("ADMIN"), app.StudentCtrl.UpdateStudent)

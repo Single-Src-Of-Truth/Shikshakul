@@ -47,3 +47,9 @@ type StudentFilter struct {
 	ClassID string `form:"class_id"`
 	Status  string `form:"status"`
 }
+
+type ConfigureSequenceRequest struct {
+	AcademicYearID string `json:"academic_year_id" binding:"required"`
+	Prefix         string `json:"prefix" binding:"required"`
+	StartingCount  *int   `json:"starting_count"`
+}

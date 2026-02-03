@@ -34,6 +34,14 @@ type Student struct {
 	Status      Status `gorm:"size:20;default:'PENDING'" json:"status"`
 	AdmissionNo string `gorm:"size:50;index" json:"admission_no"`
 
-	Class   Class   `gorm:"foreignKey:ClassID" json:"class"`
-	Section Section `gorm:"foreignKey:SectionID" json:"section"`
+	Class   *Class   `gorm:"foreignKey:ClassID" json:"class,omitempty"`
+	Section *Section `gorm:"foreignKey:SectionID" json:"section,omitempty"`
+}
+
+type AdmissionSequence struct {
+	BaseEntity
+	TenantID       uuid.UUID `gorm:"type:uuid;not null;index" json:"tenant_id"`
+	AcademicYearID uuid.UUID `gorm:"type:uuid;not null;index" json:"academic_year_id"`
+	Prefix         string    `gorm:"size:10;not null" json:"prefix"`
+	CurrentCount   int       `gorm:"default:0" json:"current_count"`
 }

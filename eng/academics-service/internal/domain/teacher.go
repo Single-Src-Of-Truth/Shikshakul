@@ -28,7 +28,6 @@ type Teacher struct {
 	Documents   json.RawMessage `gorm:"type:jsonb" json:"documents"`
 
 	Status         Status `gorm:"size:20;default:'PENDING'" json:"status"`
-	EmployeeID     string `gorm:"size:50;index" json:"employee_id"`
 	IsClassTeacher bool   `gorm:"default:false" json:"is_class_teacher"`
 }
 
