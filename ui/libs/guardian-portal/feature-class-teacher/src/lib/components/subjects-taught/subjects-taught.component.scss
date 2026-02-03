@@ -1,0 +1,93 @@
+/* Card Container */
+.card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .icon-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.purple {
+      background: #f3e5f5;
+      color: #9c27b0;
+    }
+
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+}
+
+/* Grid Layout for Subjects */
+.subjects-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.subject-item {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px; /* Ensures they don't get too squashed */
+  flex: 1;
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0; /* Added border for better contrast */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--royal-blue);
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+  }
+}

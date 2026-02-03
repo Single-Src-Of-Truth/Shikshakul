@@ -62,6 +62,27 @@
       ],
       "@shikshakul/teacher/feature-my-students": [
         "libs/teacher-portal/feature-my-students/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-shell": [
+        "libs/guardian-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-dashboard": [
+        "libs/guardian-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-student-profile": [
+        "libs/guardian-portal/feature-student-profile/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-attendance-summary": [
+        "libs/guardian-portal/feature-attendance-summary/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-academic-performance": [
+        "libs/guardian-portal/feature-academic-performance/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-exam-schedule": [
+        "libs/guardian-portal/feature-exam-schedule/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-class-teacher": [
+        "libs/guardian-portal/feature-class-teacher/src/index.ts"
       ]
     }
   },

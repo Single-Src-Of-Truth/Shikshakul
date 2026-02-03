@@ -1,0 +1,22 @@
+<div class="trend-card">
+  <div class="header">
+    <h3>Attendance Trend</h3>
+    <button class="icon-btn">
+      <span class="material-icons">refresh</span>
+    </button>
+  </div>
+
+  <div class="chart-area">
+    <div class="bar-group" *ngFor="let item of trends">
+      <div class="bar-track">
+        <div
+          class="bar-fill"
+          [ngClass]="item.type"
+          [style.height.%]="item.type === 'future' ? 100 : item.value"
+        ></div>
+      </div>
+
+      <span class="label">{{ item.month }}</span>
+    </div>
+  </div>
+</div>

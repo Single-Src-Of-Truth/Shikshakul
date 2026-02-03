@@ -1,0 +1,70 @@
+.summary-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  .avatar-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #f0f2f5;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .text {
+    h2 {
+      margin: 0 0 8px 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .meta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .material-icons {
+        font-size: 16px;
+        color: #9aa0a6;
+      }
+      .dot {
+        color: #e0e0e0;
+      }
+    }
+  }
+}
+
+.status-badge {
+  background: #e6f4ea;
+  color: #137333;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .material-icons {
+    font-size: 18px;
+  }
+}

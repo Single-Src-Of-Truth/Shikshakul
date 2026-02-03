@@ -1,0 +1,148 @@
+.calendar-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  height: 100%;
+}
+
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .nav-arrows {
+    display: flex;
+    gap: 8px;
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot.green {
+    background: #00c853;
+  }
+  .dot.red {
+    background: #d93025;
+  }
+  .dot.yellow {
+    background: #fbc02d;
+  }
+  .dot.gray {
+    background: #e0e0e0;
+  }
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+
+  .day-name {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9aa0a6;
+    margin-bottom: 8px;
+  }
+
+  .date-cell {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: #fafafa; /* Default empty */
+
+    .day-num {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .status-icon .material-icons {
+      font-size: 14px;
+    }
+
+    /* Variants */
+    &.present {
+      background: #e6f4ea;
+      color: #137333;
+      .status-icon {
+        color: #137333;
+      }
+    }
+    &.absent {
+      background: #fce8e6;
+      color: #d93025;
+      .status-icon {
+        color: #d93025;
+      }
+    }
+    &.late {
+      background: #fff9c4;
+      color: #f57f17;
+      .status-icon {
+        color: #f57f17;
+      }
+    }
+    &.holiday {
+      background: #f5f5f5;
+      color: #9aa0a6;
+    }
+    &.off {
+      background: transparent;
+      color: #bdc1c6;
+      border: 1px dashed #e0e0e0;
+    }
+
+    /* Today Highlight */
+    &.today {
+      border: 2px solid var(--royal-blue);
+      position: relative;
+    }
+    &.today::after {
+      content: 'TODAY';
+      position: absolute;
+      top: -8px;
+      background: var(--royal-blue);
+      color: white;
+      font-size: 8px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+  }
+}

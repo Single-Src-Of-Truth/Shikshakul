@@ -1,0 +1,34 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">Home / Student Profile / Attendance</div>
+      <h1>Attendance Summary</h1>
+      <p class="subtitle">Academic Session 2023-24</p>
+    </div>
+
+    <div class="actions">
+      <div class="dropdown">
+        Last 30 Days <span class="material-icons">expand_more</span>
+      </div>
+      <button class="btn-primary">
+        <span class="material-icons">download</span> Report
+      </button>
+    </div>
+  </header>
+
+  <shikshakul-student-header></shikshakul-student-header>
+
+  <shikshakul-attendance-stats></shikshakul-attendance-stats>
+
+  <div class="grid-layout">
+    <div class="main-col">
+      <shikshakul-calendar-heatmap></shikshakul-calendar-heatmap>
+    </div>
+
+    <div class="side-col">
+      <shikshakul-attendance-trends></shikshakul-attendance-trends>
+
+      <shikshakul-recent-absences></shikshakul-recent-absences>
+    </div>
+  </div>
+</div>
