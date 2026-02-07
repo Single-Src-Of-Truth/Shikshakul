@@ -1,0 +1,63 @@
+<aside
+  class="sidenav-container"
+  [class.collapsed]="collapsed"
+  (click)="collapsed ? triggerSidebarToggle() : null"
+>
+  <div class="brand-header">
+    <div class="logo-area">
+      <div class="full-logo" *ngIf="!collapsed">
+        <div class="icon-circle">
+          <span class="material-icons">school</span>
+        </div>
+        <div class="text">
+          <h3>Shikshakul</h3>
+          <span>Teacher Portal</span>
+        </div>
+      </div>
+      <div class="short-logo" *ngIf="collapsed">SKL</div>
+    </div>
+
+    <button
+      class="close-btn"
+      *ngIf="!collapsed"
+      (click)="$event.stopPropagation(); triggerSidebarToggle()"
+    >
+      <span class="material-icons">menu_open</span>
+    </button>
+  </div>
+
+  <nav class="nav-menu">
+    <div class="menu-group" *ngFor="let group of menuGroups; let first = first">
+      <div class="group-header" *ngIf="group.header && !collapsed">
+        {{ group.header }}
+      </div>
+
+      <div class="group-divider" *ngIf="collapsed && !first"></div>
+
+      <ul>
+        <li *ngFor="let item of group.items">
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+            [title]="collapsed ? item.label : ''"
+            (click)="$event.stopPropagation()"
+          >
+            <span class="material-icons">{{ item.icon }}</span>
+            <span class="label" *ngIf="!collapsed">{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-profile">
+      <div class="avatar">AS</div>
+      <div class="info" *ngIf="!collapsed">
+        <span class="name">Amaryan Singh</span>
+        <span class="role">Senior Teacher</span>
+      </div>
+    </div>
+  </div>
+</aside>

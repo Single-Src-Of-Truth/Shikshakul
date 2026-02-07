@@ -1,0 +1,137 @@
+.table-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .tag {
+    background: #f5f5f5;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+}
+
+.marks-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  th {
+    text-align: left;
+    font-size: 10px;
+    color: #9aa0a6;
+    font-weight: 700;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 16px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .center {
+    text-align: center;
+  }
+  .bold {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .subject-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    .icon-sq {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .material-icons {
+        font-size: 18px;
+      }
+      &.blue {
+        background: #e8f0fe;
+        color: var(--royal-blue);
+      }
+      &.purple {
+        background: #f3e5f5;
+        color: #9c27b0;
+      }
+      &.orange {
+        background: #fef7e0;
+        color: #ea8600;
+      }
+      &.yellow {
+        background: #fff9c4;
+        color: #fbc02d;
+      }
+      &.red {
+        background: #fce8e6;
+        color: #d93025;
+      }
+    }
+  }
+
+  .grade-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    &.green {
+      background: #e6f4ea;
+      color: #137333;
+    }
+    &.blue {
+      background: #e8f0fe;
+      color: var(--royal-blue);
+    }
+  }
+
+  .remark {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+}
+
+.teacher-note {
+  background: #f8fbff;
+  border: 1px solid #e8f0fe;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  .icon {
+    color: var(--royal-blue);
+    font-size: 20px;
+    margin-top: 2px;
+  }
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    strong {
+      color: var(--text-primary);
+    }
+  }
+}

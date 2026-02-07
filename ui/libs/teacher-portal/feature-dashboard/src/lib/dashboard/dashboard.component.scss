@@ -1,0 +1,128 @@
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: #1f1f1f;
+  }
+  p {
+    margin: 0;
+    color: #5f6368;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    background: #1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+}
+
+.main-column,
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.widget-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: #1f1f1f;
+  }
+
+  .notice-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    &:last-child {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .tag.blue {
+      background: #e8f0fe;
+      color: #1a73e8;
+    }
+    .tag.orange {
+      background: #fef7e0;
+      color: #ea8600;
+    }
+    .date {
+      float: right;
+      font-size: 11px;
+      color: #9aa0a6;
+    }
+    p {
+      margin: 8px 0 0 0;
+      font-size: 13px;
+      color: #3c4043;
+      line-height: 1.4;
+    }
+  }
+}
+
+.help-card {
+  background: #1a73e8;
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+  }
+  p {
+    font-size: 13px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+  button {
+    background: white;
+    color: #1a73e8;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+}

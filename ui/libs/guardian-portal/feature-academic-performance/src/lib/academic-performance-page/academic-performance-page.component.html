@@ -1,0 +1,55 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">
+        Home / Student Portal / Marks & Report Cards
+      </div>
+      <h1>Academic Performance</h1>
+      <p class="subtitle">View your marks, grades, and teacher remarks.</p>
+    </div>
+
+    <div class="actions">
+      <div class="dropdown">
+        2023 - 2024 <span class="material-icons">expand_more</span>
+      </div>
+      <button class="btn-primary">
+        <span class="material-icons">download</span> Download Report Card
+      </button>
+    </div>
+  </header>
+
+  <shikshakul-student-summary></shikshakul-student-summary>
+
+  <shikshakul-exam-tabs></shikshakul-exam-tabs>
+
+  <shikshakul-performance-stats></shikshakul-performance-stats>
+
+  <div class="grid-layout">
+    <div class="main-col">
+      <shikshakul-scholastic-table></shikshakul-scholastic-table>
+
+      <div class="legend-footer">
+        <span class="label">GRADING SYSTEM LEGEND</span>
+        <div class="items">
+          <span class="l-item"
+            ><span class="badge green">A1</span> Top 1/8th passed</span
+          >
+          <span class="l-item"
+            ><span class="badge green">A2</span> Next 1/8th passed</span
+          >
+          <span class="l-item"
+            ><span class="badge blue">B1</span> Next 1/8th passed</span
+          >
+          <span class="l-item"
+            ><span class="badge blue">B2</span> Next 1/8th passed</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col">
+      <shikshakul-subject-chart></shikshakul-subject-chart>
+      <shikshakul-co-scholastic-list></shikshakul-co-scholastic-list>
+    </div>
+  </div>
+</div>

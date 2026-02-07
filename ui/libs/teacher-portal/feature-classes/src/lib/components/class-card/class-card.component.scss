@@ -1,0 +1,167 @@
+/* VARIABLES (Local scope) */
+:host {
+  display: block;
+}
+
+.class-card {
+  background: white; /* Standard White Surface */
+  border: 1px solid var(--border-color); /* Standard Border #E0E0E0 */
+  border-radius: 8px; /* Standard Radius (matches stats cards) */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+
+  /* Hover: Slight lift and shadow */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #d0d0d0;
+  }
+}
+
+/* HEADER SECTION */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .title-group {
+    h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary); /* #1F1F1F */
+    }
+
+    .subject {
+      font-size: 13px;
+      color: var(--text-secondary); /* #5F6368 */
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      /* Small colored dot for distinction */
+      &::before {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+  }
+}
+
+/* Color Dots Logic */
+.class-card.blue .subject::before {
+  background: #1a73e8;
+}
+.class-card.purple .subject::before {
+  background: #9c27b0;
+}
+.class-card.green .subject::before {
+  background: #137333;
+}
+.class-card.red .subject::before {
+  background: #d93025;
+}
+.class-card.teal .subject::before {
+  background: #00bcd4;
+}
+.class-card.orange .subject::before {
+  background: #f57c00;
+}
+
+/* INFO LIST */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--bg-hover); /* Subtle separator */
+  border-bottom: 1px solid var(--bg-hover);
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-secondary); /* #5F6368 */
+
+    .material-icons {
+      font-size: 18px;
+      color: #9aa0a6; /* Lighter icon color */
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Highlight logic for Today */
+    &.highlight {
+      color: #e67c00; /* Orange for attention */
+      font-weight: 600;
+      .material-icons {
+        color: #e67c00;
+      }
+    }
+  }
+}
+
+/* FOOTER / ACTIONS */
+.action-row {
+  display: flex;
+  gap: 12px;
+
+  button {
+    flex: 1;
+    height: 36px; /* Standard button height */
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+
+  /* Primary Button (Matches your Theme Blue) */
+  .btn-primary {
+    background: var(--royal-blue); /* #1A73E8 */
+    color: white;
+    border: none;
+    &:hover {
+      background: #1557b0;
+    }
+  }
+
+  /* Secondary Button (Outline) */
+  .btn-outline {
+    background: white;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    &:hover {
+      background: var(--bg-hover);
+    }
+  }
+}

@@ -1,0 +1,141 @@
+/* VARIABLES */
+:host {
+  --bg-app: #f0f2f5;
+  --bg-surface: #ffffff;
+  --text-primary: #1f1f1f;
+  --text-secondary: #5f6368;
+  --border-color: #e0e0e0;
+  --royal-blue: #1a73e8;
+}
+
+/* 1. APP CONTAINER */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-app);
+  overflow: hidden;
+}
+
+/* 2. MAIN CONTENT AREA - Dynamic Resizing Logic */
+.main-content {
+  /* Default state (Sidebar open) */
+  margin-left: 260px; /* Matches --sidenav-width */
+  width: calc(100% - 260px);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  /* Collapsed state (Sidebar closed) */
+  /* This class must be toggled in component.ts or template based on sidebar state */
+  /* If you are passing [class.expanded]="collapsed" to .main-content in HTML: */
+  &.expanded {
+    margin-left: 72px; /* Matches --sidenav-collapsed-width */
+    width: calc(100% - 72px);
+  }
+}
+
+/* 3. TOP BAR */
+.top-bar {
+  height: 64px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+
+  /* Sticky header if content scrolls inside .content-scrollable */
+  position: sticky;
+  top: 0;
+  z-index: 90;
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .search-bar {
+    background: var(--bg-app);
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: 8px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+    }
+    .material-icons {
+      color: var(--text-secondary);
+      font-size: 20px;
+    }
+
+    &:focus-within {
+      background: #fff;
+      border-color: var(--royal-blue);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: var(--royal-blue);
+      }
+
+      .material-icons {
+        font-size: 24px;
+      }
+
+      .notification-dot {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 8px;
+        height: 8px;
+        background: #d93025;
+        border-radius: 50%;
+        border: 2px solid var(--bg-surface);
+      }
+    }
+  }
+}
+
+/* 4. CONTENT AREA */
+.content-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+
+  /* Optional: Center content on huge screens */
+  .inner-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}

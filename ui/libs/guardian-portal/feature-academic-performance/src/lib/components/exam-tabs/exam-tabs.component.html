@@ -1,0 +1,30 @@
+<div class="tabs-container">
+  <button
+    class="tab"
+    (click)="activeTab = 'ut1'"
+    [class.active]="activeTab === 'ut1'"
+  >
+    Unit Test 1
+  </button>
+  <button
+    class="tab"
+    (click)="activeTab = 'half'"
+    [class.active]="activeTab === 'half'"
+  >
+    Half Yearly Exam
+  </button>
+  <button
+    class="tab"
+    (click)="activeTab = 'ut2'"
+    [class.active]="activeTab === 'ut2'"
+  >
+    Unit Test 2
+  </button>
+  <button
+    class="tab"
+    (click)="activeTab = 'annual'"
+    [class.active]="activeTab === 'annual'"
+  >
+    Annual Exam
+  </button>
+</div>

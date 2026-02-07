@@ -1,0 +1,33 @@
+<div class="class-card" [ngClass]="classData.color">
+  <div class="card-header">
+    <div class="title-group">
+      <h3>{{ classData.name }}</h3>
+      <span class="subject">{{ classData.subject }}</span>
+    </div>
+    <button class="menu-btn" title="Options">
+      <span class="material-icons">more_vert</span>
+    </button>
+  </div>
+
+  <div class="info-list">
+    <div class="info-item">
+      <span class="material-icons">groups</span>
+      <span>{{ classData.students }} Students</span>
+    </div>
+
+    <div class="info-item" [class.highlight]="classData.isToday">
+      <span class="material-icons">schedule</span>
+      <span>{{ classData.nextTime }}</span>
+    </div>
+
+    <div class="info-item">
+      <span class="material-icons">location_on</span>
+      <span>{{ classData.room }}</span>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn-primary">Attendance</button>
+    <button class="btn-outline">Details</button>
+  </div>
+</div>

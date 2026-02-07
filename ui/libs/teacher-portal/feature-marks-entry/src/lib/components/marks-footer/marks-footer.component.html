@@ -1,0 +1,15 @@
+<div class="sticky-footer">
+  <div class="status-msg">
+    <span class="material-icons">check_circle</span>
+    Last auto-saved at 10:45 AM
+  </div>
+
+  <div class="actions">
+    <button class="btn-outline" (click)="saveDraft.emit()">
+      Save as Draft
+    </button>
+    <button class="btn-primary" (click)="submit.emit()">
+      <span class="material-icons">send</span> Finalize & Submit
+    </button>
+  </div>
+</div>

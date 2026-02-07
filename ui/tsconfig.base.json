@@ -41,6 +41,48 @@
       ],
       "@shikshakul/admin/feature-settings": [
         "libs/administrator-portal/feature-settings/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-shell": [
+        "libs/teacher-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-dashboard": [
+        "libs/teacher-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-classes": [
+        "libs/teacher-portal/feature-classes/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-attendance": [
+        "libs/teacher-portal/feature-attendance/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-marks-entry": [
+        "libs/teacher-portal/feature-marks-entry/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-student-details": [
+        "libs/teacher-portal/feature-student-details/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-my-students": [
+        "libs/teacher-portal/feature-my-students/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-shell": [
+        "libs/guardian-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-dashboard": [
+        "libs/guardian-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-student-profile": [
+        "libs/guardian-portal/feature-student-profile/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-attendance-summary": [
+        "libs/guardian-portal/feature-attendance-summary/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-academic-performance": [
+        "libs/guardian-portal/feature-academic-performance/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-exam-schedule": [
+        "libs/guardian-portal/feature-exam-schedule/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-class-teacher": [
+        "libs/guardian-portal/feature-class-teacher/src/index.ts"
       ]
     }
   },
