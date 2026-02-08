@@ -1,4 +1,4 @@
-/* VARIABLES */
+/* VARIABLES (Inherited from global styles, but good to keep structure) */
 .page-container {
   display: flex;
   flex-direction: column;
@@ -32,6 +32,7 @@
     }
   }
 }
+
 .btn-primary {
   background: var(--royal-blue);
   color: white;
@@ -43,12 +44,15 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  &:hover {
+    background: #1557b0;
+  }
   .material-icons {
     font-size: 18px;
   }
 }
 
-/* CONTENT CARD (The White Box) */
+/* CONTENT CARD */
 .content-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
@@ -182,7 +186,7 @@
       color: var(--text-secondary);
     }
 
-    /* Name Column Styling */
+    /* Name Column */
     .col.name {
       gap: 12px;
       font-weight: 600;

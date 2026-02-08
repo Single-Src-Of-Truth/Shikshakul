@@ -83,7 +83,17 @@
       ],
       "@shikshakul/guardian/feature-class-teacher": [
         "libs/guardian-portal/feature-class-teacher/src/index.ts"
-      ]
+      ],
+      "@shikshakul/data-access/academic": [
+        "libs/data-access/academic/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-class-setup": [
+        "libs/admin-portal/feature-class-setup/src/index.ts"
+      ],
+      "@shikshakul/administrator/feature-class-setup": [
+        "libs/administrator-portal/feature-class-setup/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/snackbar": ["libs/shared/ui/snackbar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

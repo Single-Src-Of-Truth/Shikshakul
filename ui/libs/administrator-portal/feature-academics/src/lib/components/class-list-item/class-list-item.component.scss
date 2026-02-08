@@ -1,6 +1,11 @@
+:host {
+  display: block;
+}
+
 .class-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: white; /* Fallback if var not defined */
+  background: var(--bg-surface, white);
+  border: 1px solid var(--border-color, #e0e0e0);
   border-radius: 8px;
   padding: 24px;
   display: grid;
@@ -10,7 +15,7 @@
   transition: all 0.2s;
 
   &:hover {
-    border-color: var(--royal-blue);
+    border-color: var(--royal-blue, #1a73e8);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 }
@@ -28,7 +33,7 @@
     .class-name {
       font-size: 18px;
       font-weight: 700;
-      color: var(--text-primary);
+      color: var(--text-primary, #1f1f1f);
       margin: 0;
     }
 
@@ -41,7 +46,7 @@
 
       &.general {
         background: #f0f2f5;
-        color: var(--text-secondary);
+        color: var(--text-secondary, #5f6368);
         border: 1px solid #dadce0;
       }
       &.science {
@@ -64,7 +69,7 @@
 
   .description {
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #5f6368);
     margin: 0;
   }
 }
@@ -78,7 +83,7 @@
   .label {
     font-size: 10px;
     font-weight: 700;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #5f6368);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -94,20 +99,21 @@
       gap: 6px;
       padding: 4px 4px 4px 12px;
       background: #ffffff;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-color, #e0e0e0);
       border-radius: 6px;
       font-size: 14px;
       font-weight: 600;
-      color: var(--text-primary);
+      color: var(--text-primary, #1f1f1f);
 
       .remove-btn {
         border: none;
         background: transparent;
         cursor: pointer;
-        color: var(--text-secondary);
+        color: var(--text-secondary, #5f6368);
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 2px;
         &:hover {
           color: #d93025;
         }
@@ -123,9 +129,9 @@
       gap: 6px;
       padding: 4px 12px;
       background: #f8f9fa;
-      border: 1px dashed var(--royal-blue);
+      border: 1px dashed var(--royal-blue, #1a73e8);
       border-radius: 6px;
-      color: var(--royal-blue);
+      color: var(--royal-blue, #1a73e8);
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -144,7 +150,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-left: 1px solid var(--bg-app);
+  border-left: 1px solid var(--border-color, #e0e0e0);
   padding-left: 32px;
 
   .student-count {
@@ -154,12 +160,12 @@
     .count {
       font-size: 18px;
       font-weight: 700;
-      color: var(--text-primary);
+      color: var(--text-primary, #1f1f1f);
       line-height: 1;
     }
     .label {
       font-size: 11px;
-      color: var(--text-secondary);
+      color: var(--text-secondary, #5f6368);
       margin-top: 4px;
     }
   }
@@ -173,7 +179,7 @@
       border-radius: 4px;
       border: none;
       background: transparent;
-      color: var(--text-secondary);
+      color: var(--text-secondary, #5f6368);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -182,7 +188,7 @@
         font-size: 18px;
       }
       &:hover.edit {
-        color: var(--royal-blue);
+        color: var(--royal-blue, #1a73e8);
         background: #e8f0fe;
       }
       &:hover.delete {

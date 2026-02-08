@@ -40,7 +40,7 @@ export class SidenavComponent {
     {
       header: 'ACADEMICS',
       items: [
-        { label: 'Class Setup', icon: 'class', route: '/academics' },
+        { label: 'Class Setup', icon: 'class', route: '/academics/classes' },
         {
           label: 'Subjects',
           icon: 'library_books',

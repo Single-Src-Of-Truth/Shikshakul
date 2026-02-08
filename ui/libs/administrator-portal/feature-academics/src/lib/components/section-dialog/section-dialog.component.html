@@ -1,0 +1,52 @@
+<div class="modal-backdrop" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="text">
+        <h2>Add Section</h2>
+        <p class="sub">For {{ className || 'Class' }}</p>
+      </div>
+      <button class="close-btn" (click)="onCancel()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="secName">Section Name</label>
+        <input
+          type="text"
+          id="secName"
+          [(ngModel)]="sectionData.name"
+          name="name"
+          placeholder="e.g. Section A"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="capacity">Student Capacity</label>
+        <input
+          type="number"
+          id="capacity"
+          [(ngModel)]="sectionData.capacity"
+          name="capacity"
+          placeholder="e.g. 40"
+          required
+          min="1"
+        />
+        <small class="hint">Maximum number of students allowed.</small>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-text" (click)="onCancel()">
+          Cancel
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="isSubmitting" class="material-icons spin">sync</span>
+          {{ isSubmitting ? 'Creating...' : 'Create Section' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

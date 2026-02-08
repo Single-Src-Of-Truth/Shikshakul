@@ -27,7 +27,7 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'academics',
+        path: 'academics/classes',
         loadComponent: () =>
           import('@shikshakul/admin/feature-academics').then(
             (m) => m.ClassManagementPageComponent,

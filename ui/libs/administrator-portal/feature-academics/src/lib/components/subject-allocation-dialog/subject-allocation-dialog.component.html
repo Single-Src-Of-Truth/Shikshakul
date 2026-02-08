@@ -1,0 +1,66 @@
+<div class="modal-backdrop" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="text">
+        <h2>Manage Subjects</h2>
+        <p class="sub">Assign subjects to {{ className }}</p>
+      </div>
+      <button class="close-btn" (click)="onCancel()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+      <span class="material-icons spin">sync</span> Loading subjects...
+    </div>
+
+    <div class="subject-list" *ngIf="!loading">
+      <div
+        class="subject-row"
+        *ngFor="let sub of subjects"
+        [class.selected]="sub.isSelected"
+      >
+        <div class="main-info" (click)="toggleSelection(sub)">
+          <div class="checkbox">
+            <span class="material-icons" *ngIf="sub.isSelected">check</span>
+          </div>
+          <div>
+            <div class="name">{{ sub.name }}</div>
+            <div class="code">{{ sub.code }}</div>
+          </div>
+        </div>
+
+        <div class="config" *ngIf="sub.isSelected">
+          <div class="field">
+            <label>Lectures/Week</label>
+            <input
+              type="number"
+              [(ngModel)]="sub.weeklyLectures"
+              min="1"
+              max="20"
+            />
+          </div>
+          <div class="field checkbox-field">
+            <input
+              type="checkbox"
+              [(ngModel)]="sub.isOptional"
+              [id]="'opt-' + sub.id"
+            />
+            <label [for]="'opt-' + sub.id">Optional</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-text" (click)="onCancel()">Cancel</button>
+      <button
+        class="btn-primary"
+        (click)="onSubmit()"
+        [disabled]="isSubmitting || loading"
+      >
+        {{ isSubmitting ? 'Saving...' : 'Save Assignments' }}
+      </button>
+    </div>
+  </div>
+</div>
