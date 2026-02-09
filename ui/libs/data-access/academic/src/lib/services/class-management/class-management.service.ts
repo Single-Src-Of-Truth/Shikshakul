@@ -27,6 +27,18 @@ export class ClassManagementService {
     return `${this.classEndpoint}/${classId}/subjects`;
   }
 
+  private getClassTeacherEndpoint(sectionId: string): string {
+    return `${this.baseUrl}/academics/sections/${sectionId}/class-teacher`;
+  }
+
+  private getSubjectTeacherEndpoint(sectionId: string): string {
+    return `${this.baseUrl}/academics/sections/${sectionId}/subject-teachers`;
+  }
+
+  private getAllocationsEndpoint(sectionId: string): string {
+    return `${this.baseUrl}/academics/sections/${sectionId}/allocations`;
+  }
+
   getClasses(): Observable<ClassGrade[]> {
     return this.http.get<ClassGrade[]>(this.classEndpoint);
   }
@@ -88,5 +100,28 @@ export class ClassManagementService {
     return this.http.delete<void>(
       `${this.getSubjectAssignmentEndpoint(classId)}/${subjectId}`,
     );
+  }
+
+  assignClassTeacher(sectionId: string, teacherId: string): Observable<any> {
+    return this.http.post(this.getClassTeacherEndpoint(sectionId), {
+      teacher_id: teacherId,
+    });
+  }
+
+  assignSubjectTeacher(
+    sectionId: string,
+    payload: {
+      academic_year_id: string;
+      subject_id: string;
+      teacher_id: string;
+    },
+  ): Observable<any> {
+    return this.http.post(this.getSubjectTeacherEndpoint(sectionId), payload);
+  }
+
+  getAllocations(sectionId: string, academicYearId: string): Observable<any> {
+    return this.http.get(this.getAllocationsEndpoint(sectionId), {
+      params: { academic_year_id: academicYearId },
+    });
   }
 }
