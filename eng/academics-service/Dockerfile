@@ -17,6 +17,8 @@ RUN apk --no-cache add ca-certificates
 
 COPY --from=builder /app/main .
 
+RUN touch config.env
+
 EXPOSE 9001
 
 # Run the binary
