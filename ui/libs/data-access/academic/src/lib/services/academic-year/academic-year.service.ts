@@ -19,7 +19,7 @@ export class AcademicYearService {
     return this.http.get<AcademicYear[]>(this.endpoint);
   }
 
-  getCurrentAcademicYead(): Observable<AcademicYear> {
+  getCurrentAcademicYear(): Observable<AcademicYear> {
     return this.http.get<AcademicYear>(`${this.endpoint}/current`);
   }
 

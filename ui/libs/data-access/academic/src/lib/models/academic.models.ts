@@ -27,3 +27,34 @@ export interface Subject {
   category?: string;
   created_by?: string;
 }
+
+export interface StudentOnboardData {
+  academic_year_id: string;
+  class_id: string;
+  section_id?: string;
+  first_name: string;
+  last_name: string;
+  email?: string;
+  mobile?: string;
+  dob: string;
+  gender: string;
+  profile_data: any;
+  documents?: any;
+}
+
+export interface TeacherOnboardData {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile: string;
+  profile_data: {
+    dob?: string;
+    gender?: string;
+    aadhar_number?: string;
+    current_address?: any;
+    employment?: any;
+    banking?: any;
+    [key: string]: any;
+  };
+  documents?: any;
+}

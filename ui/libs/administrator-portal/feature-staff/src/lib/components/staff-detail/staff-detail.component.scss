@@ -1,0 +1,69 @@
+.header-actions {
+  display: flex;
+  gap: 12px;
+
+  .btn-icon.danger {
+    color: #d93025;
+    border-color: #d93025;
+    &:hover {
+      background: #fce8e6;
+    }
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 4px;
+  &.pending {
+    background: #fef7e0;
+    color: #ea8600;
+  }
+  &.approved {
+    background: #e6f4ea;
+    color: #137333;
+  }
+}
+
+.approval-bar {
+  background: #e8f0fe;
+  border: 1px solid #d2e3fc;
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #174ea6;
+    font-weight: 500;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    button {
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-approve {
+      background: #1a73e8;
+      color: white;
+    }
+    .btn-reject {
+      background: white;
+      color: #d93025;
+      border: 1px solid #d93025;
+    }
+  }
+}

@@ -6,16 +6,25 @@
         <span class="separator">/</span> Create Profile
       </div>
       <h1 class="page-title">Create Student Profile</h1>
-      <p class="page-subtitle">
-        Enter the details below to register a new student for the academic year
-        2024-2025.
-      </p>
+      <p class="page-subtitle">Register a new student into the system.</p>
     </div>
+
     <div class="action-buttons">
-      <button class="btn btn-outline" (click)="onCancel()">Cancel</button>
-      <button class="btn btn-primary" (click)="onSubmit()">
-        <span class="material-icons">save</span>
-        Save Student
+      <button
+        class="btn btn-outline"
+        (click)="onCancel()"
+        [disabled]="isSubmitting"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="onSubmit()"
+        [disabled]="isSubmitting"
+      >
+        <span class="material-icons" *ngIf="!isSubmitting">save</span>
+        <span class="material-icons spin" *ngIf="isSubmitting">sync</span>
+        {{ isSubmitting ? 'Saving...' : 'Save Student' }}
       </button>
     </div>
   </header>
@@ -25,7 +34,6 @@
       <shikshakul-student-photo
         [parentForm]="studentForm"
       ></shikshakul-student-photo>
-
       <shikshakul-admission-details
         [formGroup]="getGroup('admission')"
       ></shikshakul-admission-details>
@@ -38,12 +46,14 @@
 
       <shikshakul-academic-details
         [formGroup]="getGroup('academic')"
-      ></shikshakul-academic-details>
+        [classes]="classes"
+        [sections]="sections"
+      >
+      </shikshakul-academic-details>
 
       <shikshakul-guardian-details
         [formGroup]="getGroup('guardian')"
       ></shikshakul-guardian-details>
-
       <shikshakul-address-details
         [formGroup]="getGroup('address')"
       ></shikshakul-address-details>

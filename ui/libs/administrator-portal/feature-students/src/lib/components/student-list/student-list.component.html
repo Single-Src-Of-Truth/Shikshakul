@@ -1,0 +1,75 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text-group">
+      <h1>Student Directory</h1>
+      <p class="subtitle">Manage all student records and admissions.</p>
+    </div>
+    <button class="btn-primary" (click)="navigateToCreate()">
+      <span class="material-icons">add</span> Admission
+    </button>
+  </header>
+
+  <div class="controls-bar">
+    <div class="search-box">
+      <span class="material-icons">search</span>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search by name (Client-side filtering coming soon)"
+      />
+    </div>
+
+    <div class="actions">
+      <select
+        [(ngModel)]="selectedClassId"
+        (change)="onClassFilterChange()"
+        class="filter-select"
+      >
+        <option value="">All Classes</option>
+        <option *ngFor="let cls of classes" [value]="cls.id">
+          {{ cls.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="data-table">
+    <div class="table-header">
+      <div class="col name">STUDENT NAME</div>
+      <div class="col adm">ADM. NO</div>
+      <div class="col father">PARENT</div>
+      <div class="col status">STATUS</div>
+      <div class="col actions"></div>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+      <span class="material-icons spin">sync</span> Loading...
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && students.length === 0">
+      No students found matching your criteria.
+    </div>
+
+    <div
+      class="table-row"
+      *ngFor="let s of students"
+      (click)="viewStudent(s.id)"
+    >
+      <div class="col name">
+        <div class="avatar">{{ s.first_name?.charAt(0) || 'S' }}</div>
+        <div class="text">
+          <span class="main">{{ s.first_name }} {{ s.last_name }}</span>
+          <span class="sub">{{ s.email || 'No Email' }}</span>
+        </div>
+      </div>
+      <div class="col adm">{{ s.profile_data?.admission_number || '-' }}</div>
+      <div class="col father">{{ s.profile_data?.father_name || '-' }}</div>
+      <div class="col status"><span class="badge active">Active</span></div>
+      <div class="col actions">
+        <button class="icon-btn-sm">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

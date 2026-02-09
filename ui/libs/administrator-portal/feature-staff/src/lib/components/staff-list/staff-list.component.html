@@ -1,0 +1,59 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text-group">
+      <h1>Staff Directory</h1>
+      <p class="subtitle">Manage teaching and non-teaching staff records.</p>
+    </div>
+    <button class="btn-primary" (click)="navigateToCreate()">
+      <span class="material-icons">add</span> Add New Staff
+    </button>
+  </header>
+
+  <div class="data-table">
+    <div class="table-header">
+      <div class="col name">NAME</div>
+      <div class="col dept">DEPARTMENT</div>
+      <div class="col desig">DESIGNATION</div>
+      <div class="col mobile">CONTACT</div>
+      <div class="col actions"></div>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+      <span class="material-icons spin">sync</span> Loading directory...
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && staffList.length === 0">
+      No staff members found.
+    </div>
+
+    <div
+      class="table-row"
+      *ngFor="let s of staffList"
+      (click)="viewStaff(s.id)"
+    >
+      <div class="col name">
+        <div class="avatar">{{ s.first_name.charAt(0) }}</div>
+        <div class="text">
+          <span class="main">{{ s.first_name }} {{ s.last_name }}</span>
+          <span class="sub">{{ s.email }}</span>
+        </div>
+      </div>
+
+      <div class="col dept">
+        <span class="badge gray">{{
+          s.profile_data?.employment?.department || '-'
+        }}</span>
+      </div>
+      <div class="col desig">
+        {{ s.profile_data?.employment?.designation || '-' }}
+      </div>
+      <div class="col mobile">{{ s.mobile }}</div>
+
+      <div class="col actions">
+        <button class="icon-btn-sm">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

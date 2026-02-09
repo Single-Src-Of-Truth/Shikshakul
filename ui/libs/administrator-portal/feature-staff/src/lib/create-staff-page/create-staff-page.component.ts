@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,6 +11,12 @@ import { StaffPersonalInfoComponent } from '../components/staff-personal-info/st
 import { StaffContactDetailsComponent } from '../components/staff-contact-details/staff-contact-details.component';
 import { StaffEmploymentInfoComponent } from '../components/staff-employment-info/staff-employment-info.component';
 import { StaffBankingPayrollComponent } from '../components/staff-banking-payroll/staff-banking-payroll.component';
+import { Router } from '@angular/router';
+import {
+  TeacherService,
+  TeacherOnboardData,
+} from '@shikshakul/data-access/academic';
+import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
 
 @Component({
   selector: 'shikshakul-create-staff-page',
@@ -28,16 +34,22 @@ import { StaffBankingPayrollComponent } from '../components/staff-banking-payrol
   styleUrl: './create-staff-page.component.scss',
 })
 export class CreateStaffPageComponent {
-  staffForm: FormGroup;
+  private fb = inject(FormBuilder);
+  private teacherService = inject(TeacherService);
+  private snackbar = inject(SnackbarService);
+  private router = inject(Router);
 
-  constructor(private fb: FormBuilder) {
+  staffForm: FormGroup;
+  isSubmitting = false;
+
+  constructor() {
     this.staffForm = this.fb.group({
       photo: [null],
       personal: this.fb.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         dob: ['', Validators.required],
-        gender: ['', Validators.required],
+        gender: ['MALE', Validators.required],
         fatherSpouseName: [''],
         aadharNumber: [
           '',
@@ -54,10 +66,13 @@ export class CreateStaffPageComponent {
         isPermanentSame: [false],
       }),
       employment: this.fb.group({
-        employeeId: [''], // Auto-generated
+        employeeId: [''],
         department: ['', Validators.required],
         designation: ['', Validators.required],
-        dateOfJoining: ['', Validators.required],
+        dateOfJoining: [
+          new Date().toISOString().split('T')[0],
+          Validators.required,
+        ],
       }),
       banking: this.fb.group({
         bankName: ['', Validators.required],
@@ -69,20 +84,78 @@ export class CreateStaffPageComponent {
   }
 
   getGroup(name: string): FormGroup {
-    const control = this.staffForm.get(name);
-    if (!control) throw new Error(`Form group '${name}' not found`);
-    return control as FormGroup;
+    return this.staffForm.get(name) as FormGroup;
   }
 
   onSubmit() {
-    if (this.staffForm.valid) {
-      console.log('Staff Data:', this.staffForm.value);
-    } else {
+    if (this.staffForm.invalid) {
       this.staffForm.markAllAsTouched();
+      this.snackbar.error(
+        'Validation Error',
+        'Please check the form for missing fields.',
+      );
+      return;
     }
+
+    this.isSubmitting = true;
+    const formVal = this.staffForm.value;
+
+    const payload: TeacherOnboardData = {
+      first_name: formVal.personal.firstName,
+      last_name: formVal.personal.lastName,
+      email: formVal.contact.email,
+      mobile: formVal.contact.mobile,
+
+      profile_data: {
+        dob: new Date(formVal.personal.dob).toISOString(),
+        gender: formVal.personal.gender,
+        father_spouse_name: formVal.personal.fatherSpouseName,
+        aadhar_number: formVal.personal.aadharNumber,
+
+        address: {
+          line1: formVal.contact.currentAddress,
+          city: formVal.contact.city,
+          state: formVal.contact.state,
+          pincode: formVal.contact.pincode,
+        },
+
+        employment: {
+          department: formVal.employment.department,
+          designation: formVal.employment.designation,
+          date_of_joining: new Date(
+            formVal.employment.dateOfJoining,
+          ).toISOString(),
+        },
+
+        banking: {
+          bank_name: formVal.banking.bankName,
+          account_number: formVal.banking.accountNumber,
+          ifsc: formVal.banking.ifscCode,
+          pan: formVal.banking.panNumber,
+        },
+      },
+      documents: {},
+    };
+
+    this.teacherService.onboardTeacher(payload).subscribe({
+      next: () => {
+        this.snackbar.success(
+          'Success',
+          'Staff member onboarded successfully!',
+        );
+        this.isSubmitting = false;
+        this.router.navigate(['/staff/list']);
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackbar.error('Error', 'Failed to onboard staff member.');
+        this.isSubmitting = false;
+      },
+    });
   }
 
   onCancel() {
+    this.router.navigate(['/staff/list']);
     console.log('Cancelled');
   }
 }

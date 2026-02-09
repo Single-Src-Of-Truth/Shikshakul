@@ -1,18 +1,22 @@
 .page-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  height: 100%;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 60px;
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
 
   .breadcrumbs {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #5f6368);
     margin-bottom: 8px;
     .separator {
       margin: 0 4px;
@@ -22,13 +26,13 @@
   .page-title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--text-primary, #1f1f1f);
     margin: 0 0 4px 0;
   }
 
   .page-subtitle {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--text-secondary, #5f6368);
     margin: 0;
   }
 
@@ -38,7 +42,7 @@
   }
 }
 
-// Standard Button Styles
+// Button Styles
 .btn {
   padding: 10px 20px;
   border-radius: 6px;
@@ -50,35 +54,43 @@
   gap: 8px;
   transition: all 0.2s;
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   &.btn-outline {
     background: white;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    &:hover {
-      background: var(--bg-app);
+    border: 1px solid var(--border-color, #dadce0);
+    color: var(--text-primary, #3c4043);
+    &:hover:not(:disabled) {
+      background: var(--bg-hover, #f1f3f4);
     }
   }
 
   &.btn-primary {
-    background: var(--royal-blue);
-    border: 1px solid var(--royal-blue);
+    background: var(--royal-blue, #1a73e8);
+    border: 1px solid var(--royal-blue, #1a73e8);
     color: white;
-    &:hover {
-      background: var(--royal-blue-hover);
+    &:hover:not(:disabled) {
+      background: #1557b0;
     }
     .material-icons {
       font-size: 18px;
     }
+
+    .spin {
+      animation: spin 1s linear infinite;
+    }
   }
 }
 
-// 2-Column Grid Layout
+// Form Grid Layout
 .form-layout {
   display: grid;
-  grid-template-columns: 320px 1fr; // Fixed left width, flexible right
-  gap: 24px;
+  grid-template-columns: 320px 1fr; // Fixed Sidebar, Fluid Main
+  gap: 32px;
   align-items: start;
-  padding-bottom: 40px; // Space at the end
 
   .left-column,
   .right-column {
@@ -87,7 +99,20 @@
     gap: 24px;
   }
 
+  // Responsive: Stack on smaller screens
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr; // Stack on smaller screens
+    grid-template-columns: 1fr;
+    .left-column {
+      order: 1;
+    }
+    .right-column {
+      order: 2;
+    }
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
   }
 }

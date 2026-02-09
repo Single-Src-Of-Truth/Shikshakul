@@ -20,10 +20,10 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'students/create',
-        loadComponent: () =>
+        path: 'academics/students',
+        loadChildren: () =>
           import('@shikshakul/admin/feature-students').then(
-            (m) => m.CreateStudentPageComponent,
+            (m) => m.featureStudentsRoutes,
           ),
       },
       {
@@ -41,10 +41,10 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'staff/create',
-        loadComponent: () =>
+        path: 'staff',
+        loadChildren: () =>
           import('@shikshakul/admin/feature-staff').then(
-            (m) => m.CreateStaffPageComponent,
+            (m) => m.featureStaffRoutes,
           ),
       },
       {

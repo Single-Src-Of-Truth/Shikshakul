@@ -1,5 +1,7 @@
 /* VARIABLES */
 :host {
+  display: flex;
+  height: 100%;
   --sidenav-width: 260px;
   --sidenav-collapsed-width: 72px;
   --royal-blue: #1a73e8;

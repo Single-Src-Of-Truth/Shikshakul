@@ -93,7 +93,12 @@
       "@shikshakul/administrator/feature-class-setup": [
         "libs/administrator-portal/feature-class-setup/src/index.ts"
       ],
-      "@shikshakul/shared/ui/snackbar": ["libs/shared/ui/snackbar/src/index.ts"]
+      "@shikshakul/shared/ui/snackbar": [
+        "libs/shared/ui/snackbar/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-student-management": [
+        "libs/administrator-portal/feature-student-management/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
