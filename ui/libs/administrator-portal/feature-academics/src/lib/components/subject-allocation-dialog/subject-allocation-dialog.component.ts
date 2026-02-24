@@ -81,7 +81,7 @@ export class SubjectAllocationDialogComponent implements OnInit {
 
     const payload = {
       subjects: selected.map((s) => ({
-        subject_id: s.id!,
+        subject_id: s.subject_id!,
         is_optional: s.isOptional,
         weekly_lectures: s.weeklyLectures,
       })),

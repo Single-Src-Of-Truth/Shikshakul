@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { ClassListItemComponent } from '../components/class-list-item/class-list-item.component';
 import { ClassStatsComponent } from '../components/class-stats/class-stats.component';
 import { ClassDialogComponent } from '../components/class-dialog/class-dialog.component';
@@ -35,6 +35,7 @@ interface UIClassItem extends ClassGrade {
 export class ClassManagementPageComponent implements OnInit {
   private classService = inject(ClassManagementService);
   private snackbar = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   classes: UIClassItem[] = [];
   loading = true;
@@ -55,22 +56,24 @@ export class ClassManagementPageComponent implements OnInit {
 
   loadClasses() {
     this.loading = true;
+    this.cdr.detectChanges();
     this.classService.getClasses().subscribe({
       next: (apiData) => {
-        this.classes = apiData
-          .sort((a, b) => a.sort_order - b.sort_order)
-          .map((cls) => ({
+        const dataArr = Array.isArray(apiData) ? apiData : ((apiData as any)?.data || []);
+        this.classes = dataArr
+          .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
+          .map((cls: any) => ({
             ...cls,
-            stream: 'General',
-            description: `Standard ${cls.sort_order} • Academic`,
             sections: [],
             studentCount: 0,
           }));
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.snackbar.error('Error', 'Failed to load classes.');
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }

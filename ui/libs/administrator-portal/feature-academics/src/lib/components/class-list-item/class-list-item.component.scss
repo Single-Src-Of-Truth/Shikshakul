@@ -3,13 +3,15 @@
 }
 
 .class-card {
-  background: white; /* Fallback if var not defined */
+  background: white;
+  /* Fallback if var not defined */
   background: var(--bg-surface, white);
   border: 1px solid var(--border-color, #e0e0e0);
   border-radius: 8px;
   padding: 24px;
   display: grid;
-  grid-template-columns: 280px 1fr 180px; /* Fixed Left, Flex Middle, Fixed Right */
+  grid-template-columns: 280px 1fr 180px;
+  /* Fixed Left, Flex Middle, Fixed Right */
   gap: 32px;
   align-items: center;
   transition: all 0.2s;
@@ -30,47 +32,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
+
     .class-name {
       font-size: 18px;
       font-weight: 700;
       color: var(--text-primary, #1f1f1f);
       margin: 0;
     }
-
-    .stream-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-
-      &.general {
-        background: #f0f2f5;
-        color: var(--text-secondary, #5f6368);
-        border: 1px solid #dadce0;
-      }
-      &.science {
-        background: #e8f0fe;
-        color: #1a73e8;
-        border: 1px solid #d2e3fc;
-      }
-      &.commerce {
-        background: #e6f4ea;
-        color: #137333;
-        border: 1px solid #ceead6;
-      }
-      &.arts {
-        background: #fef7e0;
-        color: #ea8600;
-        border: 1px solid #feefc3;
-      }
-    }
-  }
-
-  .description {
-    font-size: 13px;
-    color: var(--text-secondary, #5f6368);
-    margin: 0;
   }
 }
 
@@ -114,9 +82,11 @@
         align-items: center;
         justify-content: center;
         padding: 2px;
+
         &:hover {
           color: #d93025;
         }
+
         .material-icons {
           font-size: 14px;
         }
@@ -135,9 +105,11 @@
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
+
       &:hover {
         background: #e8f0fe;
       }
+
       .material-icons {
         font-size: 16px;
       }
@@ -157,12 +129,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .count {
       font-size: 18px;
       font-weight: 700;
       color: var(--text-primary, #1f1f1f);
       line-height: 1;
     }
+
     .label {
       font-size: 11px;
       color: var(--text-secondary, #5f6368);
@@ -173,6 +147,7 @@
   .btn-row {
     display: flex;
     gap: 8px;
+
     .icon-btn {
       width: 32px;
       height: 32px;
@@ -184,13 +159,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
       .material-icons {
         font-size: 18px;
       }
+
       &:hover.edit {
         color: var(--royal-blue, #1a73e8);
         background: #e8f0fe;
       }
+
       &:hover.delete {
         color: #d93025;
         background: #fce8e6;

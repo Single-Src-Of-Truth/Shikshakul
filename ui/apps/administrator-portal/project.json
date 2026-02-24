@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/administrator-portal",
         "browser": "apps/administrator-portal/src/main.ts",
@@ -20,7 +22,9 @@
             "input": "apps/administrator-portal/public"
           }
         ],
-        "styles": ["apps/administrator-portal/src/styles.scss"]
+        "styles": [
+          "apps/administrator-portal/src/styles.scss"
+        ]
       },
       "configurations": {
         "production": {

@@ -55,6 +55,13 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'fees',
+        loadChildren: () =>
+          import('@shikshakul/administrator-portal/feature-fees').then(
+            (m) => m.featureFeesRoutes,
+          ),
+      },
+      {
         path: 'settings/roles',
         loadComponent: () =>
           import('@shikshakul/admin/feature-roles').then(

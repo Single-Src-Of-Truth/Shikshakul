@@ -1,0 +1,233 @@
+<div class="page-container">
+  <div class="top-bar">
+    <div class="header-text">
+      <h2>Fee Structure Setup</h2>
+      <p>Manage fee heads and assign amounts for classes.</p>
+    </div>
+
+    <div class="filter-group">
+      <span class="label">Configuring For:</span>
+      <div class="select-wrapper">
+        <select
+          [(ngModel)]="selectedClassId"
+          (change)="onClassChange()"
+          class="class-select"
+        >
+          <option value="" disabled selected>Select Class</option>
+          <option *ngFor="let c of classes" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="action-bar">
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input
+          type="text"
+          placeholder="Search fee types (e.g., Tuition, Transport)..."
+        />
+      </div>
+
+      <div class="buttons">
+        <button class="btn-secondary" (click)="showHeadModal = true">
+          <span class="material-icons">list</span> Manage Fee Types
+        </button>
+
+        <button
+          class="btn-primary"
+          (click)="showAddModal = true"
+          [disabled]="!selectedClassId"
+        >
+          <span class="material-icons">add</span> Assign New Fee
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!selectedClassId">
+      <div class="icon-circle"><span class="material-icons">class</span></div>
+      <h3>Select a Class</h3>
+      <p>
+        Please select a class from the top right to view or configure its fee
+        structure.
+      </p>
+    </div>
+
+    <div class="table-container" *ngIf="selectedClassId">
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th>Fee Name</th>
+            <th>Frequency</th>
+            <th>Due Date</th>
+            <th>Amount (₹)</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of currentStructure">
+            <td>
+              <div class="fee-info">
+                <div class="icon-box">
+                  <span class="material-icons">{{
+                    getIconForFee(s.fee_head?.name)
+                  }}</span>
+                </div>
+                <div class="text">
+                  <span class="name">{{ s.fee_head?.name }}</span>
+                  <span class="desc">Standard Fee</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="s.frequency">{{
+                s.frequency
+              }}</span>
+            </td>
+            <td>10th of Month</td>
+            <td class="amount">₹ {{ s.amount | number }}</td>
+            <td><span class="status-pill active">Active</span></td>
+            <td>
+              <button
+                class="btn-icon danger"
+                (click)="deleteStructure(s.id)"
+                title="Remove"
+              >
+                <span class="material-icons">delete_outline</span>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="currentStructure.length === 0" class="no-data-row">
+            <td colspan="6">No fees configured for this class yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="summary-section" *ngIf="selectedClassId">
+      <div class="summary-card">
+        <div class="card-content">
+          <span class="label">Total Active Fees</span>
+          <span class="val">{{ currentStructure.length }}</span>
+        </div>
+        <div class="icon-circle green">
+          <span class="material-icons">check_circle</span>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="card-content">
+          <span class="label">Draft Fees</span>
+          <span class="val">0</span>
+        </div>
+        <div class="icon-circle yellow">
+          <span class="material-icons">edit_note</span>
+        </div>
+      </div>
+
+      <div class="summary-card featured blue">
+        <div class="card-content">
+          <span class="label">Projected Collection</span>
+          <span class="val">₹ {{ calculateTotal() | number }}</span>
+          <span class="sub">Per student / year</span>
+        </div>
+        <div class="bg-icon"><span class="material-icons">savings</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showAddModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Assign New Fee</h3>
+        <button class="close-btn" (click)="showAddModal = false">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="structureForm" (ngSubmit)="addStructure()">
+        <div class="field">
+          <label>Fee Type</label>
+          <div class="select-wrapper">
+            <select formControlName="fee_head_id">
+              <option value="" disabled selected>Select a fee type...</option>
+              <option *ngFor="let h of feeHeads" [value]="h.id">
+                {{ h.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Amount (₹)</label>
+            <input type="number" formControlName="amount" placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label>Frequency</label>
+            <div class="select-wrapper">
+              <select formControlName="frequency">
+                <option value="MONTHLY">Monthly</option>
+                <option value="YEARLY">Yearly</option>
+                <option value="ONE_TIME">One Time</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-text" (click)="showAddModal = false">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">Assign Fee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showHeadModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Manage Fee Types</h3>
+        <button class="close-btn" (click)="showHeadModal = false">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="list-area">
+        <div class="list-item" *ngFor="let head of feeHeads">
+          <span class="name">{{ head.name }}</span>
+          <span class="badge small">{{ head.type }}</span>
+        </div>
+        <div class="empty-list" *ngIf="feeHeads.length === 0">
+          No fee heads created yet.
+        </div>
+      </div>
+
+      <form
+        [formGroup]="headForm"
+        (ngSubmit)="addFeeHead()"
+        class="footer-form"
+      >
+        <div class="input-group">
+          <input
+            placeholder="New Fee Name (e.g. Library Fee)"
+            formControlName="name"
+          />
+          <div class="select-wrapper small">
+            <select formControlName="type">
+              <option value="RECURRING">Recurring</option>
+              <option value="ONE_TIME">One Time</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-icon-primary">
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

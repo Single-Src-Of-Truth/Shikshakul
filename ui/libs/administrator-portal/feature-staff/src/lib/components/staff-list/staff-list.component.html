@@ -12,8 +12,8 @@
   <div class="data-table">
     <div class="table-header">
       <div class="col name">NAME</div>
-      <div class="col dept">DEPARTMENT</div>
-      <div class="col desig">DESIGNATION</div>
+      <div class="col role">ROLE</div>
+      <div class="col status">STATUS</div>
       <div class="col mobile">CONTACT</div>
       <div class="col actions"></div>
     </div>
@@ -26,28 +26,30 @@
       No staff members found.
     </div>
 
-    <div
-      class="table-row"
-      *ngFor="let s of staffList"
-      (click)="viewStaff(s.id)"
-    >
+    <div class="table-row" *ngFor="let s of staffList" (click)="viewStaff(s.id)">
       <div class="col name">
-        <div class="avatar">{{ s.first_name.charAt(0) }}</div>
+        <div class="avatar">{{ s.first_name?.charAt(0) || 'T' }}</div>
         <div class="text">
           <span class="main">{{ s.first_name }} {{ s.last_name }}</span>
-          <span class="sub">{{ s.email }}</span>
+          <span class="sub">{{ s.email || 'No Email' }}</span>
         </div>
       </div>
 
-      <div class="col dept">
-        <span class="badge gray">{{
-          s.profile_data?.employment?.department || '-'
-        }}</span>
+      <div class="col role">
+        <div class="text">
+          <span class="main">{{ s.profile_data?.qualification || '-' }}</span>
+          <span class="sub" *ngIf="s.is_class_teacher" style="color: #6366f1; font-size: 11px; font-weight: 500;">Class
+            Teacher</span>
+        </div>
       </div>
-      <div class="col desig">
-        {{ s.profile_data?.employment?.designation || '-' }}
+
+      <div class="col status">
+        <span class="badge" [ngClass]="s.status === 'ACTIVE' || s.status === 'APPROVED' ? 'active' : 'gray'">
+          {{ s.status || 'UNKNOWN' }}
+        </span>
       </div>
-      <div class="col mobile">{{ s.mobile }}</div>
+
+      <div class="col mobile">{{ s.mobile || '-' }}</div>
 
       <div class="col actions">
         <button class="icon-btn-sm">

@@ -19,11 +19,31 @@ export interface Section {
   class_id?: string;
 }
 
+export type Status = 'PENDING' | 'ACTIVE' | 'INACTIVE' | 'APPROVED' | 'REJECTED' | 'SUSPENDED';
+
+export type SubjectType = 'THEORY' | 'PRACTICAL' | 'LAB';
+
+export type FeeFrequency = 'MONTHLY' | 'YEARLY' | 'ONE_TIME';
+
+export type PaymentMode = 'CASH' | 'CHEQUE' | 'UPI' | 'ONLINE';
+
+export type FeeStatus = 'PENDING' | 'PARTIAL' | 'PAID' | 'OVERDUE';
+
+export type DayOfWeek = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+
+export type EvaluationStatus = 'DRAFT' | 'SUBMITTED' | 'PUBLISHED';
+
+export type AttendanceStatus = 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'LEAVE';
+
+export type CertificateType = 'ID_CARD' | 'TRANSFER_CERTIFICATE' | 'BONAFIDE' | 'CHARACTER';
+
+export type EventType = 'HOLIDAY' | 'EXAM' | 'EVENT' | 'MEETING';
+
 export interface Subject {
-  id?: string;
+  subject_id?: string;
   name: string;
   code: string;
-  type: 'THEORY' | 'PRACTICAL' | 'CO_SCHOLASTIC';
+  type: SubjectType;
   category?: string;
   created_by?: string;
 }
@@ -57,4 +77,20 @@ export interface TeacherOnboardData {
     [key: string]: any;
   };
   documents?: any;
+}
+
+export interface FeeHead {
+  id?: string;
+  name: string;
+  type: 'RECURRING' | 'ONE_TIME';
+}
+
+export interface FeeStructure {
+  id?: string;
+  academic_year_id: string;
+  class_id: string;
+  fee_head_id: string;
+  amount: number;
+  frequency: FeeFrequency;
+  due_date_day?: number;
 }

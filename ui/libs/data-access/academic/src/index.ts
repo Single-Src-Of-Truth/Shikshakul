@@ -4,4 +4,5 @@ export * from './lib/services/class-management/class-management.service';
 export * from './lib/services/subject/subject.service';
 export * from './lib/services/student/student.service';
 export * from './lib/services/teacher/teacher.service';
+export * from './lib/services/fee/fee.service';
 export * from './lib/academic.config';

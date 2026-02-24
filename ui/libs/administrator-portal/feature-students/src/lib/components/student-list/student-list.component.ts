@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -21,6 +21,7 @@ export class StudentListComponent implements OnInit {
   private classService = inject(ClassManagementService);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   students: any[] = [];
   classes: ClassGrade[] = [];
@@ -35,24 +36,29 @@ export class StudentListComponent implements OnInit {
   }
 
   loadClasses() {
-    this.classService.getClasses().subscribe((data) => {
-      this.classes = data.sort((a, b) => a.sort_order - b.sort_order);
+    this.classService.getClasses().subscribe((res: any) => {
+      const data = Array.isArray(res) ? res : (res?.data || []);
+      this.classes = data.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
+      this.cdr.detectChanges();
     });
   }
 
   loadStudents() {
     this.loading = true;
+    this.cdr.detectChanges();
     const filters: any = {};
     if (this.selectedClassId) filters.class_id = this.selectedClassId;
 
     this.studentService.getStudents(filters).subscribe({
-      next: (data) => {
-        this.students = data;
+      next: (res: any) => {
+        this.students = Array.isArray(res) ? res : (res?.data || []);
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loading = false;
         this.snackbar.error('Error', 'Failed to load students.');
+        this.cdr.detectChanges();
       },
     });
   }

@@ -98,6 +98,9 @@
       ],
       "@shikshakul/administrator-portal/feature-student-management": [
         "libs/administrator-portal/feature-student-management/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-fees": [
+        "libs/administrator-portal/feature-fees/src/index.ts"
       ]
     }
   },

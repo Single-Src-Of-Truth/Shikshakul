@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SubjectStatsComponent } from '../components/subject-stats/subject-stats.component';
 import { SubjectDialogComponent } from '../components/subject-dialog/subject-dialog.component';
 import { Subject, SubjectService } from '@shikshakul/data-access/academic';
@@ -21,6 +21,7 @@ interface UISubject extends Subject {
 export class SubjectSetupPageComponent implements OnInit {
   private subjectService = inject(SubjectService);
   private snackbar = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   subjects: UISubject[] = [];
   loading = true;
@@ -37,11 +38,13 @@ export class SubjectSetupPageComponent implements OnInit {
 
   loadSubjects() {
     this.loading = true;
+    this.cdr.detectChanges();
     this.subjectService.getSubjects().subscribe({
-      next: (data) => {
-        this.subjects = data.map((sub) => ({
+      next: (res: any) => {
+        const data = Array.isArray(res) ? res : (res?.data || []);
+        this.subjects = data.map((sub: any) => ({
           ...sub,
-          icon: sub.name.charAt(0).toUpperCase(),
+          icon: sub.name?.charAt(0)?.toUpperCase() || 'S',
           color: this.getColorForType(sub.type),
           createdBy: 'Admin User',
           category: this.getCategoryForType(sub.type),
@@ -49,11 +52,13 @@ export class SubjectSetupPageComponent implements OnInit {
 
         this.calculateStats();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.snackbar.error('Error', 'Failed to load subjects');
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -62,21 +67,18 @@ export class SubjectSetupPageComponent implements OnInit {
     this.stats.total = this.subjects.length;
     this.stats.theory = this.subjects.filter((s) => s.type === 'THEORY').length;
     this.stats.practical = this.subjects.filter(
-      (s) => s.type === 'PRACTICAL',
+      (s) => s.type === 'LAB' || s.type === 'PRACTICAL',
     ).length;
-    this.stats.other = this.subjects.filter(
-      (s) => s.type === 'CO_SCHOLASTIC',
-    ).length;
+    this.stats.other = 0;
   }
 
   getColorForType(type: string): string {
     switch (type) {
       case 'THEORY':
         return 'blue';
+      case 'LAB':
       case 'PRACTICAL':
         return 'green';
-      case 'CO_SCHOLASTIC':
-        return 'teal';
       default:
         return 'blue';
     }
@@ -86,10 +88,9 @@ export class SubjectSetupPageComponent implements OnInit {
     switch (type) {
       case 'THEORY':
         return 'Compulsory (Core)';
+      case 'LAB':
       case 'PRACTICAL':
         return 'Lab / Practical';
-      case 'CO_SCHOLASTIC':
-        return 'Elective';
       default:
         return 'General';
     }

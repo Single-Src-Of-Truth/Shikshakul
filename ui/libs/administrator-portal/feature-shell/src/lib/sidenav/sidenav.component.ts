@@ -48,6 +48,17 @@ export class SidenavComponent {
       ],
     },
     {
+      header: 'ADMINISTRATION',
+      items: [
+        {
+          label: 'Fee Management',
+          icon: 'payments',
+          route: '/fees',
+        },
+        // { label: 'Transport', icon: 'directions_bus', route: '/transport' }, // Future
+      ],
+    },
+    {
       header: 'CONFIGURATION',
       items: [
         {

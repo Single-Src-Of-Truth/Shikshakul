@@ -17,6 +17,7 @@
       color: var(--text-primary, #1f1f1f);
       margin: 0 0 4px 0;
     }
+
     .subtitle {
       font-size: 14px;
       color: var(--text-secondary, #5f6368);
@@ -42,6 +43,7 @@
   &:hover {
     background: #1557b0;
   }
+
   .material-icons {
     font-size: 18px;
   }
@@ -69,10 +71,12 @@
       width: 100%;
       font-size: 14px;
       color: var(--text-primary, #3c4043);
+
       &::placeholder {
         color: #9aa0a6;
       }
     }
+
     .material-icons {
       color: var(--text-secondary, #5f6368);
       font-size: 20px;
@@ -112,20 +116,29 @@
     padding: 0 16px;
 
     &.name {
-      flex: 2;
+      flex: 0 0 30%;
+      min-width: 250px;
     }
+
     &.adm {
-      flex: 1;
+      flex: 0 0 12%;
     }
-    &.father {
-      flex: 1.5;
+
+    &.class-sec {
+      flex: 0 0 15%;
     }
+
+    &.contact {
+      flex: 0 0 20%;
+    }
+
     &.status {
-      flex: 0.8;
-      justify-content: center;
+      flex: 0 0 15%;
+      justify-content: flex-start;
     }
+
     &.actions {
-      flex: 0.5;
+      flex: 1;
       justify-content: flex-end;
     }
   }
@@ -155,6 +168,7 @@
     &:last-child {
       border-bottom: none;
     }
+
     &:hover {
       background: #f8fbff;
     }
@@ -162,6 +176,22 @@
     .col {
       font-size: 14px;
       color: var(--text-primary, #3c4043);
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .main {
+          font-weight: 600;
+          color: #1f1f1f;
+        }
+
+        .sub {
+          font-size: 12px;
+          color: #5f6368;
+        }
+      }
     }
 
     .col.name {
@@ -178,20 +208,6 @@
         justify-content: center;
         font-weight: 700;
         font-size: 16px;
-      }
-
-      .text {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        .main {
-          font-weight: 600;
-          color: #1f1f1f;
-        }
-        .sub {
-          font-size: 12px;
-          color: #5f6368;
-        }
       }
     }
 
@@ -211,6 +227,7 @@
           background: #e6f4ea;
           color: #137333;
         }
+
         &.inactive {
           background: #fce8e6;
           color: #c5221f;

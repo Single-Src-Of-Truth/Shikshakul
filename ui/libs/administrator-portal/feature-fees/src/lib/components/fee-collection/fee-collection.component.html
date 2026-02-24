@@ -1,0 +1,153 @@
+<div class="page-container">
+  <div class="card search-card">
+    <div class="search-input-wrapper">
+      <span class="material-icons search-icon">search</span>
+      <input type="text" placeholder="Search by Student Name or Admission No..." [(ngModel)]="searchQuery"
+        (keyup.enter)="searchStudent()" />
+      <button *ngIf="searchQuery" class="clear-btn" (click)="searchQuery = ''; students = []">
+        <span class="material-icons">close</span>
+      </button>
+      <button class="btn-primary" (click)="searchStudent()">
+        Find Student
+      </button>
+    </div>
+
+    <div class="search-results" *ngIf="students.length > 0">
+      <div class="result-item" *ngFor="let s of students" (click)="selectStudent(s)">
+        <div class="avatar-sm">{{ s.first_name.charAt(0) }}</div>
+        <div class="info">
+          <div class="name">{{ s.first_name }} {{ s.last_name }}</div>
+          <div class="meta">
+            Adm No: {{ s.profile_data?.admission_number || 'N/A' }} • Father:
+            {{ s.profile_data?.father_name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid" *ngIf="selectedStudent">
+    <div class="card transaction-card">
+      <div class="card-header">
+        <h3>
+          <span class="material-icons">payments</span> Transaction Details
+        </h3>
+      </div>
+
+      <div class="card-body">
+        <div class="form-row">
+          <div class="field-group">
+            <label>Paying Amount (₹)</label>
+            <input type="number" [(ngModel)]="paymentAmount" class="input-lg" />
+            <span class="hint">Full outstanding amount selected by default</span>
+          </div>
+          <div class="field-group">
+            <label>Payment Date</label>
+            <input type="date" [value]="todayDate" disabled class="input-lg bg-gray" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Payment Mode</label>
+          <div class="mode-grid">
+            <div class="mode-tile" [class.active]="paymentMode === 'CASH'" (click)="paymentMode = 'CASH'">
+              <span class="material-icons">attach_money</span>
+              <span>Cash</span>
+            </div>
+            <div class="mode-tile" [class.active]="paymentMode === 'ONLINE'" (click)="paymentMode = 'ONLINE'">
+              <span class="material-icons">qr_code_scanner</span>
+              <span>Online</span>
+            </div>
+            <div class="mode-tile" [class.active]="paymentMode === 'UPI'" (click)="paymentMode = 'UPI'">
+              <span class="material-icons">smartphone</span>
+              <span>UPI</span>
+            </div>
+            <div class="mode-tile" [class.active]="paymentMode === 'CHEQUE'" (click)="paymentMode = 'CHEQUE'">
+              <span class="material-icons">account_balance</span>
+              <span>Cheque</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group" *ngIf="paymentMode !== 'CASH'">
+          <label>{{
+            paymentMode === 'CHEQUE' ? 'Cheque Number' :
+            paymentMode === 'UPI' ? 'UPI ID / UTR' : 'Transaction ID'
+            }}</label>
+          <input type="text" placeholder="Enter reference number" class="input-std" />
+        </div>
+
+        <div class="field-group">
+          <label>Remarks (Optional)</label>
+          <textarea rows="3" placeholder="Any notes regarding this payment..." [(ngModel)]="remarks"
+            class="input-std"></textarea>
+        </div>
+
+        <div class="action-footer">
+          <button class="btn-text" (click)="selectedStudent = null">
+            Reset
+          </button>
+          <button class="btn-collect" (click)="submitPayment()">
+            <span class="material-icons">print</span> Collect & Print Receipt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-panel">
+      <div class="card profile-card">
+        <div class="avatar-lg">{{ selectedStudent.first_name.charAt(0) }}</div>
+        <h3 class="student-name">
+          {{ selectedStudent.first_name }} {{ selectedStudent.last_name }}
+        </h3>
+        <span class="adm-badge">Adm No:
+          {{ selectedStudent.profile_data?.admission_number || '---' }}</span>
+
+        <div class="info-list">
+          <div class="row">
+            <span class="label">Class & Section</span>
+            <span class="val font-bold">Class {{ selectedStudent.class_id }}</span>
+          </div>
+          <div class="row">
+            <span class="label">Father's Name</span>
+            <span class="val">{{
+              selectedStudent.profile_data?.father_name
+              }}</span>
+          </div>
+          <div class="row">
+            <span class="label">Contact</span>
+            <span class="val">{{ selectedStudent.mobile }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card outstanding-card">
+        <span class="label">TOTAL OUTSTANDING</span>
+        <div class="amount">₹{{ totalDue | number }}</div>
+        <div class="alert-text">
+          <span class="material-icons">warning</span> Due since last month
+        </div>
+      </div>
+
+      <div class="card history-card">
+        <div class="card-header-sm">
+          <h4>Recent History</h4>
+          <a href="javascript:void(0)">View All</a>
+        </div>
+        <div class="history-list">
+          <div class="history-item" *ngFor="let txn of transactionHistory">
+            <div class="txn-info">
+              <span class="txn-title">{{ txn.remarks || 'Fee Payment' }}</span>
+              <span class="txn-date">{{ txn.date | date: 'mediumDate' }} •
+                {{ txn.payment_mode }}</span>
+            </div>
+            <div class="txn-amount positive">+ ₹{{ txn.amount }}</div>
+          </div>
+          <div class="empty-msg" *ngIf="transactionHistory.length === 0">
+            No recent transactions
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

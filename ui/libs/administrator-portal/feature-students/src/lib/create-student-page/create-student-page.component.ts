@@ -132,8 +132,9 @@ export class CreateStudentPageComponent implements OnInit, OnDestroy {
       .getClasses()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
-          this.classes = data.sort((a, b) => a.sort_order - b.sort_order);
+        next: (res) => {
+          const dataArr = Array.isArray(res) ? res : ((res as any)?.data || []);
+          this.classes = dataArr.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
         },
         error: () => this.snackbar.error('Error', 'Could not load classes.'),
       });
@@ -164,8 +165,9 @@ export class CreateStudentPageComponent implements OnInit, OnDestroy {
       .getSectionsByClass(classId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
-          this.sections = data;
+        next: (res) => {
+          const dataArr = Array.isArray(res) ? res : ((res as any)?.data || []);
+          this.sections = dataArr;
           this.studentForm.get('academic.section')?.enable();
         },
         error: () => {

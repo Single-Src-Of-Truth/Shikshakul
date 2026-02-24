@@ -15,11 +15,7 @@
     </div>
 
     <div class="subject-list" *ngIf="!loading">
-      <div
-        class="subject-row"
-        *ngFor="let sub of subjects"
-        [class.selected]="sub.isSelected"
-      >
+      <div class="subject-row" *ngFor="let sub of subjects" [class.selected]="sub.isSelected">
         <div class="main-info" (click)="toggleSelection(sub)">
           <div class="checkbox">
             <span class="material-icons" *ngIf="sub.isSelected">check</span>
@@ -33,20 +29,11 @@
         <div class="config" *ngIf="sub.isSelected">
           <div class="field">
             <label>Lectures/Week</label>
-            <input
-              type="number"
-              [(ngModel)]="sub.weeklyLectures"
-              min="1"
-              max="20"
-            />
+            <input type="number" [(ngModel)]="sub.weeklyLectures" min="1" max="20" />
           </div>
           <div class="field checkbox-field">
-            <input
-              type="checkbox"
-              [(ngModel)]="sub.isOptional"
-              [id]="'opt-' + sub.id"
-            />
-            <label [for]="'opt-' + sub.id">Optional</label>
+            <input type="checkbox" [(ngModel)]="sub.isOptional" [id]="'opt-' + sub.subject_id" />
+            <label [for]="'opt-' + sub.subject_id">Optional</label>
           </div>
         </div>
       </div>
@@ -54,11 +41,7 @@
 
     <div class="modal-actions">
       <button class="btn-text" (click)="onCancel()">Cancel</button>
-      <button
-        class="btn-primary"
-        (click)="onSubmit()"
-        [disabled]="isSubmitting || loading"
-      >
+      <button class="btn-primary" (click)="onSubmit()" [disabled]="isSubmitting || loading">
         {{ isSubmitting ? 'Saving...' : 'Save Assignments' }}
       </button>
     </div>

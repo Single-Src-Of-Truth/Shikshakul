@@ -10,21 +10,25 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
   .text-group {
     .breadcrumbs {
       font-size: 12px;
       color: var(--text-secondary);
       margin-bottom: 8px;
+
       .sep {
         margin: 0 4px;
       }
     }
+
     h1 {
       font-size: 24px;
       font-weight: 700;
       color: var(--text-primary);
       margin: 0 0 4px 0;
     }
+
     .subtitle {
       font-size: 14px;
       color: var(--text-secondary);
@@ -44,9 +48,11 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+
   &:hover {
     background: #1557b0;
   }
+
   .material-icons {
     font-size: 18px;
   }
@@ -74,6 +80,7 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 8px 12px;
+
     input {
       border: none;
       outline: none;
@@ -81,6 +88,7 @@
       font-size: 14px;
       color: var(--text-primary);
     }
+
     .material-icons {
       color: var(--text-secondary);
       font-size: 20px;
@@ -112,10 +120,12 @@
       justify-content: center;
       cursor: pointer;
       color: var(--text-secondary);
+
       &:hover {
         background: var(--bg-hover);
         color: var(--royal-blue);
       }
+
       .material-icons {
         font-size: 20px;
       }
@@ -133,24 +143,22 @@
     display: flex;
     align-items: center;
   }
+
   .col.check {
     width: 40px;
     justify-content: center;
   }
+
   .col.name {
     flex: 2;
   }
+
   .col.code {
     flex: 1;
   }
+
   .col.type {
     flex: 1;
-  }
-  .col.category {
-    flex: 1.5;
-  }
-  .col.created {
-    flex: 1.5;
   }
 
   /* Header */
@@ -159,6 +167,7 @@
     padding: 12px 16px;
     background: #f8f9fa;
     border-bottom: 1px solid var(--border-color);
+
     .col {
       font-size: 11px;
       font-weight: 700;
@@ -174,6 +183,7 @@
     padding: 16px;
     border-bottom: 1px solid var(--bg-app);
     transition: background 0.1s;
+
     &:hover {
       background: #fafafa;
     }
@@ -182,14 +192,12 @@
       font-size: 14px;
       color: var(--text-primary);
     }
-    .col.category {
-      color: var(--text-secondary);
-    }
 
     /* Name Column */
     .col.name {
       gap: 12px;
       font-weight: 600;
+
       .subject-icon {
         width: 32px;
         height: 32px;
@@ -199,18 +207,22 @@
         justify-content: center;
         font-weight: 700;
         font-size: 14px;
+
         &.blue {
           background: #e8f0fe;
           color: var(--royal-blue);
         }
+
         &.green {
           background: #e6f4ea;
           color: #137333;
         }
+
         &.red {
           background: #fce8e6;
           color: #d93025;
         }
+
         &.teal {
           background: #e0f2f1;
           color: #009688;
@@ -233,37 +245,23 @@
       border-radius: 12px;
       font-size: 12px;
       font-weight: 600;
+
       &.theory {
         background: #e8f0fe;
         color: var(--royal-blue);
       }
+
       &.practical {
         background: #fef7e0;
         color: #ea8600;
       }
+
       &.coscho {
         background: #e0f2f1;
         color: #009688;
       }
     }
 
-    /* Created By */
-    .col.created {
-      gap: 10px;
-      font-size: 13px;
-      .avatar-xs {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: #e0e0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--text-secondary);
-      }
-    }
   }
 }
 
@@ -273,13 +271,16 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 24px;
+
   .result-text {
     font-size: 13px;
     color: var(--text-secondary);
   }
+
   .pages {
     display: flex;
     gap: 8px;
+
     .page-btn {
       width: 32px;
       height: 32px;
@@ -291,14 +292,17 @@
       justify-content: center;
       cursor: pointer;
       color: var(--text-secondary);
+
       &:hover {
         background: var(--bg-hover);
       }
+
       &.active {
         background: var(--royal-blue);
         color: white;
         border-color: var(--royal-blue);
       }
+
       .material-icons {
         font-size: 16px;
       }
