@@ -17,20 +17,26 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() {
-	viper.SetConfigFile("config.env")
+	AppConfig = &Config{}
+
 	viper.AddConfigPath(".")
+	viper.SetConfigName("config")
+	viper.SetConfigType("env")
+
 	viper.AutomaticEnv()
 
+	viper.BindEnv("PORT")
+	viper.BindEnv("ENVIRONMENT")
+	viper.BindEnv("AWS_REGION")
+	viper.BindEnv("DOC_BUCKET_NAME")
+	viper.BindEnv("AWS_ACCESS_KEY_ID")
+	viper.BindEnv("AWS_SECRET_ACCESS_KEY")
+
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Println("No config.env file found, relying on System Env Variables")
-		} else {
-			log.Fatal("Error reading config file:", err)
-		}
+		log.Println("Config file not found, relying on System Env Variables")
 	}
 
-	err := viper.Unmarshal(&AppConfig)
-	if err != nil {
+	if err := viper.Unmarshal(AppConfig); err != nil {
 		log.Fatal("Unable to decode into struct:", err)
 	}
 
@@ -40,7 +46,7 @@ func LoadConfig() {
 	if secret := viper.GetString("AWS_SECRET_ACCESS_KEY"); secret != "" {
 		os.Setenv("AWS_SECRET_ACCESS_KEY", secret)
 	}
-	
+
 	if AppConfig.Port == "" {
 		AppConfig.Port = "9004"
 	}
