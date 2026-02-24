@@ -8,6 +8,7 @@ type StorageProvider interface {
 	GenerateDownloadURL(ctx context.Context, objectKey string, inline bool) (string, error)
 	MoveObject(ctx context.Context, sourceKey, destKey string) error
 	DeleteObject(ctx context.Context, objectKey string) error
+	Ping(ctx context.Context) error
 }
 
 var (

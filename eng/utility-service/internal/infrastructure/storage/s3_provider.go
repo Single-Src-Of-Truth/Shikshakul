@@ -162,3 +162,10 @@ func (p *S3Provider) DeleteObject(ctx context.Context, objectKey string) error {
 	})
 	return err
 }
+
+func (p *S3Provider) Ping(ctx context.Context) error {
+	_, err := p.client.HeadBucket(ctx, &s3.HeadBucketInput{
+		Bucket: aws.String(p.bucketName),
+	})
+	return err
+}
