@@ -85,3 +85,16 @@ func (s *DocumentService) SoftDeleteDocument(ctx context.Context, sourceKey stri
 
 	return destKey, nil
 }
+
+func (s *DocumentService) HealthCheck(ctx context.Context) map[string]string {
+	status := make(map[string]string)
+
+	if err := s.storage.Ping(ctx); err != nil {
+		s.logger.Error("Health Check Failed: S3 is unreachable", zap.Error(err))
+		status["s3_storage"] = "DOWN"
+	} else {
+		status["s3_storage"] = "UP"
+	}
+
+	return status
+}

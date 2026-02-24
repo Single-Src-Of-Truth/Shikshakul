@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/service"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/pkg/dto"
@@ -91,7 +92,35 @@ func (c *DocumentController) SoftDelete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response.Success("Document moved to trash successfully", gin.H{"new_key": newKey}))
 }
 
+func (c *DocumentController) Ping(ctx *gin.Context) {
+	healthStatuses := c.docService.HealthCheck(ctx.Request.Context())
+
+	isFullyHealthy := true
+	for _, state := range healthStatuses {
+		if state != "UP" {
+			isFullyHealthy = false
+			break
+		}
+	}
+
+	responsePayload := gin.H{
+		"success":    isFullyHealthy,
+		"timestamp":  time.Now().Format(time.RFC3339),
+		"components": healthStatuses,
+	}
+
+	if isFullyHealthy {
+		responsePayload["status"] = "UP"
+		ctx.JSON(http.StatusOK, responsePayload)
+	} else {
+		responsePayload["status"] = "DOWN"
+		ctx.JSON(http.StatusServiceUnavailable, responsePayload)
+	}
+}
+
 func (c *DocumentController) RegisterRoutes(router *gin.Engine) {
+	router.GET("/ping", c.Ping)
+	router.GET("/", c.Ping)
 	docGroup := router.Group("/api/v1/utility/docs")
 	{
 		docGroup.POST("/sign-upload", c.SignUpload)
