@@ -1,0 +1,102 @@
+package controller
+
+import (
+	"net/http"
+
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/service"
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/pkg/dto"
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/pkg/response"
+	"github.com/gin-gonic/gin"
+)
+
+type DocumentController struct {
+	docService *service.DocumentService
+}
+
+func NewDocumentController(docService *service.DocumentService) *DocumentController {
+	return &DocumentController{
+		docService: docService,
+	}
+}
+
+func (c *DocumentController) SignUpload(ctx *gin.Context) {
+	var req dto.SignUploadRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error("Invalid request payload", err.Error()))
+		return
+	}
+
+	url, objectKey, err := c.docService.RequestUpload(ctx.Request.Context(), req.TenantID, req.Category, req.FileName, req.ContentType)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.Error("Failed to sign upload request", err.Error()))
+		return
+	}
+
+	resp := dto.SignUploadResponse{
+		UploadURL: url,
+		ObjectKey: objectKey,
+		ExpiresIn: 900,
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("Upload URL generated successfully", resp))
+}
+
+func (c *DocumentController) MoveDocument(ctx *gin.Context) {
+	var req dto.MoveDocumentRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error("Invalid request payload", err.Error()))
+		return
+	}
+
+	newKey, err := c.docService.ApproveDocument(ctx.Request.Context(), req.SourceKey)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.Error("Failed to move document", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("Document moved successfully", gin.H{"new_key": newKey}))
+}
+
+func (c *DocumentController) GetAccessURL(ctx *gin.Context) {
+	objectKey := ctx.Query("key")
+	if objectKey == "" {
+		ctx.JSON(http.StatusBadRequest, response.Error("Missing document key", "The 'key' query parameter is required"))
+		return
+	}
+
+	isView := ctx.Query("view") == "true"
+
+	url, err := c.docService.GetAccessURL(ctx.Request.Context(), objectKey, isView)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.Error("Failed to generate access URL", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("URL generated successfully", gin.H{"url": url}))
+}
+
+func (c *DocumentController) SoftDelete(ctx *gin.Context) {
+	var req dto.SoftDeleteDocumentRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error("Invalid request payload", err.Error()))
+		return
+	}
+
+	newKey, err := c.docService.SoftDeleteDocument(ctx.Request.Context(), req.SourceKey)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, response.Error("Failed to soft delete document", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("Document moved to trash successfully", gin.H{"new_key": newKey}))
+}
+
+func (c *DocumentController) RegisterRoutes(router *gin.Engine) {
+	docGroup := router.Group("/api/v1/utility/docs")
+	{
+		docGroup.POST("/sign-upload", c.SignUpload)
+		docGroup.POST("/approve", c.MoveDocument)
+		docGroup.GET("/access", c.GetAccessURL)
+		docGroup.POST("/soft-delete", c.SoftDelete)
+	}
+}
