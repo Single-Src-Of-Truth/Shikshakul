@@ -72,6 +72,13 @@
         </span>
       </div>
       <div class="col actions">
+        <button class="icon-btn-sm text-success" title="Approve" (click)="approveStudent($event, s)"
+          *ngIf="s.status !== 'APPROVED' && s.status !== 'ACTIVE'">
+          <span class="material-icons">check_circle</span>
+        </button>
+        <button class="icon-btn-sm text-danger" title="Delete" (click)="deleteStudent($event, s)">
+          <span class="material-icons">delete</span>
+        </button>
         <button class="icon-btn-sm">
           <span class="material-icons">chevron_right</span>
         </button>

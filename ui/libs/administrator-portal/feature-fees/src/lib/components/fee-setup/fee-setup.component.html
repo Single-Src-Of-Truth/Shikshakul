@@ -8,11 +8,7 @@
     <div class="filter-group">
       <span class="label">Configuring For:</span>
       <div class="select-wrapper">
-        <select
-          [(ngModel)]="selectedClassId"
-          (change)="onClassChange()"
-          class="class-select"
-        >
+        <select [(ngModel)]="selectedClassId" (change)="onClassChange()" class="class-select">
           <option value="" disabled selected>Select Class</option>
           <option *ngFor="let c of classes" [value]="c.id">{{ c.name }}</option>
         </select>
@@ -24,10 +20,7 @@
     <div class="action-bar">
       <div class="search-box">
         <span class="material-icons">search</span>
-        <input
-          type="text"
-          placeholder="Search fee types (e.g., Tuition, Transport)..."
-        />
+        <input type="text" placeholder="Search fee types (e.g., Tuition, Transport)..." />
       </div>
 
       <div class="buttons">
@@ -35,11 +28,7 @@
           <span class="material-icons">list</span> Manage Fee Types
         </button>
 
-        <button
-          class="btn-primary"
-          (click)="showAddModal = true"
-          [disabled]="!selectedClassId"
-        >
+        <button class="btn-primary" (click)="showAddModal = true" [disabled]="!selectedClassId">
           <span class="material-icons">add</span> Assign New Fee
         </button>
       </div>
@@ -73,7 +62,7 @@
                 <div class="icon-box">
                   <span class="material-icons">{{
                     getIconForFee(s.fee_head?.name)
-                  }}</span>
+                    }}</span>
                 </div>
                 <div class="text">
                   <span class="name">{{ s.fee_head?.name }}</span>
@@ -84,17 +73,16 @@
             <td>
               <span class="badge" [ngClass]="s.frequency">{{
                 s.frequency
-              }}</span>
+                }}</span>
             </td>
             <td>10th of Month</td>
             <td class="amount">₹ {{ s.amount | number }}</td>
             <td><span class="status-pill active">Active</span></td>
             <td>
-              <button
-                class="btn-icon danger"
-                (click)="deleteStructure(s.id)"
-                title="Remove"
-              >
+              <button class="btn-icon" (click)="openEditStructureModal(s)" title="Edit">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="btn-icon danger" (click)="deleteStructure(s.id)" title="Remove">
                 <span class="material-icons">delete_outline</span>
               </button>
             </td>
@@ -142,8 +130,8 @@
   <div class="modal-overlay" *ngIf="showAddModal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Assign New Fee</h3>
-        <button class="close-btn" (click)="showAddModal = false">
+        <h3>{{ editingStructure ? 'Edit Fee Assignment' : 'Assign New Fee' }}</h3>
+        <button class="close-btn" (click)="closeStructureModal()">
           <span class="material-icons">close</span>
         </button>
       </div>
@@ -179,10 +167,12 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn-text" (click)="showAddModal = false">
+          <button type="button" class="btn-text" (click)="closeStructureModal()">
             Cancel
           </button>
-          <button type="submit" class="btn-primary">Assign Fee</button>
+          <button type="submit" class="btn-primary">
+            {{ editingStructure ? 'Update Fee' : 'Assign Fee' }}
+          </button>
         </div>
       </form>
     </div>
@@ -200,31 +190,33 @@
       <div class="list-area">
         <div class="list-item" *ngFor="let head of feeHeads">
           <span class="name">{{ head.name }}</span>
-          <span class="badge small">{{ head.type }}</span>
+          <div class="badges">
+            <span class="badge small">{{ head.type }}</span>
+            <button class="icon-btn-sm" (click)="editFeeHead(head)" title="Edit">
+              <span class="material-icons" style="font-size: 16px;">edit</span>
+            </button>
+          </div>
         </div>
         <div class="empty-list" *ngIf="feeHeads.length === 0">
           No fee heads created yet.
         </div>
       </div>
 
-      <form
-        [formGroup]="headForm"
-        (ngSubmit)="addFeeHead()"
-        class="footer-form"
-      >
+      <form [formGroup]="headForm" (ngSubmit)="addFeeHead()" class="footer-form">
         <div class="input-group">
-          <input
-            placeholder="New Fee Name (e.g. Library Fee)"
-            formControlName="name"
-          />
+          <input placeholder="New Fee Name (e.g. Library Fee)" formControlName="name" />
           <div class="select-wrapper small">
             <select formControlName="type">
               <option value="RECURRING">Recurring</option>
               <option value="ONE_TIME">One Time</option>
             </select>
           </div>
-          <button type="submit" class="btn-icon-primary">
-            <span class="material-icons">add</span>
+          <button type="submit" class="btn-icon-primary" [title]="editingHead ? 'Update' : 'Add'">
+            <span class="material-icons">{{ editingHead ? 'check' : 'add' }}</span>
+          </button>
+          <button *ngIf="editingHead" type="button" class="btn-icon danger" title="Cancel Edit"
+            (click)="cancelEditFeeHead()">
+            <span class="material-icons">close</span>
           </button>
         </div>
       </form>

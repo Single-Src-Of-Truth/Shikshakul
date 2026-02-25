@@ -1,0 +1,70 @@
+<div class="schema-config-card">
+    <div class="header-section">
+        <div class="icon-box">
+            <span class="material-icons">data_object</span>
+        </div>
+        <div class="text">
+            <h3>Student Profile Schema</h3>
+            <p>Configure dynamic fields for student onboarding</p>
+        </div>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+        <span class="material-icons spin">sync</span> Loading Schema...
+    </div>
+
+    <form [formGroup]="schemaForm" (ngSubmit)="saveSchema()" *ngIf="!loading">
+        <div class="form-group row">
+            <label>Schema Name</label>
+            <input type="text" formControlName="schema_name" placeholder="e.g. Student Admission Schema" />
+        </div>
+
+        <div class="schema-fields-container" formArrayName="fields">
+            <div class="section-title">
+                <h4>Custom Fields</h4>
+                <button type="button" class="btn-outline-sm" (click)="addField()">
+                    <span class="material-icons">add</span> Add Field
+                </button>
+            </div>
+
+            <div class="field-item" *ngFor="let field of fields.controls; let i=index" [formGroupName]="i">
+                <div class="drag-handle"><span class="material-icons">drag_indicator</span></div>
+
+                <div class="field-inputs">
+                    <input type="text" formControlName="field_name" placeholder="Field Name (e.g. Blood Group)" />
+
+                    <div class="select-wrapper">
+                        <select formControlName="field_type">
+                            <option value="text">Text / String</option>
+                            <option value="number">Number</option>
+                            <option value="boolean">Boolean / Checkbox</option>
+                            <option value="date">Date</option>
+                        </select>
+                    </div>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" formControlName="is_required" /> Required
+                    </label>
+                </div>
+
+                <button type="button" class="icon-btn-sm danger" (click)="removeField(i)">
+                    <span class="material-icons">delete</span>
+                </button>
+            </div>
+
+            <div class="empty-fields" *ngIf="fields.length === 0">
+                No custom fields defined. Click "Add Field" to create one.
+            </div>
+        </div>
+
+        <div class="actions-footer">
+            <button type="button" class="btn-text danger" (click)="deleteSchema()" [disabled]="saving">
+                Delete Schema
+            </button>
+            <button type="submit" class="btn-primary" [disabled]="saving || schemaForm.invalid">
+                <span *ngIf="saving" class="material-icons spin">sync</span>
+                {{ saving ? 'Saving...' : 'Save Configuration' }}
+            </button>
+        </div>
+    </form>
+</div>

@@ -94,46 +94,72 @@ export class ClassManagementPageComponent implements OnInit {
   saveClass(data: Partial<ClassGrade>) {
     if (!data.name || !data.sort_order) return;
 
-    this.classService
-      .createClass({
-        name: data.name,
-        sort_order: Number(data.sort_order),
-      })
-      .subscribe({
+    if (this.isEditMode && data.id) {
+      this.classService
+        .updateClass(data.id, {
+          name: data.name,
+          sort_order: Number(data.sort_order),
+        })
+        .subscribe({
+          next: () => {
+            this.loadClasses();
+            this.closeClassDialog();
+            this.snackbar.success('Class Updated', `Class ${data.name} updated.`);
+          },
+          error: (err) => {
+            console.error(err);
+            this.snackbar.error('Error', 'Failed to update class.');
+          }
+        });
+    } else {
+      this.classService
+        .createClass({
+          name: data.name,
+          sort_order: Number(data.sort_order),
+        })
+        .subscribe({
+          next: () => {
+            this.loadClasses();
+            this.closeClassDialog();
+            this.snackbar.success(
+              'Class Created',
+              `Class ${data.name} has been successfully added.`,
+            );
+          },
+          error: (err) => {
+            console.error(err);
+            this.snackbar.error(
+              'Error',
+              'Failed to create the class. Please try again.',
+            );
+          },
+        });
+    }
+  }
+
+  onEditClass(cls: UIClassItem) {
+    this.selectedClassData = {
+      id: cls.id,
+      name: cls.name,
+      sort_order: cls.sort_order,
+    };
+    this.isEditMode = true;
+    this.showClassDialog = true;
+  }
+
+  onDeleteClass(cls: UIClassItem) {
+    if (confirm(`Are you sure you want to delete class ${cls.name}?`)) {
+      this.classService.deleteClass(cls.id).subscribe({
         next: () => {
+          this.snackbar.success('Class Deleted', `Class ${cls.name} was removed.`);
           this.loadClasses();
-          this.closeClassDialog();
-          this.snackbar.success(
-            'Class Created',
-            `Class ${data.name} has been successfully added.`,
-          );
         },
         error: (err) => {
+          this.snackbar.error('Error', 'Failed to delete class.');
           console.error(err);
-          this.snackbar.error(
-            'Error',
-            'Failed to create the class. Please try again.',
-          );
-        },
+        }
       });
-  }
-
-  // TODO
-  onEditClass(cls: UIClassItem) {
-    // Implement Edit Logic
-    this.snackbar.info(
-      'Coming Soon',
-      `Edit functionality for ${cls.name} is under development.`,
-    );
-  }
-
-  // TODO
-  onDeleteClass(cls: UIClassItem) {
-    // Call delete API here
-    this.snackbar.info(
-      'Coming Soon',
-      `Delete functionality is under development.`,
-    );
+    }
   }
 
   openSectionDialog(cls: UIClassItem) {
@@ -171,12 +197,32 @@ export class ClassManagementPageComponent implements OnInit {
     });
   }
 
-  // TODO
   onRemoveSection(cls: UIClassItem, sectionName: string) {
-    this.snackbar.info(
-      'Coming Soon',
-      `Removing sections is under development.`,
-    );
+    if (confirm(`Are you sure you want to remove section ${sectionName} from ${cls.name}?`)) {
+      this.classService.getSectionsByClass(cls.id).subscribe({
+        next: (sections) => {
+          const sectionToDelete = sections.find(s => s.name === sectionName);
+          if (sectionToDelete) {
+            this.classService.deleteSection(sectionToDelete.id).subscribe({
+              next: () => {
+                this.snackbar.success('Section Removed', `Section ${sectionName} deleted.`);
+                this.loadClasses(); // Reload classes to refresh sections
+              },
+              error: (err) => {
+                this.snackbar.error('Error', 'Failed to remove section.');
+                console.error(err);
+              }
+            });
+          } else {
+            this.snackbar.error('Error', 'Section not found.');
+          }
+        },
+        error: (err) => {
+          this.snackbar.error('Error', 'Could not fetch sections to delete.');
+          console.error(err);
+        }
+      });
+    }
   }
 
   openSubjectDialog(cls: UIClassItem) {

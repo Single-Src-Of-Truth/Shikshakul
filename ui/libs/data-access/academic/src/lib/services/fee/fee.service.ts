@@ -68,4 +68,12 @@ export class FeeService {
   }): Observable<any> {
     return this.http.post(`${this.feeBase}/collect`, data);
   }
+
+  updateFeeHead(id: string, data: Partial<FeeHead>): Observable<FeeHead> {
+    return this.http.put<FeeHead>(`${this.feeBase}/heads/${id}`, data);
+  }
+
+  updateFeeStructure(id: string, data: Partial<FeeStructure>): Observable<any> {
+    return this.http.put<any>(`${this.feeBase}/structure/${id}`, data);
+  }
 }

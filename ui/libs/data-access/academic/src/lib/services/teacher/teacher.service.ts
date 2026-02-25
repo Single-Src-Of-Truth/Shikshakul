@@ -41,4 +41,16 @@ export class TeacherService {
   approveTeacher(id: string, action: 'APPROVE' | 'REJECT'): Observable<any> {
     return this.http.post(`${this.apiUrl}/${id}/approve`, { action });
   }
+
+  createSchema(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/schema`, data);
+  }
+
+  getActiveSchema(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/schema`);
+  }
+
+  deleteSchema(): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/schema`);
+  }
 }

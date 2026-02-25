@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, KeyValuePipe } from '@angular/common';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -23,6 +23,7 @@ export class StudentDetailComponent implements OnInit {
   private studentService = inject(StudentService);
   private snackbar = inject(SnackbarService);
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   studentId: string | null = null;
   student: any = null;
@@ -35,40 +36,77 @@ export class StudentDetailComponent implements OnInit {
     this.studentId = this.route.snapshot.paramMap.get('id');
     if (this.studentId) {
       this.loadStudent(this.studentId);
+    } else {
+      this.loading = false;
+      this.snackbar.error('Error', 'No student ID provided.');
     }
   }
 
   loadStudent(id: string) {
     this.loading = true;
+    this.cdr.detectChanges();
+
     this.studentService.getStudentById(id).subscribe({
-      next: (data) => {
-        this.student = data;
-        this.initForm(data);
+      next: (res) => {
+        const studentData = res?.data || res;
+        this.student = studentData;
+
+        if (studentData) {
+          this.initForm(studentData);
+        }
+
         this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err) => {
+        console.error("Failed to load student:", err);
         this.loading = false;
         this.snackbar.error('Error', 'Failed to load student details.');
+        this.cdr.detectChanges();
         this.router.navigate(['/academics/students']);
       },
     });
   }
 
   initForm(data: any) {
+    const profileKeys = Object.keys(data?.profile_data || {});
+    const profileControls: any = {};
+
+    for (const key of profileKeys) {
+      profileControls[key] = [data?.profile_data[key]];
+    }
+
+    if (Object.keys(profileControls).length === 0) {
+      profileControls['father_name'] = [''];
+    }
+
     this.editForm = this.fb.group({
-      first_name: [data.first_name, Validators.required],
-      last_name: [data.last_name, Validators.required],
-      email: [data.email, Validators.email],
-      mobile: [data.mobile, [Validators.pattern('^[0-9]{10}$')]],
-      father_name: [data.profile_data?.father_name || ''],
+      first_name: [data?.first_name || '', Validators.required],
+      last_name: [data?.last_name || '', Validators.required],
+      email: [data?.email || '', Validators.email],
+      mobile: [data?.mobile || '', [Validators.pattern('^[0-9]{10}$')]],
+      profile_data: this.fb.group(profileControls),
     });
+  }
+
+  get profileDataControls() {
+    return (this.editForm.get('profile_data') as FormGroup).controls;
+  }
+
+  objectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  formatKey(key: any): string {
+    return String(key).split('_').join(' ').toUpperCase();
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
-    if (!this.isEditing) {
+    if (!this.isEditing && this.student) {
       this.initForm(this.student);
     }
+    this.cdr.detectChanges();
   }
 
   saveChanges() {
@@ -82,21 +120,26 @@ export class StudentDetailComponent implements OnInit {
       email: formVal.email,
       mobile: formVal.mobile,
       profile_data: {
-        ...this.student.profile_data,
-        father_name: formVal.father_name,
+        ...(this.student?.profile_data || {}),
+        ...formVal.profile_data,
       },
     };
 
     this.studentService.updateStudent(this.studentId, payload).subscribe({
       next: (updated) => {
-        this.student = updated;
+        this.student = updated?.data || updated;
         this.isEditing = false;
         this.snackbar.success(
           'Updated',
           'Student details updated successfully.',
         );
+        this.cdr.detectChanges();
       },
-      error: () => this.snackbar.error('Error', 'Failed to update student.'),
+      error: (err) => {
+        console.error("Failed to update student:", err);
+        this.snackbar.error('Error', 'Failed to update student.');
+        this.cdr.detectChanges();
+      },
     });
   }
 }

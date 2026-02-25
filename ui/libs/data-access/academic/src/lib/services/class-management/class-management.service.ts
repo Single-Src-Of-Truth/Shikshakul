@@ -124,4 +124,20 @@ export class ClassManagementService {
       params: { academic_year_id: academicYearId },
     });
   }
+
+  updateClass(classId: string, data: { name: string; sort_order: number }): Observable<ClassGrade> {
+    return this.http.put<ClassGrade>(`${this.classEndpoint}/${classId}`, data);
+  }
+
+  deleteClass(classId: string): Observable<void> {
+    return this.http.delete<void>(`${this.classEndpoint}/${classId}`);
+  }
+
+  updateSection(sectionId: string, data: { name: string; capacity: number }): Observable<Section> {
+    return this.http.put<Section>(`${this.baseUrl}/academics/setup/sections/${sectionId}`, data);
+  }
+
+  deleteSection(sectionId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/academics/setup/sections/${sectionId}`);
+  }
 }

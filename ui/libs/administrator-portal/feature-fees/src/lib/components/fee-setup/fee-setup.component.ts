@@ -40,6 +40,8 @@ export class FeeSetupComponent implements OnInit {
 
   showAddModal = false;
   showHeadModal = false;
+  editingStructure: any = null;
+  editingHead: any = null;
 
   headForm: FormGroup;
   structureForm: FormGroup;
@@ -87,14 +89,43 @@ export class FeeSetupComponent implements OnInit {
 
   addFeeHead() {
     if (this.headForm.invalid) return;
-    this.feeService.createFeeHead(this.headForm.value).subscribe({
-      next: (head) => {
-        this.feeHeads.push(head);
-        this.headForm.reset({ type: 'RECURRING' });
-        this.snackbar.success('Success', 'Fee Head Added');
-      },
-      error: () => this.snackbar.error('Error', 'Failed to add fee head'),
+
+    if (this.editingHead) {
+      this.feeService.updateFeeHead(this.editingHead.id, this.headForm.value).subscribe({
+        next: (head) => {
+          const index = this.feeHeads.findIndex(h => h.id === this.editingHead.id);
+          if (index !== -1) {
+            this.feeHeads[index] = head;
+          }
+          this.headForm.reset({ type: 'RECURRING' });
+          this.editingHead = null;
+          this.snackbar.success('Success', 'Fee Head Updated');
+        },
+        error: () => this.snackbar.error('Error', 'Failed to update fee head'),
+      });
+    } else {
+      this.feeService.createFeeHead(this.headForm.value).subscribe({
+        next: (head) => {
+          this.feeHeads.push(head);
+          this.headForm.reset({ type: 'RECURRING' });
+          this.snackbar.success('Success', 'Fee Head Added');
+        },
+        error: () => this.snackbar.error('Error', 'Failed to add fee head'),
+      });
+    }
+  }
+
+  editFeeHead(head: any) {
+    this.editingHead = head;
+    this.headForm.patchValue({
+      name: head.name,
+      type: head.type
     });
+  }
+
+  cancelEditFeeHead() {
+    this.editingHead = null;
+    this.headForm.reset({ type: 'RECURRING' });
   }
 
   onClassChange() {
@@ -125,15 +156,42 @@ export class FeeSetupComponent implements OnInit {
       academic_year_id: this.activeYearId,
     };
 
-    this.feeService.createFeeStructure(payload).subscribe({
-      next: () => {
-        this.snackbar.success('Success', 'Fee assigned to class');
-        this.onClassChange();
-        this.structureForm.reset({ frequency: 'MONTHLY', due_date_day: 10 });
-        this.showAddModal = false;
-      },
-      error: () => this.snackbar.error('Error', 'Failed to assign fee'),
+    if (this.editingStructure) {
+      this.feeService.updateFeeStructure(this.editingStructure.id, payload).subscribe({
+        next: () => {
+          this.snackbar.success('Success', 'Fee updated');
+          this.onClassChange();
+          this.closeStructureModal();
+        },
+        error: () => this.snackbar.error('Error', 'Failed to update fee'),
+      });
+    } else {
+      this.feeService.createFeeStructure(payload).subscribe({
+        next: () => {
+          this.snackbar.success('Success', 'Fee assigned to class');
+          this.onClassChange();
+          this.closeStructureModal();
+        },
+        error: () => this.snackbar.error('Error', 'Failed to assign fee'),
+      });
+    }
+  }
+
+  openEditStructureModal(structure: any) {
+    this.editingStructure = structure;
+    this.structureForm.patchValue({
+      fee_head_id: structure.fee_head_id || structure.fee_head?.id,
+      amount: structure.amount,
+      frequency: structure.frequency,
+      due_date_day: structure.due_date_day || 10
     });
+    this.showAddModal = true;
+  }
+
+  closeStructureModal() {
+    this.showAddModal = false;
+    this.editingStructure = null;
+    this.structureForm.reset({ frequency: 'MONTHLY', due_date_day: 10 });
   }
 
   deleteStructure(id: string) {

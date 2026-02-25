@@ -1,1 +1,102 @@
-<p>student-detail works!</p>
+<div class="page-container">
+    <header class="page-header">
+        <div class="text">
+            <div class="breadcrumbs">
+                Home <span class="sep">/</span> Academics <span class="sep">/</span> Students <span class="sep">/</span>
+                Detail
+            </div>
+            <h1>Student Details</h1>
+            <p class="subtitle">View and update student information</p>
+        </div>
+        <div class="actions" *ngIf="!loading && student">
+            <button class="btn-outline" (click)="toggleEdit()" *ngIf="!isEditing">
+                <span class="material-icons">edit</span> Edit Student
+            </button>
+            <button class="btn-text danger" (click)="toggleEdit()" *ngIf="isEditing">
+                Cancel
+            </button>
+            <button class="btn-primary" (click)="saveChanges()" *ngIf="isEditing" [disabled]="editForm.invalid">
+                <span class="material-icons">save</span> Save Changes
+            </button>
+        </div>
+    </header>
+
+    <div class="loading-state" *ngIf="loading">
+        <span class="material-icons spin">sync</span> Loading student data...
+    </div>
+
+    <div class="content-box" *ngIf="!loading && student">
+        <!-- View Mode -->
+        <div class="detail-view" *ngIf="!isEditing">
+            <div class="profile-header">
+                <div class="avatar">
+                    {{ student.first_name?.[0] || 'S' }}{{ student.last_name?.[0] || '' }}
+                </div>
+                <div class="info">
+                    <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+                    <span class="badge"
+                        [ngClass]="student.status?.toLowerCase() === 'approved' || student.status?.toLowerCase() === 'active' ? 'active' : 'inactive'">
+                        {{ student.status || 'ACTIVE' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-group">
+                    <label>EMAIL ADDRESS</label>
+                    <div class="value">{{ student.email || '--' }}</div>
+                </div>
+                <div class="data-group">
+                    <label>MOBILE NUMBER</label>
+                    <div class="value">{{ student.mobile || '--' }}</div>
+                </div>
+                <div class="data-group">
+                    <label>CLASS & SECTION</label>
+                    <div class="value">{{ student.class?.name || '--' }} - {{ student.section?.name || '--' }}</div>
+                </div>
+                <div class="data-group">
+                    <label>ADMISSION NO</label>
+                    <div class="value">{{ student.admission_no || '--' }}</div>
+                </div>
+
+                <!-- Dynamic Profile Data -->
+                <ng-container *ngIf="student.profile_data">
+                    <div class="data-group" *ngFor="let item of student.profile_data | keyvalue">
+                        <label>{{ formatKey(item.key) }}</label>
+                        <div class="value">{{ item.value || '--' }}</div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <form class="edit-form" [formGroup]="editForm" *ngIf="isEditing" (ngSubmit)="saveChanges()">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>First Name <span class="req">*</span></label>
+                    <input type="text" formControlName="first_name" placeholder="Enter first name" />
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="req">*</span></label>
+                    <input type="text" formControlName="last_name" placeholder="Enter last name" />
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" formControlName="email" placeholder="student@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="text" formControlName="mobile" placeholder="10-digit number" />
+                </div>
+
+                <ng-container formGroupName="profile_data">
+                    <div class="form-group" *ngFor="let key of objectKeys(profileDataControls)">
+                        <label>{{ formatKey(key) }}</label>
+                        <input type="text" [formControlName]="key"
+                            placeholder="Enter {{ formatKey(key) | lowercase }}" />
+                    </div>
+                </ng-container>
+            </div>
+        </form>
+    </div>
+</div>

@@ -74,4 +74,36 @@ export class StudentListComponent implements OnInit {
   navigateToCreate() {
     this.router.navigate(['/academics/students/onboard']);
   }
+
+  approveStudent(event: Event, student: any) {
+    event.stopPropagation();
+    if (confirm(`Are you sure you want to approve ${student.first_name} ${student.last_name}?`)) {
+      this.studentService.approveStudent(student.id).subscribe({
+        next: () => {
+          this.snackbar.success('Student Approved', `${student.first_name} has been approved.`);
+          this.loadStudents();
+        },
+        error: (err) => {
+          this.snackbar.error('Error', 'Failed to approve student.');
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  deleteStudent(event: Event, student: any) {
+    event.stopPropagation();
+    if (confirm(`Are you sure you want to delete ${student.first_name} ${student.last_name}?`)) {
+      this.studentService.deleteStudent(student.id).subscribe({
+        next: () => {
+          this.snackbar.success('Student Deleted', `${student.first_name} has been deleted.`);
+          this.loadStudents();
+        },
+        error: (err) => {
+          this.snackbar.error('Error', 'Failed to delete student.');
+          console.error(err);
+        }
+      });
+    }
+  }
 }

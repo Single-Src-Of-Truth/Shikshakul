@@ -1,11 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AcademicYearStatsComponent } from '../components/academic-year-stats/academic-year-stats.component';
+import { StudentSchemaConfigComponent } from '../components/student-schema-config.component';
+import { StaffSchemaConfigComponent } from '../components/staff-schema-config.component';
+import { AdmissionSequenceConfigComponent } from '../components/admission-sequence-config.component';
 
 @Component({
   selector: 'shikshakul-academic-year-page',
   standalone: true,
-  imports: [CommonModule, AcademicYearStatsComponent],
+  imports: [
+    CommonModule,
+    AcademicYearStatsComponent,
+    StudentSchemaConfigComponent,
+    StaffSchemaConfigComponent,
+    AdmissionSequenceConfigComponent
+  ],
   templateUrl: './academic-year-page.component.html',
   styleUrl: './academic-year-page.component.scss',
 })
