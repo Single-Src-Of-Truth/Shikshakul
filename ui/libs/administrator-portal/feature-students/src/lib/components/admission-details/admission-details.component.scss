@@ -1,9 +1,9 @@
 .single-col {
-  grid-template-columns: 1fr; /* Stack fields vertically */
+  grid-template-columns: 1fr;
 }
 
 .readonly-input {
-  background-color: #f8fafc; /* Light grey background */
+  background-color: #f8fafc;
   cursor: not-allowed;
 }
 

@@ -1,3 +1,5 @@
+@use 'styles/shared' as *;
+
 .role-sidebar {
   display: flex;
   flex-direction: column;
@@ -8,43 +10,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-
-  .search-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background: white;
-    .material-icons {
-      color: var(--text-secondary);
-      font-size: 20px;
-    }
-    input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 14px;
-    }
-  }
-
-  .btn-primary {
-    background: var(--royal-blue);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    &:hover {
-      background: #1557b0;
-    }
-  }
 }
 
 .list-label {
@@ -55,8 +20,9 @@
   font-weight: 700;
   color: var(--text-secondary);
   letter-spacing: 0.5px;
+  text-transform: uppercase;
   .badge {
-    background: #e8f0fe;
+    background: var(--royal-blue-light);
     color: var(--royal-blue);
     padding: 2px 8px;
     border-radius: 4px;
@@ -74,21 +40,21 @@
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: white;
+  background: var(--white);
   border: 1px solid transparent;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: #f8f9fa;
+    background: var(--bg-hover);
   }
 
   &.active {
-    background: #e8f0fe;
-    border-color: #d2e3fc;
+    background: var(--royal-blue-light);
+    border-color: var(--border-subtle);
     .icon-box {
-      background: white;
+      background: var(--white);
       color: var(--royal-blue);
     }
     .chevron {
@@ -101,13 +67,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f0f2f5;
+    @include flex-center;
+    background: var(--bg-page);
     color: var(--text-secondary);
     &.blue {
-      background: #e8f0fe;
+      background: var(--royal-blue-light);
       color: var(--royal-blue);
     }
     &.purple {
@@ -115,8 +79,8 @@
       color: #9c27b0;
     }
     &.orange {
-      background: #fef7e0;
-      color: #ea8600;
+      background: var(--bg-warning);
+      color: var(--color-warning);
     }
   }
 

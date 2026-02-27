@@ -51,6 +51,12 @@ export class ClassManagementService {
   }
 
   getSectionsByClass(classId: string): Observable<Section[]> {
+    if (!classId || classId === 'undefined') {
+      return new Observable((subscriber) => {
+        subscriber.next([]);
+        subscriber.complete();
+      });
+    }
     return this.http.get<Section[]>(this.getSectionEndpoint(classId));
   }
 

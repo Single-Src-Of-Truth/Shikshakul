@@ -1,0 +1,145 @@
+<div class="timetable-container">
+  <header class="header">
+    <div class="title-group">
+      <h1>Timetable Management</h1>
+      <p class="subtitle">
+        Efficient schedule management for academic sections
+      </p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="openAddRoutine()">
+        <span class="material-icons">add</span>
+        Add Routine
+      </button>
+    </div>
+  </header>
+
+  <section class="filters-card">
+    <div class="filter-group">
+      <div class="filter-item">
+        <label>Class</label>
+        <div class="select-box">
+          <select [(ngModel)]="selectedClassId" (change)="onClassChange()">
+            <option value="">Select Class</option>
+            <option *ngFor="let c of classes()" [value]="c.id">
+              {{ c.name }}
+            </option>
+          </select>
+          <span class="material-icons dropdown-icon">expand_more</span>
+        </div>
+      </div>
+
+      <div class="filter-item">
+        <label>Section</label>
+        <div class="select-box">
+          <select
+            [(ngModel)]="selectedSectionId"
+            (change)="onSectionChange()"
+            [disabled]="!selectedClassId"
+          >
+            <option value="">Select Section</option>
+            <option *ngFor="let s of sections()" [value]="s.id">
+              {{ s.name }}
+            </option>
+          </select>
+          <span class="material-icons dropdown-icon">expand_more</span>
+        </div>
+      </div>
+
+      <div class="divider">OR</div>
+
+      <div class="filter-item">
+        <label>Teacher</label>
+        <div class="select-box">
+          <select [(ngModel)]="selectedTeacherId" (change)="onTeacherChange()">
+            <option value="">Select Teacher</option>
+            <option *ngFor="let t of teachers()" [value]="t.id">
+              {{ t.first_name }} {{ t.last_name }}
+            </option>
+          </select>
+          <span class="material-icons dropdown-icon">expand_more</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid-card" *ngIf="!loading && routines().length > 0">
+    <div class="timetable-grid">
+      <div class="grid-header-corner"></div>
+
+      <div class="day-header" *ngFor="let day of days">
+        {{ (day === 'WEDNESDAY' ? 'Wed' : (day | titlecase)).substring(0, 3) }}
+      </div>
+
+      <ng-container *ngFor="let time of timeSlots">
+        <div class="time-label">
+          <span class="time-val">{{ time.split(' ')[0] }}</span>
+          <span class="time-ampm">{{ time.split(' ')[1] }}</span>
+        </div>
+
+        <ng-container *ngIf="!time.includes('BREAK')">
+          <div class="grid-cell" *ngFor="let day of days">
+            <div
+              class="routine-card-mini"
+              *ngIf="getRoutineForSlot(day, time) as r"
+              [ngClass]="'color-' + (r.subject_name.length % 6)"
+            >
+              <div class="subject">{{ r.subject_name }}</div>
+              <div class="type">Lecture</div>
+              <div class="room" *ngIf="r.room_number">{{ r.room_number }}</div>
+              <div class="time-range">
+                {{ r.start_time }} - {{ r.end_time }}
+              </div>
+              <button class="delete-mini" (click)="deleteRoutine(r.id)">
+                <span class="material-icons">close</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="lunch-break-row" *ngIf="time.includes('BREAK')">
+          <span class="break-text">LUNCH BREAK</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner-container">
+      <span class="material-icons spin">refresh</span>
+      <span>Preparing Schedule...</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="
+      !loading &&
+      routines().length === 0 &&
+      (selectedSectionId || selectedTeacherId)
+    "
+    class="empty-state"
+  >
+    <span class="material-icons">event_busy</span>
+    <p>No routines scheduled for this view.</p>
+  </div>
+
+  <div
+    *ngIf="
+      !loading &&
+      routines().length === 0 &&
+      !selectedSectionId &&
+      !selectedTeacherId
+    "
+    class="empty-state"
+  >
+    <span class="material-icons">manage_search</span>
+    <p>Select a Section or Teacher to view schedule.</p>
+  </div>
+
+  <shikshakul-add-routine-drawer
+    *ngIf="showAddDrawer"
+    [currentYear]="currentYear()"
+    (close)="showAddDrawer = false"
+    (saved)="loadTimetable()"
+  ></shikshakul-add-routine-drawer>
+</div>

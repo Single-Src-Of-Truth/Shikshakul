@@ -4,6 +4,7 @@ export interface AcademicYear {
   start_date: string;
   end_date: string;
   is_current: boolean;
+  academic_year_id?: string;
 }
 
 export interface ClassGrade {
@@ -93,4 +94,69 @@ export interface FeeStructure {
   amount: number;
   frequency: FeeFrequency;
   due_date_day?: number;
+}
+
+export interface Routine {
+  id: string;
+  day_of_week: DayOfWeek;
+  start_time: string;
+  end_time: string;
+  subject_name: string;
+  teacher_name: string;
+  room_number?: string;
+}
+
+export interface CreateRoutineRequest {
+  academic_year_id: string;
+  class_id: string;
+  section_id: string;
+  subject_id: string;
+  teacher_id: string;
+  day_of_week: DayOfWeek;
+  start_time: string;
+  end_time: string;
+  room_number?: string;
+}
+
+export interface ExamTerm {
+  id: string;
+  name: string;
+  academic_year_id: string;
+  start_date: string;
+  end_date: string;
+  status: Status;
+}
+
+export interface CreateExamTermRequest {
+  name: string;
+  academic_year_id: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface ExamSchedule {
+  id: string;
+  exam_term_id: string;
+  class_id: string;
+  subject_id: string;
+  exam_date: string;
+  start_time: string;
+  end_time: string;
+  room_number?: string;
+  max_marks: number;
+  pass_marks: number;
+  subject_name?: string;
+  term_name?: string;
+}
+
+export interface CreateExamScheduleRequest {
+  exam_term_id: string;
+  class_id: string;
+  subject_id: string;
+  exam_date: string;
+  start_time: string;
+  end_time: string;
+  room_number?: string;
+  max_marks: number;
+  pass_marks: number;
 }

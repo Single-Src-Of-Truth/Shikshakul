@@ -1,0 +1,144 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.controls-bar, .action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 360px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: white;
+  position: relative;
+
+  input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: transparent;
+
+    &::placeholder {
+      color: var(--text-disabled);
+    }
+  }
+
+  .material-icons {
+    color: var(--text-secondary);
+    font-size: 20px;
+  }
+}
+
+.form-card {
+  @include card-base;
+  padding: 24px;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .card-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  &.three-col {
+     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .full-width {
+    grid-column: span 2;
+  }
+}
+
+.form-field, .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+
+    .required, .req {
+      color: var(--color-danger);
+      margin-left: 2px;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    @include input-base;
+    
+    &.ng-invalid.ng-touched {
+      border-color: var(--color-danger);
+      background: var(--bg-danger);
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235F6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 36px;
+  }
+}
+
+.input-prefix {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  .prefix {
+    background: #f8fafc;
+    padding: 10px 12px;
+    border-right: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  input {
+    border: none;
+    width: 100%;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  .checkbox-label {
+    margin: 0;
+    font-weight: 400;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+}

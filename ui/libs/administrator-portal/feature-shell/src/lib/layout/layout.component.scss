@@ -1,24 +1,14 @@
-/* VARIABLES */
-:host {
-  --bg-app: #f0f2f5; /* Light Grey (Dashboard Area) */
-  --bg-surface: #ffffff; /* Pure White (Sidebar + TopBar) */
-  --text-primary: #1f1f1f;
-  --text-secondary: #5f6368;
-  --border-color: #e0e0e0;
-  --royal-blue: #1a73e8;
-}
+@use 'styles/shared' as *;
 
-/* 1. APP CONTAINER (Forces Side-by-Side) */
 .app-container {
   display: flex;
-  flex-direction: row; /* Critical: Sidebar Left, Content Right */
+  flex-direction: row;
   height: 100vh;
   width: 100vw;
-  background-color: var(--bg-app);
+  background-color: var(--bg-page);
   overflow: hidden;
 }
 
-/* 2. MAIN CONTENT AREA */
 .main-content {
   flex: 1;
   display: flex;
@@ -26,11 +16,10 @@
   min-width: 0;
 }
 
-/* 3. TOP BAR (Now White) */
 .top-bar {
   height: 64px;
-  background-color: var(--bg-surface); /* WHITE BACKGROUND */
-  border-bottom: 1px solid var(--border-color); /* Separator line */
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -44,7 +33,7 @@
   }
 
   .search-bar {
-    background: var(--bg-app); /* Grey input on White bar */
+    background: var(--bg-page);
     border: 1px solid transparent;
     padding: 8px 16px;
     border-radius: 8px;
@@ -66,9 +55,9 @@
     }
 
     &:focus-within {
-      background: #fff;
+      background: var(--white);
       border-color: var(--royal-blue);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
   }
 
@@ -78,7 +67,7 @@
     gap: 24px;
 
     .date-badge {
-      background: #f0f2f5;
+      background: var(--bg-page);
       color: var(--text-secondary);
       padding: 6px 12px;
       border-radius: 6px;
@@ -102,7 +91,6 @@
   }
 }
 
-/* 4. CONTENT AREA */
 .content-scrollable {
   flex: 1;
   overflow-y: auto;

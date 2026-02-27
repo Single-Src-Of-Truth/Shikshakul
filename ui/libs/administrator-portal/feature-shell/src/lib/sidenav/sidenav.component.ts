@@ -44,6 +44,11 @@ export class SidenavComponent {
           icon: 'library_books',
           route: '/academics/subjects',
         },
+        {
+          label: 'Timetable',
+          icon: 'calendar_view_week',
+          route: '/academics/timetable',
+        },
         { label: 'Exams', icon: 'assignment', route: '/exams/setup' },
       ],
     },

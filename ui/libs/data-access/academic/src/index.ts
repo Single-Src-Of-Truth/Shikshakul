@@ -5,4 +5,6 @@ export * from './lib/services/subject/subject.service';
 export * from './lib/services/student/student.service';
 export * from './lib/services/teacher/teacher.service';
 export * from './lib/services/fee/fee.service';
+export * from './lib/services/timetable/timetable.service';
+export * from './lib/services/exam/exam.service';
 export * from './lib/academic.config';

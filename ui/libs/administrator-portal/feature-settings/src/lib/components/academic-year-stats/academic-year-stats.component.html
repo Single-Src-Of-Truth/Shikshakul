@@ -4,31 +4,31 @@
       <span class="label">CURRENT SESSION</span>
       <div class="icon-box green">
         <span class="material-icons">calendar_today</span>
-      </div>
+  <div class="stat-item active">
+    <div class="icon-env">
+      <span class="material-icons">event_available</span>
     </div>
-    <div class="value">{{ currentYear }}</div>
-    <div class="status active"><span class="dot"></span> Active Now</div>
+    <div class="stat-info">
+      <span class="label">Current Active Session</span>
+      <span class="value">{{ activeYearName }}</span>
+    </div>
   </div>
-
-  <div class="stat-card">
-    <div class="top">
-      <span class="label">UPCOMING SESSION</span>
-      <div class="icon-box blue">
-        <span class="material-icons">update</span>
-      </div>
+  <div class="stat-item upcoming">
+    <div class="icon-env">
+      <span class="material-icons">event_upcoming</span>
     </div>
-    <div class="value">{{ upcomingYear }}</div>
-    <div class="status info">Starts in 45 days</div>
+    <div class="stat-info">
+      <span class="label">Next Scheduled Session</span>
+      <span class="value">{{ upcomingYearName }}</span>
+    </div>
   </div>
-
-  <div class="stat-card">
-    <div class="top">
-      <span class="label">TOTAL ARCHIVES</span>
-      <div class="icon-box orange">
-        <span class="material-icons">folder_open</span>
-      </div>
+  <div class="stat-item archived">
+    <div class="icon-env">
+      <span class="material-icons">inventory_2</span>
     </div>
-    <div class="value">{{ totalArchives }} Years</div>
-    <div class="status plain">Stored securely</div>
+    <div class="stat-info">
+      <span class="label">Past Archived Sessions</span>
+      <span class="value">{{ archivedCount }}</span>
+    </div>
   </div>
 </div>

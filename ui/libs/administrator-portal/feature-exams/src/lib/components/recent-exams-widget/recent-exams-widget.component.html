@@ -1,26 +1,58 @@
 <div class="widget-card">
-  <div class="header">
-    <h3>Recent Exams</h3>
-    <a href="#" class="view-all">View All</a>
+  <div class="widget-header">
+    <div class="title-env">
+      <span class="material-icons">assignment</span>
+      <h4>Exam Terms</h4>
+    </div>
+    <button class="add-mini-btn" (click)="toggleForm()">
+      <span class="material-icons">{{ showForm() ? 'close' : 'add' }}</span>
+    </button>
   </div>
 
-  <div class="exam-list">
-    <div class="exam-item">
-      <div class="info">
-        <span class="name">Pre-Board 2024</span>
-        <span class="sub">Class X</span>
+  <div class="widget-content">
+    <!-- Inline Create Term Form -->
+    <div class="inline-form" *ngIf="showForm()" [formGroup]="termForm">
+      <h5>Create New Term</h5>
+      <div class="field">
+        <label>Term Name</label>
+        <input type="text" formControlName="name" placeholder="e.g., Term 1" />
       </div>
-      <span class="badge active">Active</span>
-      <button class="icon-btn"><span class="material-icons">edit</span></button>
+      <div class="row-fields">
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" formControlName="start_date" />
+        </div>
+        <div class="field">
+          <label>End Date</label>
+          <input type="date" formControlName="end_date" />
+        </div>
+      </div>
+      <button class="btn-submit" (click)="onSubmit()" [disabled]="submitting() || termForm.invalid">
+        {{ submitting() ? 'Saving...' : 'Save Term' }}
+      </button>
     </div>
 
-    <div class="exam-item">
-      <div class="info">
-        <span class="name">Unit Test 1</span>
-        <span class="sub">Class IX</span>
+    <!-- Terms List -->
+    <div class="terms-list" *ngIf="!loading">
+      <div class="term-item" *ngFor="let term of terms">
+        <div class="term-info">
+          <p class="name">{{ term.name }}</p>
+          <p class="dates">{{ term.start_date | date:'mediumDate' }} - {{ term.end_date | date:'mediumDate' }}</p>
+        </div>
+        <div class="status-badge" [ngClass]="(term.status || 'PENDING').toLowerCase()">
+          {{ term.status || 'PENDING' }}
+        </div>
       </div>
-      <span class="badge draft">Draft</span>
-      <button class="icon-btn"><span class="material-icons">edit</span></button>
+
+      <div class="empty-state" *ngIf="terms.length === 0">
+        <span class="material-icons">info_outline</span>
+        <p>No exam terms defined yet.</p>
+      </div>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+      <span class="material-icons spin">refresh</span>
+      <p>Loading terms...</p>
     </div>
   </div>
 </div>

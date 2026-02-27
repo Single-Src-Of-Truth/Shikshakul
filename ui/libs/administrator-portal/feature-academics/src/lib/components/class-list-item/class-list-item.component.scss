@@ -1,57 +1,45 @@
-:host {
-  display: block;
-}
+@use 'styles/shared' as *;
 
 .class-card {
-  background: white;
-  /* Fallback if var not defined */
-  background: var(--bg-surface, white);
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 8px;
+  @include card-base;
   padding: 24px;
   display: grid;
   grid-template-columns: 280px 1fr 180px;
-  /* Fixed Left, Flex Middle, Fixed Right */
   gap: 32px;
   align-items: center;
   transition: all 0.2s;
 
   &:hover {
-    border-color: var(--royal-blue, #1a73e8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-color: var(--royal-blue);
+    box-shadow: var(--shadow-sm);
   }
 }
 
-/* 1. INFO GROUP */
 .info-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   .header-row {
     display: flex;
     align-items: center;
     gap: 12px;
-
     .class-name {
       font-size: 18px;
       font-weight: 700;
-      color: var(--text-primary, #1f1f1f);
+      color: var(--text-primary);
       margin: 0;
     }
   }
 }
 
-/* 2. SECTIONS GROUP */
 .sections-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   .label {
     font-size: 10px;
     font-weight: 700;
-    color: var(--text-secondary, #5f6368);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -66,27 +54,23 @@
       align-items: center;
       gap: 6px;
       padding: 4px 4px 4px 12px;
-      background: #ffffff;
-      border: 1px solid var(--border-color, #e0e0e0);
+      background: var(--white);
+      border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 14px;
       font-weight: 600;
-      color: var(--text-primary, #1f1f1f);
+      color: var(--text-primary);
 
       .remove-btn {
         border: none;
         background: transparent;
         cursor: pointer;
-        color: var(--text-secondary, #5f6368);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        color: var(--text-secondary);
+        @include flex-center;
         padding: 2px;
-
         &:hover {
-          color: #d93025;
+          color: var(--color-danger);
         }
-
         .material-icons {
           font-size: 14px;
         }
@@ -99,17 +83,15 @@
       gap: 6px;
       padding: 4px 12px;
       background: #f8f9fa;
-      border: 1px dashed var(--royal-blue, #1a73e8);
+      border: 1px dashed var(--royal-blue);
       border-radius: 6px;
-      color: var(--royal-blue, #1a73e8);
+      color: var(--royal-blue);
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-
       &:hover {
-        background: #e8f0fe;
+        background: var(--royal-blue-light);
       }
-
       .material-icons {
         font-size: 16px;
       }
@@ -117,29 +99,26 @@
   }
 }
 
-/* 3. ACTIONS GROUP */
 .actions-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-left: 1px solid var(--border-color, #e0e0e0);
+  border-left: 1px solid var(--border-color);
   padding-left: 32px;
 
   .student-count {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     .count {
       font-size: 18px;
       font-weight: 700;
-      color: var(--text-primary, #1f1f1f);
+      color: var(--text-primary);
       line-height: 1;
     }
-
     .label {
       font-size: 11px;
-      color: var(--text-secondary, #5f6368);
+      color: var(--text-secondary);
       margin-top: 4px;
     }
   }
@@ -147,31 +126,26 @@
   .btn-row {
     display: flex;
     gap: 8px;
-
     .icon-btn {
       width: 32px;
       height: 32px;
       border-radius: 4px;
       border: none;
       background: transparent;
-      color: var(--text-secondary, #5f6368);
+      color: var(--text-secondary);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
+      @include flex-center;
       .material-icons {
         font-size: 18px;
       }
 
       &:hover.edit {
-        color: var(--royal-blue, #1a73e8);
-        background: #e8f0fe;
+        color: var(--royal-blue);
+        background: var(--royal-blue-light);
       }
-
       &:hover.delete {
-        color: #d93025;
-        background: #fce8e6;
+        color: var(--color-danger);
+        background: var(--bg-danger);
       }
     }
   }

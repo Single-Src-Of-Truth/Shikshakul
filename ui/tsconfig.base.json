@@ -101,6 +101,9 @@
       ],
       "@shikshakul/administrator-portal/feature-fees": [
         "libs/administrator-portal/feature-fees/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-timetable": [
+        "libs/administrator-portal/feature-timetable/src/index.ts"
       ]
     }
   },

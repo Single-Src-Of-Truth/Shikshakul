@@ -1,34 +1,25 @@
 <div class="form-card" [formGroup]="examForm">
   <div class="card-header">
-    <h3>Create New Exam</h3>
-    <span class="badge-blue">New Configuration</span>
+    <div class="title">
+      <h3>Schedule Examination</h3>
+      <p class="subtitle">Assign exam dates and marks for subjects per term.</p>
+    </div>
+    <span class="badge-blue">Step 1: Term & Class</span>
   </div>
 
   <div class="form-grid">
     <div class="form-field">
-      <label>Exam Name <span class="required">*</span></label>
-      <input
-        type="text"
-        formControlName="examName"
-        placeholder="e.g., Half-Yearly 2024"
-      />
-    </div>
-    <div class="form-field">
-      <label>Academic Year</label>
-      <select formControlName="academicYear">
-        <option>2024-2025</option>
+      <label>Exam Term <span class="required">*</span></label>
+      <select formControlName="exam_term_id">
+        <option value="">Select Term</option>
+        <option *ngFor="let term of terms" [value]="term.id">{{ term.name }}</option>
       </select>
     </div>
     <div class="form-field">
       <label>Class / Grade <span class="required">*</span></label>
-      <select formControlName="classGrade">
-        <option>Select Class</option>
-      </select>
-    </div>
-    <div class="form-field">
-      <label>Grading System</label>
-      <select formControlName="gradingSystem">
-        <option>Marks Based (CBSE)</option>
+      <select formControlName="class_id">
+        <option value="">Select Class</option>
+        <option *ngFor="let c of classes()" [value]="c.id">{{ c.name }}</option>
       </select>
     </div>
   </div>
@@ -38,53 +29,74 @@
   <div class="subjects-section">
     <div class="section-header">
       <div class="text">
-        <h4>Subject & Marks Distribution</h4>
-        <p>Define maximum and passing marks for each subject in this exam.</p>
+        <h4>Subject Schedules</h4>
+        <p>Define dates, times, and marks for each subject.</p>
       </div>
       <button class="add-btn" (click)="addSubject()">
-        <span class="material-icons">add_circle_outline</span> Add Subject
+        <span class="material-icons">add_circle_outline</span> Add Subject Slot
       </button>
     </div>
 
     <div class="subjects-list">
       <div class="list-header">
-        <span class="col-1">SUBJECT</span>
-        <span class="col-2">MAX MARKS</span>
-        <span class="col-3">PASS MARKS</span>
-        <span class="col-4"></span>
+        <span class="col-subject">SUBJECT</span>
+        <span class="col-date">DATE</span>
+        <span class="col-time">TIME (S-E)</span>
+        <span class="col-marks">MAX/PASS</span>
+        <span class="col-room">ROOM</span>
+        <span class="col-action"></span>
       </div>
 
       <div
         class="list-row"
-        *ngFor="let subject of subjectsArray.controls; let i = index"
-        [formGroup]="$any(subject)"
+        *ngFor="let schedule of schedulesArray.controls; let i = index"
+        [formGroup]="$any(schedule)"
       >
-        <div class="col-1">
-          <select formControlName="subjectName">
-            <option value="Mathematics">Mathematics</option>
-            <option value="Science">Science</option>
-            <option value="">Select Subject...</option>
+        <div class="col-subject">
+          <select formControlName="subject_id">
+            <option value="">Select...</option>
+            <option *ngFor="let s of subjects()" [value]="s.subject_id">{{ s.name }}</option>
           </select>
         </div>
-        <div class="col-2">
-          <input type="number" formControlName="maxMarks" />
+        <div class="col-date">
+          <input type="date" formControlName="exam_date" />
         </div>
-        <div class="col-3">
-          <input type="number" formControlName="passMarks" />
+        <div class="col-time">
+          <div class="time-range">
+            <input type="time" formControlName="start_time" />
+            <span>-</span>
+            <input type="time" formControlName="end_time" />
+          </div>
         </div>
-        <div class="col-4">
+        <div class="col-marks">
+          <div class="marks-input">
+            <input type="number" formControlName="max_marks" placeholder="Max" />
+            <input type="number" formControlName="pass_marks" placeholder="Pass" />
+          </div>
+        </div>
+        <div class="col-room">
+          <input type="text" formControlName="room_number" placeholder="Room" />
+        </div>
+        <div class="col-action">
           <button class="delete-btn" (click)="removeSubject(i)">
-            <span class="material-icons">delete</span>
+            <span class="material-icons">delete_outline</span>
           </button>
         </div>
+      </div>
+
+      <div *ngIf="schedulesArray.length === 0" class="empty-list">
+        <span class="material-icons">event_note</span>
+        <p>No subjects added to schedule yet. Click "Add Subject Slot" to start.</p>
       </div>
     </div>
   </div>
 
   <div class="form-footer">
-    <button class="btn-outline">Cancel</button>
-    <button class="btn-primary" (click)="onSubmit()">
-      <span class="material-icons">save</span> Save Configuration
+    <button class="btn-ghost" (click)="examForm.reset()">Clear Form</button>
+    <button class="btn-primary" (click)="onSubmit()" [disabled]="submitting()">
+      <span class="material-icons" *ngIf="!submitting()">publish</span>
+      <span class="material-icons spin" *ngIf="submitting()">refresh</span>
+      {{ submitting() ? 'Scheduling...' : 'Publish Exam Schedule' }}
     </button>
   </div>
 </div>

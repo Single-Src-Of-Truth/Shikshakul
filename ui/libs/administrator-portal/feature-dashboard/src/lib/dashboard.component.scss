@@ -1,8 +1,10 @@
+@use 'styles/shared' as *;
+
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Vertical Rhythm */
-  max-width: 1400px; /* Prevent stretching on huge monitors */
+  gap: 24px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -23,12 +25,8 @@
   gap: 24px;
 }
 
-/* SHARED CARD STYLE - The "Widget" Container */
-/* Apply this class to wrapper divs in your dashboard.component.html if needed */
 .widget-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  @include card-base;
   padding: 24px;
   height: 100%;
 }

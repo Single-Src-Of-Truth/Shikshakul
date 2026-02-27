@@ -11,66 +11,128 @@
         at a time.
       </p>
     </div>
-    <button class="btn-primary">
+    <button class="btn-primary" (click)="toggleModal()">
       <span class="material-icons">add</span> Create New Year
     </button>
   </header>
 
-  <shikshakul-academic-year-stats></shikshakul-academic-year-stats>
+  <shikshakul-academic-year-stats
+    [currentYear]="years()"
+  ></shikshakul-academic-year-stats>
 
   <div class="content-box">
     <div class="controls-bar">
       <h3>All Academic Years</h3>
       <div class="actions">
-        <button class="btn-outline">
-          <span class="material-icons">filter_list</span> Filter
-        </button>
-        <button class="btn-outline">
-          <span class="material-icons">download</span> Export
+        <button class="btn-outline" (click)="loadYears()">
+          <span class="material-icons" [class.spin]="loading()">refresh</span> Refresh
         </button>
       </div>
     </div>
 
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width: 30%">ACADEMIC YEAR</th>
-          <th>START DATE</th>
-          <th>END DATE</th>
-          <th>STATUS</th>
-          <th style="width: 10%">ACTIONS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let year of years">
-          <td>
-            <div class="year-info">
-              <span class="name">{{ year.name }}</span>
-              <span class="sub" *ngIf="year.sub">{{ year.sub }}</span>
-            </div>
-          </td>
-          <td class="date-cell">{{ year.startDate }}</td>
-          <td class="date-cell">{{ year.endDate }}</td>
-          <td>
-            <span class="status-badge" [ngClass]="year.statusClass">
-              <span class="dot" *ngIf="year.statusClass !== 'archived'"></span>
-              {{ year.status }}
-            </span>
-          </td>
-          <td>
-            <button class="icon-btn">
-              <span class="material-icons">more_vert</span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container" [class.loading]="loading()">
+      <div class="loading-overlay" *ngIf="loading()">
+        <span class="material-icons spin">refresh</span>
+      </div>
 
-    <div class="pagination-footer">
-      <span class="text">Showing 1 to 4 of 10 results</span>
-      <div class="pages">
-        <button class="page-btn">Previous</button>
-        <button class="page-btn">Next</button>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 30%">ACADEMIC YEAR</th>
+            <th>START DATE</th>
+            <th>END DATE</th>
+            <th>STATUS</th>
+            <th style="width: 15%">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let year of years()">
+            <td>
+              <div class="year-info">
+                <span class="name">{{ year.name }}</span>
+                <span class="sub" *ngIf="year.is_current">Current Session</span>
+              </div>
+            </td>
+            <td class="date-cell">{{ year.start_date | date:'longDate' }}</td>
+            <td class="date-cell">{{ year.end_date | date:'longDate' }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(year)">
+                <span class="dot" *ngIf="!year.is_current"></span>
+                {{ getStatusLabel(year) }}
+              </span>
+            </td>
+            <td>
+              <div class="action-btns">
+                <button 
+                  class="btn-icon active-btn" 
+                  *ngIf="!year.is_current" 
+                  (click)="activateYear(year.id)"
+                  title="Activate Year"
+                >
+                  <span class="material-icons">check_circle</span>
+                </button>
+                <button 
+                  class="btn-icon delete-btn" 
+                  (click)="deleteYear(year.id)"
+                  title="Delete Year"
+                >
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <tr *ngIf="years().length === 0 && !loading()">
+            <td colspan="5" class="empty-state">
+              <span class="material-icons">info_outline</span>
+              <p>No academic years found. Create your first session to get started.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Year Modal -->
+  <div class="modal-overlay" *ngIf="showModal()" (click)="toggleModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()" [formGroup]="yearForm">
+      <div class="modal-header">
+        <h3>Create Academic Year</h3>
+        <button class="close-btn" (click)="toggleModal()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-field">
+          <label>Year Name (e.g., 2024-2025)</label>
+          <input type="text" formControlName="name" placeholder="YYYY-YYYY" />
+          <small class="error" *ngIf="yearForm.get('name')?.touched && yearForm.get('name')?.invalid">
+            Please enter a valid year range (e.g., 2024-2025)
+          </small>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Start Date</label>
+            <input type="date" formControlName="start_date" />
+          </div>
+          <div class="form-field">
+            <label>End Date</label>
+            <input type="date" formControlName="end_date" />
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-ghost" (click)="toggleModal()">Cancel</button>
+        <button 
+          class="btn-primary" 
+          (click)="onSubmit()" 
+          [disabled]="yearForm.invalid || submitting()"
+        >
+          {{ submitting() ? 'Creating...' : 'Create Year' }}
+        </button>
       </div>
     </div>
   </div>
@@ -80,12 +142,11 @@
     <p>
       Activating a new academic year will automatically archive the current one.
       This action affects all student records, fee structures, and attendance
-      modules. Please ensure all grading for the current term is finalized
-      before switching.
+      modules.
     </p>
   </div>
 
-  <div class="settings-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 32px;">
+  <div class="settings-grid">
     <lib-student-schema-config></lib-student-schema-config>
     <lib-staff-schema-config></lib-staff-schema-config>
     <lib-admission-sequence-config style="grid-column: 1 / -1;"></lib-admission-sequence-config>

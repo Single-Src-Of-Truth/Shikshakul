@@ -1,0 +1,167 @@
+<div class="drawer-overlay" (click)="close.emit()">
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    <header class="drawer-header">
+      <div class="title-area">
+        <h2>Add Routine Slot</h2>
+        <p>Assign subject and teacher to a section</p>
+      </div>
+      <button class="close-btn" (click)="close.emit()">
+        <span class="material-icons">close</span>
+      </button>
+    </header>
+
+    <form [formGroup]="routineForm" (ngSubmit)="onSubmit()" class="drawer-body">
+      <div class="form-section">
+        <h3>Class & Section</h3>
+        <div class="form-row">
+          <div
+            class="field"
+            [class.error]="
+              routineForm.get('class_id')?.touched &&
+              routineForm.get('class_id')?.invalid
+            "
+          >
+            <label>Class</label>
+            <div class="select-box">
+              <select formControlName="class_id" (change)="onClassChange()">
+                <option value="">Select Class</option>
+                <option *ngFor="let c of classes()" [value]="c.id">
+                  {{ c.name }}
+                </option>
+              </select>
+              <span class="material-icons dropdown-icon">expand_more</span>
+            </div>
+          </div>
+          <div
+            class="field"
+            [class.error]="
+              routineForm.get('section_id')?.touched &&
+              routineForm.get('section_id')?.invalid
+            "
+          >
+            <label>Section</label>
+            <div class="select-box">
+              <select
+                formControlName="section_id"
+                [disabled]="!routineForm.get('class_id')?.value"
+              >
+                <option value="">Select Section</option>
+                <option *ngFor="let s of sections()" [value]="s.id">
+                  {{ s.name }}
+                </option>
+              </select>
+              <span class="material-icons dropdown-icon">expand_more</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Subject & Teacher</h3>
+        <div
+          class="field"
+          [class.error]="
+            routineForm.get('subject_id')?.touched &&
+            routineForm.get('subject_id')?.invalid
+          "
+        >
+          <label>Subject</label>
+          <div class="select-box">
+            <select formControlName="subject_id">
+              <option value="">Select Subject</option>
+              <option *ngFor="let s of subjects()" [value]="s.subject_id">
+                {{ s.name }}
+              </option>
+            </select>
+            <span class="material-icons dropdown-icon">expand_more</span>
+          </div>
+        </div>
+        <div
+          class="field"
+          [class.error]="
+            routineForm.get('teacher_id')?.touched &&
+            routineForm.get('teacher_id')?.invalid
+          "
+        >
+          <label>Teacher</label>
+          <div class="select-box">
+            <select formControlName="teacher_id">
+              <option value="">Select Teacher</option>
+              <option *ngFor="let t of teachers()" [value]="t.id">
+                {{ t.first_name }} {{ t.last_name }}
+              </option>
+            </select>
+            <span class="material-icons dropdown-icon">expand_more</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Schedule</h3>
+        <div
+          class="field"
+          [class.error]="
+            routineForm.get('day_of_week')?.touched &&
+            routineForm.get('day_of_week')?.invalid
+          "
+        >
+          <label>Day</label>
+          <div class="select-box">
+            <select formControlName="day_of_week">
+              <option value="">Select Day</option>
+              <option *ngFor="let d of days" [value]="d">
+                {{ d | titlecase }}
+              </option>
+            </select>
+            <span class="material-icons dropdown-icon">expand_more</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div
+            class="field"
+            [class.error]="
+              routineForm.get('start_time')?.touched &&
+              routineForm.get('start_time')?.invalid
+            "
+          >
+            <label>Start Time</label>
+            <input type="time" formControlName="start_time" />
+          </div>
+          <div
+            class="field"
+            [class.error]="
+              routineForm.get('end_time')?.touched &&
+              routineForm.get('end_time')?.invalid
+            "
+          >
+            <label>End Time</label>
+            <input type="time" formControlName="end_time" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Room Number</label>
+          <input
+            type="text"
+            formControlName="room_number"
+            placeholder="e.g. 101"
+          />
+        </div>
+      </div>
+    </form>
+
+    <footer class="drawer-footer">
+      <button class="btn btn-ghost" (click)="close.emit()" type="button">
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="onSubmit()"
+        [disabled]="submitting"
+      >
+        <span class="material-icons" *ngIf="!submitting">check</span>
+        <span class="material-icons spin" *ngIf="submitting">refresh</span>
+        {{ submitting ? 'Processing...' : 'Publish Routine' }}
+      </button>
+    </footer>
+  </div>
+</div>

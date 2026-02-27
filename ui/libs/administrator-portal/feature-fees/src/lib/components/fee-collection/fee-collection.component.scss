@@ -1,93 +1,28 @@
-$primary: #1a73e8;
-$bg-page: #f4f6f8;
-$border: #e0e0e0;
-$text-dark: #1f2937;
-$text-light: #6b7280;
+@use 'styles/shared' as *;
 
-.page-container {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
 
-/* --- CARDS --- */
-.card {
-  background: white;
-  border: 1px solid $border;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-}
-
-/* --- 1. SEARCH BAR --- */
-.search-card {
-  padding: 16px;
-  margin-bottom: 24px;
-  position: relative;
-
-  .search-input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f9fafb;
-    border: 1px solid $border;
-    border-radius: 8px;
-    padding: 6px 6px 6px 16px;
-
-    .search-icon {
-      color: $text-light;
-    }
-
-    input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 15px;
-      outline: none;
-
-      &::placeholder {
-        color: #9ca3af;
-      }
-    }
-
-    .clear-btn {
-      background: none;
-      border: none;
-      color: $text-light;
-      cursor: pointer;
-      display: flex;
-
-      &:hover {
-        color: #ef4444;
-      }
-    }
-
-    .btn-primary {
-      background: $primary;
-      color: white;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-
-      &:hover {
-        background: color-mix(in srgb, $primary 90%, black);
-      }
-    }
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
   }
+}
 
-  /* Dropdown Results */
+.search-card {
+  position: relative;
   .search-results {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     margin-top: 8px;
-    background: white;
-    border: 1px solid $border;
+    background: var(--white);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     z-index: 50;
     overflow: hidden;
 
@@ -97,12 +32,10 @@ $text-light: #6b7280;
       gap: 16px;
       padding: 12px 16px;
       cursor: pointer;
-      border-bottom: 1px solid #f3f4f6;
-
+      border-bottom: 1px solid var(--border-subtle);
       &:hover {
-        background: #f9fafb;
+        background: var(--bg-hover);
       }
-
       &:last-child {
         border-bottom: none;
       }
@@ -110,26 +43,22 @@ $text-light: #6b7280;
       .avatar-sm {
         width: 32px;
         height: 32px;
-        background: #e0e7ff;
-        color: $primary;
+        background: var(--royal-blue-light);
+        color: var(--royal-blue);
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         font-weight: 700;
         font-size: 14px;
       }
-
       .info {
         .name {
           font-weight: 600;
-          color: $text-dark;
+          color: var(--text-primary);
           font-size: 14px;
         }
-
         .meta {
           font-size: 12px;
-          color: $text-light;
+          color: var(--text-secondary);
           margin-top: 2px;
         }
       }
@@ -137,119 +66,13 @@ $text-light: #6b7280;
   }
 }
 
-/* --- 2. GRID LAYOUT --- */
-.content-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  /* 2/3 and 1/3 split */
-  gap: 24px;
-  align-items: start;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* --- LEFT: TRANSACTION FORM --- */
-.transaction-card {
-  .card-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid $border;
-
-    h3 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 700;
-      color: $text-dark;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .material-icons {
-      color: $primary;
-    }
-  }
-
-  .card-body {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  label {
-    font-size: 13px;
-    font-weight: 600;
-    color: $text-dark;
-  }
-
-  .hint {
-    font-size: 12px;
-    color: $text-light;
-  }
-
-  .input-lg {
-    height: 48px;
-    padding: 0 16px;
-    border: 1px solid $border;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    color: $text-dark;
-    outline: none;
-
-    &:focus {
-      border-color: $primary;
-      box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
-    }
-
-    &.bg-gray {
-      background: #f9fafb;
-      color: $text-light;
-    }
-  }
-
-  .input-std {
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid $border;
-    border-radius: 6px;
-    font-size: 14px;
-    outline: none;
-
-    &:focus {
-      border-color: $primary;
-    }
-  }
-
-  textarea.input-std {
-    height: auto;
-    padding: 12px;
-    font-family: inherit;
-  }
-}
-
-/* Payment Mode Tiles */
 .mode-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 
   .mode-tile {
-    border: 1px solid $border;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px;
     display: flex;
@@ -261,86 +84,31 @@ $text-light: #6b7280;
 
     .material-icons {
       font-size: 24px;
-      color: $text-light;
+      color: var(--text-secondary);
     }
-
     span {
       font-size: 14px;
       font-weight: 500;
-      color: $text-dark;
+      color: var(--text-primary);
     }
 
     &:hover {
-      border-color: color-mix(in srgb, $border 85%, black);
-      background: #f9fafb;
+      background: var(--bg-hover);
     }
-
     &.active {
-      border-color: $primary;
-      background: #eff6ff;
-
+      border-color: var(--royal-blue);
+      background: var(--royal-blue-light);
       .material-icons,
       span {
-        color: $primary;
+        color: var(--royal-blue);
         font-weight: 600;
       }
     }
   }
 }
 
-.action-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  margin-top: 16px;
-  padding-top: 24px;
-  border-top: 1px solid #f3f4f6;
-
-  .btn-text {
-    background: none;
-    border: none;
-    font-weight: 600;
-    color: $text-light;
-    cursor: pointer;
-
-    &:hover {
-      color: $text-dark;
-    }
-  }
-
-  .btn-collect {
-    background: $primary;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    &:hover {
-      background: color-mix(in srgb, $primary 90%, black);
-      box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
-    }
-  }
-}
-
-/* --- RIGHT: SIDE PANEL --- */
-.side-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Profile Card */
 .profile-card {
-  padding: 24px;
   text-align: center;
-
   .avatar-lg {
     width: 80px;
     height: 80px;
@@ -350,169 +118,82 @@ $text-light: #6b7280;
     border-radius: 50%;
     font-size: 32px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid white;
-    box-shadow: 0 0 0 1px $border;
+    @include flex-center;
+    border: 4px solid var(--white);
+    box-shadow: 0 0 0 1px var(--border-color);
   }
-
-  .student-name {
-    margin: 0;
-    font-size: 18px;
-    color: $text-dark;
-  }
-
-  .adm-badge {
-    display: inline-block;
-    background: #e0e7ff;
-    color: $primary;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 12px;
-    margin-top: 4px;
-  }
-
   .info-list {
     margin-top: 24px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border-subtle);
     padding-top: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-
     .row {
       display: flex;
       justify-content: space-between;
       font-size: 13px;
-
       .label {
-        color: $text-light;
+        color: var(--text-secondary);
       }
-
       .val {
-        color: $text-dark;
+        color: var(--text-primary);
         font-weight: 500;
         text-align: right;
-      }
-
-      .font-bold {
-        font-weight: 700;
       }
     }
   }
 }
 
-/* Outstanding Card */
 .outstanding-card {
-  padding: 20px;
+  text-align: center;
   background: #fff1f2;
   border: 1px solid #fecdd3;
-  text-align: center;
-
+  padding: 20px;
   .label {
     font-size: 11px;
     font-weight: 700;
     color: #be123c;
-    letter-spacing: 1px;
     text-transform: uppercase;
   }
-
   .amount {
     font-size: 32px;
     font-weight: 800;
     color: #be123c;
     margin: 8px 0;
   }
-
-  .alert-text {
-    font-size: 12px;
-    color: #9f1239;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .material-icons {
-    font-size: 14px;
-  }
 }
 
-/* History Card */
-.history-card {
-  padding: 0;
-
-  .card-header-sm {
-    padding: 16px 20px;
+.history-list {
+  padding: 0 20px 20px;
+  .history-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #f3f4f6;
-
-    h4 {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 700;
-      color: $text-dark;
+    &:last-child {
+      border-bottom: none;
     }
-
-    a {
-      font-size: 12px;
-      color: $primary;
-      text-decoration: none;
-      font-weight: 600;
-    }
-  }
-
-  .history-list {
-    padding: 0 20px 20px;
-
-    .history-item {
-      padding: 12px 0;
-      border-bottom: 1px solid #f3f4f6;
+    .txn-info {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .txn-info {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-
-        .txn-title {
-          font-size: 13px;
-          font-weight: 600;
-          color: $text-dark;
-        }
-
-        .txn-date {
-          font-size: 11px;
-          color: $text-light;
-        }
-      }
-
-      .txn-amount {
+      flex-direction: column;
+      gap: 2px;
+      .txn-title {
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 600;
       }
-
-      .positive {
-        color: #059669;
+      .txn-date {
+        font-size: 11px;
+        color: var(--text-secondary);
       }
     }
-
-    .empty-msg {
-      padding: 20px 0;
-      text-align: center;
-      font-size: 12px;
-      color: $text-light;
-      font-style: italic;
+    .txn-amount {
+      font-size: 13px;
+      font-weight: 700;
+      &.positive {
+        color: var(--color-success);
+      }
     }
   }
 }

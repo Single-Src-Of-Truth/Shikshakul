@@ -4,20 +4,85 @@
       Home <span class="sep">/</span> Exams <span class="sep">/</span> Exam
       Setup
     </div>
-    <h1>Exam Setup</h1>
-    <p class="subtitle">
-      Configure examination structures, subject mapping, and grading criteria
-      for the upcoming term.
-    </p>
+    <div class="header-main">
+      <div class="title-env">
+        <h1>Exam Setup</h1>
+        <p class="subtitle">
+          Configure examination structures, subject mapping, and grading criteria.
+        </p>
+      </div>
+    </div>
   </header>
 
   <div class="content-grid">
     <div class="main-column">
-      <shikshakul-exam-form></shikshakul-exam-form>
+      <shikshakul-exam-form 
+        [terms]="examTerms()" 
+        (saved)="onScheduleSaved()"
+      ></shikshakul-exam-form>
+
+      <!-- Exam Schedules List -->
+      <div class="schedules-card">
+        <div class="card-header">
+          <div class="title">
+            <h3>Examination Schedules</h3>
+            <p>View published exam schedules for specific classes and terms.</p>
+          </div>
+          
+          <div class="filters-row">
+            <select [ngModel]="selectedTermId()" (ngModelChange)="selectedTermId.set($event); onFilterChange()">
+              <option value="">Select Term</option>
+              <option *ngFor="let term of examTerms()" [value]="term.id">{{ term.name }}</option>
+            </select>
+            <select [ngModel]="selectedClassId()" (ngModelChange)="selectedClassId.set($event); onFilterChange()">
+              <option value="">Select Class</option>
+              <option *ngFor="let c of classes()" [value]="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <div class="loading-overlay" *ngIf="loading()">
+            <span class="material-icons spin">refresh</span>
+          </div>
+
+          <div class="schedules-table" *ngIf="examSchedules().length > 0">
+            <div class="table-header">
+              <span>SUBJECT</span>
+              <span>DATE & TIME</span>
+              <span>ROOM</span>
+              <span>MARKS (MAX/PASS)</span>
+            </div>
+            <div class="table-row" *ngFor="let s of examSchedules()">
+              <span class="subject-name">{{ s.subject_name }}</span>
+              <div class="date-time">
+                <span class="date">{{ s.exam_date | date:'mediumDate' }}</span>
+                <span class="time">{{ s.start_time }} - {{ s.end_time }}</span>
+              </div>
+              <span class="room">{{ s.room_number || 'N/A' }}</span>
+              <span class="marks">{{ s.max_marks }} / {{ s.pass_marks }}</span>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="!loading() && examSchedules().length === 0">
+            <span class="material-icons">search</span>
+            <p *ngIf="!selectedTermId() || !selectedClassId() || selectedTermId() === 'undefined' || selectedClassId() === 'undefined'">
+              Select Term and Class to view schedules.
+            </p>
+            <p *ngIf="selectedTermId() && selectedClassId() && selectedTermId() !== 'undefined' && selectedClassId() !== 'undefined'">
+              No schedules found for the selected filters.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="side-column">
-      <shikshakul-recent-exams-widget></shikshakul-recent-exams-widget>
+      <shikshakul-recent-exams-widget 
+        [terms]="examTerms()" 
+        [loading]="loading()"
+        (termSaved)="onTermSaved()"
+      ></shikshakul-recent-exams-widget>
       <shikshakul-exam-guidelines-widget></shikshakul-exam-guidelines-widget>
     </div>
   </div>

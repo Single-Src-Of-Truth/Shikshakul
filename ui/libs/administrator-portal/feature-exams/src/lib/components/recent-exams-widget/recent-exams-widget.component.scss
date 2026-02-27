@@ -1,75 +1,131 @@
+@use 'styles/shared' as *;
+
 .widget-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
+  @include card-base;
+  margin-bottom: 24px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-  .view-all {
-    font-size: 12px;
-    color: var(--royal-blue);
-    text-decoration: none;
-    font-weight: 600;
-  }
-}
-
-.exam-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
+.widget-header {
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
-  &:last-child {
-    border-bottom: none;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  .info {
+  .title-env {
     display: flex;
-    flex-direction: column;
-    .name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    .sub {
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+
+    .material-icons { font-size: 20px; color: var(--royal-blue); }
+    h4 { margin: 0; font-size: 15px; font-weight: 700; }
   }
 
-  .badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
-    &.active {
-      background: #e6f4ea;
-      color: #137333;
-    }
-    &.draft {
-      background: #f0f2f5;
-      color: var(--text-secondary);
-      border: 1px solid #dadce0;
-    }
-  }
-
-  .icon-btn {
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
+  .add-mini-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: white;
+    @include flex-center;
     cursor: pointer;
-    .material-icons {
-      font-size: 16px;
+    @include transition-base;
+
+    &:hover {
+      background: var(--bg-page);
+      border-color: var(--royal-blue);
+      color: var(--royal-blue);
+    }
+    
+    .material-icons { font-size: 18px; }
+  }
+}
+
+.widget-content {
+  padding: 8px 0;
+}
+
+.inline-form {
+  padding: 16px 20px;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-color);
+  
+  h5 { margin: 0 0 12px 0; font-size: 13px; color: var(--text-primary); }
+
+  .field {
+    margin-bottom: 12px;
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; text-transform: uppercase; }
+    input { width: 100%; height: 36px; padding: 0 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; }
+  }
+
+  .row-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    height: 36px;
+    background: var(--royal-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+}
+
+.terms-list {
+  .term-item {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    @include transition-base;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: #f8fafc; }
+
+    .term-info {
+      .name { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+      .dates { margin: 2px 0 0 0; font-size: 11px; color: var(--text-secondary); }
     }
   }
 }
+
+.status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  
+  &.active { background: var(--bg-success); color: var(--color-success); }
+  &.pending { background: #fef3c7; color: #d97706; }
+  &.published { background: var(--bg-info); color: var(--color-info); }
+}
+
+.empty-state, .loading-state {
+  padding: 32px 20px;
+  @include flex-center;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-secondary);
+  text-align: center;
+  
+  .material-icons { font-size: 28px; color: var(--text-disabled); }
+  p { margin: 0; font-size: 13px; }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }

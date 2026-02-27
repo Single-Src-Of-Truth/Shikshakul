@@ -41,6 +41,13 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'academics/timetable',
+        loadChildren: () =>
+          import('@shikshakul/admin/feature-timetable').then(
+            (m) => m.featureTimetableRoutes,
+          ),
+      },
+      {
         path: 'staff',
         loadChildren: () =>
           import('@shikshakul/admin/feature-staff').then(
