@@ -1,84 +1,19 @@
+@use 'styles/shared' as *;
+
 .page-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  height: 100%;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 60px;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .breadcrumbs {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    .separator {
-      margin: 0 4px;
-    }
-  }
-
-  .page-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 4px 0;
-  }
-
-  .page-subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin: 0;
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 12px;
-  }
-}
-
-// Standard Button Styles
-.btn {
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-
-  &.btn-outline {
-    background: white;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    &:hover {
-      background: var(--bg-app);
-    }
-  }
-
-  &.btn-primary {
-    background: var(--royal-blue);
-    border: 1px solid var(--royal-blue);
-    color: white;
-    &:hover {
-      background: var(--royal-blue-hover);
-    }
-    .material-icons {
-      font-size: 18px;
-    }
-  }
-}
-
-// 2-Column Grid Layout
 .form-layout {
   display: grid;
-  grid-template-columns: 320px 1fr; // Fixed left width, flexible right
-  gap: 24px;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
   align-items: start;
-  padding-bottom: 40px; // Space at the end
 
   .left-column,
   .right-column {
@@ -88,6 +23,12 @@
   }
 
   @media (max-width: 1024px) {
-    grid-template-columns: 1fr; // Stack on smaller screens
+    grid-template-columns: 1fr;
+    .left-column {
+      order: 1;
+    }
+    .right-column {
+      order: 2;
+    }
   }
 }

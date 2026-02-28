@@ -10,21 +10,20 @@
         Manage and configure academic subjects for the 2024-2025 Session.
       </p>
     </div>
-    <button class="btn-primary">
+    <button class="btn-primary" (click)="openAddDialog()">
       <span class="material-icons">add</span> Add New Subject
     </button>
   </header>
 
-  <shikshakul-subject-stats></shikshakul-subject-stats>
+  <shikshakul-subject-stats [total]="stats.total" [theory]="stats.theory" [practical]="stats.practical"
+    [other]="stats.other">
+  </shikshakul-subject-stats>
 
   <div class="content-card">
     <div class="controls-bar">
       <div class="search-box">
         <span class="material-icons">search</span>
-        <input
-          type="text"
-          placeholder="Search by name, code or department..."
-        />
+        <input type="text" placeholder="Search by name, code or department..." />
       </div>
 
       <div class="actions">
@@ -49,8 +48,15 @@
         <div class="col name">SUBJECT NAME</div>
         <div class="col code">CODE</div>
         <div class="col type">TYPE</div>
-        <div class="col category">CATEGORY</div>
-        <div class="col created">CREATED BY</div>
+      </div>
+
+      <div *ngIf="loading" style="padding: 20px; text-align: center; color: var(--text-secondary)">
+        Loading subjects...
+      </div>
+
+      <div *ngIf="!loading && subjects.length === 0"
+        style="padding: 20px; text-align: center; color: var(--text-secondary)">
+        No subjects found. Add one to get started.
       </div>
 
       <div class="table-row" *ngFor="let sub of subjects">
@@ -66,42 +72,31 @@
         </div>
 
         <div class="col type">
-          <span
-            class="type-badge"
-            [class.theory]="sub.type === 'Theory'"
-            [class.practical]="sub.type === 'Practical'"
-            [class.coscho]="sub.type === 'Co-Scholastic'"
-          >
-            {{ sub.type }}
+          <span class="type-badge" [class.theory]="sub.type === 'THEORY'"
+            [class.practical]="sub.type === 'PRACTICAL' || sub.type === 'LAB'">
+            {{ sub.type | titlecase }}
           </span>
-        </div>
-
-        <div class="col category">{{ sub.category }}</div>
-
-        <div class="col created">
-          <div class="avatar-xs">{{ sub.createdBy.charAt(0) }}</div>
-          <span>{{ sub.createdBy }}</span>
         </div>
       </div>
     </div>
 
     <div class="pagination-footer">
-      <span class="result-text"
-        >Showing <strong>1</strong> to <strong>4</strong> of
-        <strong>42</strong> results</span
-      >
+      <span class="result-text">
+        Showing <strong>1</strong> to <strong>{{ subjects.length }}</strong> of
+        <strong>{{ subjects.length }}</strong> results
+      </span>
       <div class="pages">
         <button class="page-btn">
           <span class="material-icons">chevron_left</span>
         </button>
         <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">...</button>
-        <button class="page-btn">8</button>
         <button class="page-btn">
           <span class="material-icons">chevron_right</span>
         </button>
       </div>
     </div>
   </div>
+
+  <shikshakul-subject-dialog *ngIf="showDialog" [subject]="selectedSubject" [isEditMode]="isEditMode"
+    (close)="closeDialog()" (save)="onSave($event)"></shikshakul-subject-dialog>
 </div>

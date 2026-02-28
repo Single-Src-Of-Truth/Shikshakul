@@ -1,3 +1,5 @@
+@use 'styles/shared' as *;
+
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -5,9 +7,7 @@
 }
 
 .stat-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  @include card-base;
   padding: 24px;
   display: flex;
   align-items: center;
@@ -17,12 +17,10 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
 
     &.blue {
-      background: #e8f0fe;
+      background: var(--royal-blue-light);
       color: var(--royal-blue);
     }
     &.purple {
@@ -30,8 +28,8 @@
       color: #9c27b0;
     }
     &.green {
-      background: #e6f4ea;
-      color: #137333;
+      background: var(--bg-success);
+      color: var(--color-success);
     }
 
     .material-icons {
@@ -48,6 +46,7 @@
       color: var(--text-secondary);
       letter-spacing: 0.5px;
       margin-bottom: 4px;
+      text-transform: uppercase;
     }
     .value {
       font-size: 24px;

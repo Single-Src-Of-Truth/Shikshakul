@@ -1,13 +1,13 @@
+@use 'styles/shared' as *;
+
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 4 Columns
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
 .stat-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  @include card-base;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -24,17 +24,15 @@
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
 
     &.blue {
-      background: #e8f0fe;
+      background: var(--royal-blue-light);
       color: var(--royal-blue);
     }
     &.orange {
-      background: #fef7e0;
-      color: #ea8600;
+      background: var(--bg-warning);
+      color: var(--color-warning);
     }
     &.purple {
       background: #f3e5f5;
@@ -51,8 +49,8 @@
   }
 
   .badge.positive {
-    background: #e6f4ea;
-    color: #137333;
+    background: var(--bg-success);
+    color: var(--color-success);
     font-size: 10px;
     font-weight: 700;
     padding: 4px 8px;

@@ -1,0 +1,65 @@
+@use 'styles/shared' as *;
+
+.schema-config-card {
+  @include card-base;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  .header-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+
+    .icon-box {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: var(--royal-blue-light);
+      color: var(--royal-blue);
+      @include flex-center;
+      .material-icons { font-size: 24px; }
+    }
+    .text {
+      h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text-primary); }
+      p { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+    }
+  }
+
+  .schema-fields-container {
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 24px;
+
+    .section-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+      h4 { margin: 0; color: var(--text-primary); font-size: 1rem; }
+    }
+
+    .field-item {
+      display: flex; align-items: center; gap: 12px;
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 12px;
+
+      .field-inputs {
+        flex: 1; display: flex; align-items: center; gap: 16px;
+        input[type="text"] { flex: 2; @include input-base; height: 38px; }
+        .select-wrapper { flex: 1; }
+      }
+    }
+
+    .empty-fields {
+      text-align: center; padding: 24px;
+      color: var(--text-secondary); font-size: 0.9rem;
+      border: 1px dashed var(--border-color);
+      border-radius: 6px;
+    }
+  }
+}

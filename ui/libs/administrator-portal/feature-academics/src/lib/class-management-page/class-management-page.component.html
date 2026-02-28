@@ -11,13 +11,15 @@
       </p>
     </div>
 
-    <button class="btn-primary">
+    <button class="btn-primary" (click)="openCreateClassDialog()">
       <span class="material-icons">add</span>
       Add New Class
     </button>
   </header>
 
-  <shikshakul-class-stats></shikshakul-class-stats>
+  <shikshakul-class-stats
+    [totalClasses]="classes.length"
+  ></shikshakul-class-stats>
 
   <div class="list-controls">
     <h3>All Classes</h3>
@@ -31,12 +33,28 @@
     </div>
   </div>
 
-  <div class="class-list">
-    <shikshakul-class-list-item *ngFor="let cls of classes" [classData]="cls">
+  <div *ngIf="loading" class="state-message">
+    <span class="material-icons spin">sync</span> Loading classes...
+  </div>
+
+  <div *ngIf="!loading && classes.length === 0" class="state-message">
+    No classes found. Click "Add New Class" to get started.
+  </div>
+
+  <div class="class-list" *ngIf="!loading && classes.length > 0">
+    <shikshakul-class-list-item
+      *ngFor="let cls of classes"
+      [classData]="cls"
+      (addSectionClick)="openSectionDialog(cls)"
+      (manageSubjects)="openSubjectDialog(cls)"
+      (removeSection)="onRemoveSection(cls, $event)"
+      (edit)="onEditClass(cls)"
+      (delete)="onDeleteClass(cls)"
+    >
     </shikshakul-class-list-item>
   </div>
 
-  <div class="pagination">
+  <div class="pagination" *ngIf="!loading && classes.length > 0">
     <button class="page-btn">
       <span class="material-icons">chevron_left</span>
     </button>
@@ -47,4 +65,28 @@
       <span class="material-icons">chevron_right</span>
     </button>
   </div>
+
+  <shikshakul-class-dialog
+    *ngIf="showClassDialog"
+    [classData]="selectedClassData"
+    [isEditMode]="isEditMode"
+    (close)="closeClassDialog()"
+    (save)="saveClass($event)"
+  ></shikshakul-class-dialog>
+
+  <shikshakul-section-dialog
+    *ngIf="showSectionDialog && selectedClassForSection"
+    [classId]="selectedClassForSection.id"
+    [className]="selectedClassForSection.name"
+    (close)="closeSectionDialog()"
+    (save)="onSectionSaved()"
+  ></shikshakul-section-dialog>
+
+  <shikshakul-subject-allocation-dialog
+    *ngIf="showSubjectDialog && selectedClassForSubjects"
+    [classId]="selectedClassForSubjects.id"
+    [className]="selectedClassForSubjects.name"
+    (close)="closeSubjectDialog()"
+    (save)="loadClasses()"
+  ></shikshakul-subject-allocation-dialog>
 </div>

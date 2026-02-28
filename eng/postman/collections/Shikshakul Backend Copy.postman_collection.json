@@ -1249,15 +1249,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/heads/:id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "heads",
-                    ":id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "heads", ":id"],
                   "variable": [
                     {
                       "key": "id",
@@ -1276,15 +1269,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/heads/:id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "heads",
-                    ":id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "heads", ":id"],
                   "variable": [
                     {
                       "key": "id",
@@ -1312,14 +1298,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/structure",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "structure"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "structure"]
                 }
               },
               "response": []
@@ -1332,14 +1312,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/structure?class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9&academic_year_id=7ce09cef-131b-4b14-bda3-8eb5d62499fd",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "structure"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "structure"],
                   "query": [
                     {
                       "key": "class_id",
@@ -1371,15 +1345,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/structure/:id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "structure",
-                    ":id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "structure", ":id"],
                   "variable": [
                     {
                       "key": "id",
@@ -1398,15 +1365,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/structure/:id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "structure",
-                    ":id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "structure", ":id"],
                   "variable": [
                     {
                       "key": "id",
@@ -1434,14 +1394,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/generate-demands",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "generate-demands"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "generate-demands"]
                 }
               },
               "response": []
@@ -1463,14 +1417,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/collect",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "fees",
-                    "collect"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "fees", "collect"]
                 }
               },
               "response": []
@@ -1483,9 +1431,7 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/students/:student_id/dues",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
                   "path": [
                     "academics",
                     "fees",
@@ -1511,9 +1457,7 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/fees/students/:student_id/history",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
                   "path": [
                     "academics",
                     "fees",
@@ -1554,13 +1498,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/timetables",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "timetables"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "timetables"]
                 }
               },
               "response": []
@@ -1573,13 +1512,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/timetables?section_id=07f3c78b-770f-45e1-b661-30d9e70147ba",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "timetables"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "timetables"],
                   "query": [
                     {
                       "key": "section_id",
@@ -1608,14 +1542,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/timetables/:routine_id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "timetables",
-                    ":routine_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "timetables", ":routine_id"],
                   "variable": [
                     {
                       "key": "routine_id",
@@ -1649,14 +1577,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/terms",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "terms"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "terms"]
                 }
               },
               "response": []
@@ -1669,14 +1591,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/terms?academic_year_id=7ce09cef-131b-4b14-bda3-8eb5d62499fd",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "terms"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "terms"],
                   "query": [
                     {
                       "key": "academic_year_id",
@@ -1704,14 +1620,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "schedules"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "schedules"]
                 }
               },
               "response": []
@@ -1724,14 +1634,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules?term_id=150d6f1c-037a-4cd5-9d42-41d90df41254&class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "schedules"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "schedules"],
                   "query": [
                     {
                       "key": "term_id",
@@ -1754,15 +1658,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules/:schedule_id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "schedules",
-                    ":schedule_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "schedules", ":schedule_id"],
                   "variable": [
                     {
                       "key": "schedule_id",
@@ -1787,9 +1684,7 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/schedules/:schedule_id/marks",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
                   "path": [
                     "academics",
                     "exams",
@@ -1824,14 +1719,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/exams/marks",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "exams",
-                    "marks"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "exams", "marks"]
                 }
               },
               "response": []
@@ -1859,14 +1748,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/results/generate",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "results",
-                    "generate"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "results", "generate"]
                 }
               },
               "response": []
@@ -1888,14 +1771,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/results/publish",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "results",
-                    "publish"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "results", "publish"]
                 }
               },
               "response": []
@@ -1908,15 +1785,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/results/students/:student_id?term_id=150d6f1c-037a-4cd5-9d42-41d90df41254",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "results",
-                    "students",
-                    ":student_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "results", "students", ":student_id"],
                   "query": [
                     {
                       "key": "term_id",
@@ -1947,15 +1817,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/attendance/section/:section_id?date=2025-12-25",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "attendance",
-                    "section",
-                    ":section_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "attendance", "section", ":section_id"],
                   "query": [
                     {
                       "key": "date",
@@ -1989,13 +1852,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/attendance",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "attendance"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "attendance"]
                 }
               },
               "response": []
@@ -2008,15 +1866,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/attendance/student/:student_id?start=2025-12-01&end=2025-12-31",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "attendance",
-                    "student",
-                    ":student_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "attendance", "student", ":student_id"],
                   "query": [
                     {
                       "key": "start",
@@ -2051,14 +1902,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/certificates/id-cards?class_id=7bf409d1-6c3a-4a0f-8569-f072e7fe9da9",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "certificates",
-                    "id-cards"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "certificates", "id-cards"],
                   "query": [
                     {
                       "key": "class_id",
@@ -2086,14 +1931,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/certificates/tc",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "certificates",
-                    "tc"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "certificates", "tc"]
                 }
               },
               "response": []
@@ -2115,14 +1954,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/certificates/bonafide",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "certificates",
-                    "bonafide"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "certificates", "bonafide"]
                 }
               },
               "response": []
@@ -2141,14 +1974,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/calendar/events?month=2&year=2026",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "calendar",
-                    "events"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "calendar", "events"],
                   "query": [
                     {
                       "key": "month",
@@ -2182,14 +2009,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/calendar/events",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "calendar",
-                    "events"
-                  ]
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "calendar", "events"]
                 }
               },
               "response": []
@@ -2202,15 +2023,8 @@
                 "header": [],
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/calendar/events/:event_id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "calendar",
-                    "events",
-                    ":event_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "calendar", "events", ":event_id"],
                   "variable": [
                     {
                       "key": "event_id",
@@ -2238,15 +2052,8 @@
                 },
                 "url": {
                   "raw": "{{acadServiceBaseUrl}}/academics/calendar/events/:event_id",
-                  "host": [
-                    "{{acadServiceBaseUrl}}"
-                  ],
-                  "path": [
-                    "academics",
-                    "calendar",
-                    "events",
-                    ":event_id"
-                  ],
+                  "host": ["{{acadServiceBaseUrl}}"],
+                  "path": ["academics", "calendar", "events", ":event_id"],
                   "variable": [
                     {
                       "key": "event_id",

@@ -9,9 +9,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './class-list-item.component.scss',
 })
 export class ClassListItemComponent {
-  @Input() classData: any; // We'll define the interface later
+  @Input() classData: any;
+
+  @Output() addSectionClick = new EventEmitter<void>();
+  @Output() removeSection = new EventEmitter<string>();
   @Output() edit = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
-  @Output() addSection = new EventEmitter<void>();
-  @Output() removeSection = new EventEmitter<string>();
+
+  onAddSection() {
+    this.addSectionClick.emit();
+  }
 }

@@ -1,0 +1,29 @@
+<div class="snackbar-container" *ngIf="activeSnackbar$ | async as snack">
+  <div class="snackbar-card" [ngClass]="snack.type">
+    <div class="icon-box">
+      <span class="material-icons icon" *ngIf="snack.type === 'success'"
+        >check</span
+      >
+
+      <span class="material-icons icon" *ngIf="snack.type === 'error'"
+        >error_outline</span
+      >
+
+      <span class="material-icons icon" *ngIf="snack.type === 'info'"
+        >chat_bubble_outline</span
+      >
+      <span class="material-icons icon" *ngIf="snack.type === 'warning'"
+        >warning_amber</span
+      >
+    </div>
+
+    <div class="text-content">
+      <div class="title">{{ snack.title || (snack.type | titlecase) }}</div>
+      <div class="message">{{ snack.message }}</div>
+    </div>
+
+    <button class="close-btn" (click)="close()">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+</div>

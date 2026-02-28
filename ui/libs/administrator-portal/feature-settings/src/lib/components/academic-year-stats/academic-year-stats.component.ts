@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { AcademicYear } from '@shikshakul/data-access/academic';
 
 @Component({
   selector: 'shikshakul-academic-year-stats',
@@ -9,7 +10,19 @@ import { Component, Input } from '@angular/core';
   styleUrl: './academic-year-stats.component.scss',
 })
 export class AcademicYearStatsComponent {
-  @Input() currentYear = '2024-2025';
-  @Input() upcomingYear = '2025-2026';
-  @Input() totalArchives = 8;
+  @Input() currentYear: AcademicYear[] = [];
+
+  get activeYearName(): string {
+    return this.currentYear.find(y => y.is_current)?.name || 'None';
+  }
+
+  get upcomingYearName(): string {
+    const today = new Date();
+    return this.currentYear.find(y => !y.is_current && new Date(y.start_date) > today)?.name || 'N/A';
+  }
+
+  get archivedCount(): number {
+    const today = new Date();
+    return this.currentYear.filter(y => !y.is_current && new Date(y.start_date) <= today).length;
+  }
 }

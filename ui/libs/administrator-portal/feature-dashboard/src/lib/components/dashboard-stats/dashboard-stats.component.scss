@@ -1,3 +1,5 @@
+@use 'styles/shared' as *;
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -5,9 +7,7 @@
 }
 
 .stat-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  @include card-base;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -15,8 +15,7 @@
 
   &:hover {
     border-color: var(--royal-blue);
-    box-shadow: var(--shadow-hover);
-
+    box-shadow: var(--shadow-md);
     .card-top .icon-box {
       color: var(--royal-blue);
     }
@@ -37,7 +36,7 @@
     }
 
     .icon-box {
-      color: var(--text-disabled);
+      color: var(--text-secondary);
       .material-icons {
         font-size: 24px;
       }
@@ -76,7 +75,7 @@
       }
       &.neutral {
         color: var(--text-secondary);
-        background: var(--bg-app);
+        background: var(--bg-page);
       }
 
       .material-icons {

@@ -20,14 +20,14 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'students/create',
-        loadComponent: () =>
+        path: 'academics/students',
+        loadChildren: () =>
           import('@shikshakul/admin/feature-students').then(
-            (m) => m.CreateStudentPageComponent,
+            (m) => m.featureStudentsRoutes,
           ),
       },
       {
-        path: 'academics',
+        path: 'academics/classes',
         loadComponent: () =>
           import('@shikshakul/admin/feature-academics').then(
             (m) => m.ClassManagementPageComponent,
@@ -41,10 +41,17 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'staff/create',
-        loadComponent: () =>
+        path: 'academics/timetable',
+        loadChildren: () =>
+          import('@shikshakul/admin/feature-timetable').then(
+            (m) => m.featureTimetableRoutes,
+          ),
+      },
+      {
+        path: 'staff',
+        loadChildren: () =>
           import('@shikshakul/admin/feature-staff').then(
-            (m) => m.CreateStaffPageComponent,
+            (m) => m.featureStaffRoutes,
           ),
       },
       {
@@ -52,6 +59,13 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('@shikshakul/admin/feature-exams').then(
             (m) => m.ExamSetupPageComponent,
+          ),
+      },
+      {
+        path: 'fees',
+        loadChildren: () =>
+          import('@shikshakul/administrator-portal/feature-fees').then(
+            (m) => m.featureFeesRoutes,
           ),
       },
       {

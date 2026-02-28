@@ -9,7 +9,7 @@ interface MenuItem {
 }
 
 interface MenuGroup {
-  header?: string; // Optional header like "ACADEMICS"
+  header?: string;
   items: MenuItem[];
 }
 
@@ -24,38 +24,45 @@ export class SidenavComponent {
   @Input() collapsed = false;
   @Output() toggleCollapse = new EventEmitter<void>();
 
-  // Organized into Visual Groups (No clicking required)
   menuGroups: MenuGroup[] = [
     {
-      // Main Dashboard (No header needed)
       items: [{ label: 'Dashboard', icon: 'dashboard', route: '/dashboard' }],
     },
     {
       header: 'PEOPLE',
       items: [
-        { label: 'Students', icon: 'school', route: '/students/create' },
-        { label: 'Staff', icon: 'badge', route: '/staff/create' },
+        { label: 'Students', icon: 'school', route: '/academics/students' },
+        { label: 'Staff', icon: 'badge', route: '/staff' },
       ],
     },
     {
       header: 'ACADEMICS',
       items: [
-        { label: 'Class Setup', icon: 'class', route: '/academics' },
+        { label: 'Class Setup', icon: 'class', route: '/academics/classes' },
         {
           label: 'Subjects',
           icon: 'library_books',
           route: '/academics/subjects',
         },
+        {
+          label: 'Timetable',
+          icon: 'calendar_view_week',
+          route: '/academics/timetable',
+        },
         { label: 'Exams', icon: 'assignment', route: '/exams/setup' },
       ],
     },
-    // {
-    //   header: 'ADMINISTRATION',
-    //   items: [
-    //     { label: 'Fees & Finance', icon: 'payments', route: '/fees' },
-    //     { label: 'Transport', icon: 'directions_bus', route: '/transport' },
-    //   ],
-    // },
+    {
+      header: 'ADMINISTRATION',
+      items: [
+        {
+          label: 'Fee Management',
+          icon: 'payments',
+          route: '/fees',
+        },
+        // { label: 'Transport', icon: 'directions_bus', route: '/transport' }, // Future
+      ],
+    },
     {
       header: 'CONFIGURATION',
       items: [

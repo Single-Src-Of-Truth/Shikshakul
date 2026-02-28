@@ -1,26 +1,24 @@
+@use 'styles/shared' as *;
+
 .class-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  @include card-base;
   padding: 24px;
   display: grid;
-  grid-template-columns: 280px 1fr 180px; /* Fixed Left, Flex Middle, Fixed Right */
+  grid-template-columns: 280px 1fr 180px;
   gap: 32px;
   align-items: center;
   transition: all 0.2s;
 
   &:hover {
     border-color: var(--royal-blue);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
   }
 }
 
-/* 1. INFO GROUP */
 .info-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   .header-row {
     display: flex;
     align-items: center;
@@ -31,50 +29,13 @@
       color: var(--text-primary);
       margin: 0;
     }
-
-    .stream-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-
-      &.general {
-        background: #f0f2f5;
-        color: var(--text-secondary);
-        border: 1px solid #dadce0;
-      }
-      &.science {
-        background: #e8f0fe;
-        color: #1a73e8;
-        border: 1px solid #d2e3fc;
-      }
-      &.commerce {
-        background: #e6f4ea;
-        color: #137333;
-        border: 1px solid #ceead6;
-      }
-      &.arts {
-        background: #fef7e0;
-        color: #ea8600;
-        border: 1px solid #feefc3;
-      }
-    }
-  }
-
-  .description {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin: 0;
   }
 }
 
-/* 2. SECTIONS GROUP */
 .sections-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   .label {
     font-size: 10px;
     font-weight: 700;
@@ -93,7 +54,7 @@
       align-items: center;
       gap: 6px;
       padding: 4px 4px 4px 12px;
-      background: #ffffff;
+      background: var(--white);
       border: 1px solid var(--border-color);
       border-radius: 6px;
       font-size: 14px;
@@ -105,11 +66,10 @@
         background: transparent;
         cursor: pointer;
         color: var(--text-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
+        padding: 2px;
         &:hover {
-          color: #d93025;
+          color: var(--color-danger);
         }
         .material-icons {
           font-size: 14px;
@@ -130,7 +90,7 @@
       font-weight: 600;
       cursor: pointer;
       &:hover {
-        background: #e8f0fe;
+        background: var(--royal-blue-light);
       }
       .material-icons {
         font-size: 16px;
@@ -139,12 +99,11 @@
   }
 }
 
-/* 3. ACTIONS GROUP */
 .actions-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-left: 1px solid var(--bg-app);
+  border-left: 1px solid var(--border-color);
   padding-left: 32px;
 
   .student-count {
@@ -175,19 +134,18 @@
       background: transparent;
       color: var(--text-secondary);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center;
       .material-icons {
         font-size: 18px;
       }
+
       &:hover.edit {
         color: var(--royal-blue);
-        background: #e8f0fe;
+        background: var(--royal-blue-light);
       }
       &:hover.delete {
-        color: #d93025;
-        background: #fce8e6;
+        color: var(--color-danger);
+        background: var(--bg-danger);
       }
     }
   }

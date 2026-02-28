@@ -2,11 +2,7 @@
   <div class="info-group">
     <div class="header-row">
       <h3 class="class-name">{{ classData.name }}</h3>
-      <span class="stream-badge" [ngClass]="classData.stream.toLowerCase()">
-        {{ classData.stream }}
-      </span>
     </div>
-    <p class="description">{{ classData.description }}</p>
   </div>
 
   <div class="sections-group">
@@ -19,7 +15,7 @@
         </button>
       </div>
 
-      <button class="add-section-btn" (click)="addSection.emit()">
+      <button class="add-section-btn" (click)="onAddSection()">
         <span class="material-icons">add</span>
         Add Section
       </button>

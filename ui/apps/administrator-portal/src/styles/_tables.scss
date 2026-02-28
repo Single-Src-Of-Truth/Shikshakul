@@ -1,0 +1,100 @@
+@use 'variables' as *;
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .table-header {
+    display: flex;
+    height: 48px;
+    background: var(--bg-page);
+    border-bottom: 1px solid var(--border-color);
+
+    .col {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .table-row {
+    display: flex;
+    min-height: 64px;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.1s;
+    cursor: pointer;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: var(--bg-hover);
+    }
+
+    .col {
+      font-size: 14px;
+      color: var(--text-primary);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .main {
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .sub {
+          font-size: 12px;
+          color: var(--text-secondary);
+        }
+      }
+    }
+  }
+
+  // Legacy support for <table> based fee tables
+  &.fee-table {
+    display: table;
+    border-collapse: collapse;
+    
+    thead th {
+      text-align: left;
+      padding: 14px 24px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      background: var(--bg-page);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tbody td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+  }
+}

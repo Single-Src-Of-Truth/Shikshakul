@@ -1,0 +1,28 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1>Fee Management</h1>
+    <p>Configure fee structures and collect payments.</p>
+  </header>
+
+  <div class="tabs">
+    <button
+      [class.active]="activeTab === 'COLLECTION'"
+      (click)="activeTab = 'COLLECTION'"
+    >
+      <span class="material-icons">point_of_sale</span> Fee Collection
+    </button>
+    <button
+      [class.active]="activeTab === 'SETUP'"
+      (click)="activeTab = 'SETUP'"
+    >
+      <span class="material-icons">settings</span> Configuration
+    </button>
+  </div>
+
+  <div class="tab-content">
+    <shikshakul-fee-collection
+      *ngIf="activeTab === 'COLLECTION'"
+    ></shikshakul-fee-collection>
+    <shikshakul-fee-setup *ngIf="activeTab === 'SETUP'"></shikshakul-fee-setup>
+  </div>
+</div>

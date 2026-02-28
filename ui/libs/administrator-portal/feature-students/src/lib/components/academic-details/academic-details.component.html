@@ -16,7 +16,7 @@
         <option value="" disabled selected>Select Board</option>
         <option value="CBSE">CBSE</option>
         <option value="ICSE">ICSE</option>
-        <option value="State">State Board</option>
+        <option value="STATE">State Board</option>
       </select>
     </div>
 
@@ -29,9 +29,9 @@
         "
       >
         <option value="" disabled selected>Select Class</option>
-        <option value="X">Class X</option>
-        <option value="IX">Class IX</option>
-        <option value="VIII">Class VIII</option>
+        <option *ngFor="let cls of classes" [value]="cls.id">
+          {{ cls.name }}
+        </option>
       </select>
     </div>
 
@@ -44,9 +44,16 @@
         "
       >
         <option value="" disabled selected>Select Section</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
+        <option
+          *ngIf="classes.length > 0 && sections.length === 0"
+          value=""
+          disabled
+        >
+          Select a class first
+        </option>
+        <option *ngFor="let sec of sections" [value]="sec.id">
+          {{ sec.name }}
+        </option>
       </select>
     </div>
 

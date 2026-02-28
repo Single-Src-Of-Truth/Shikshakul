@@ -1,7 +1,9 @@
+@use 'styles/shared' as *;
+
 .chart-wrapper {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   padding: 24px;
   height: 100%;
   display: flex;

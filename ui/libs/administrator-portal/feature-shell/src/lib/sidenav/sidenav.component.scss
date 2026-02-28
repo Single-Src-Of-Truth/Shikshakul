@@ -1,13 +1,10 @@
-/* VARIABLES */
+@use 'styles/shared' as *;
+
 :host {
+  display: flex;
+  height: 100%;
   --sidenav-width: 260px;
   --sidenav-collapsed-width: 72px;
-  --royal-blue: #1a73e8;
-  --text-primary: #1f1f1f;
-  --text-secondary: #5f6368;
-  --bg-surface: #ffffff;
-  --bg-hover: #f5f5f5;
-  --border-color: #e0e0e0;
 }
 
 .sidenav-container {
@@ -15,18 +12,17 @@
   flex-direction: column;
   height: 100%;
   width: var(--sidenav-width);
-  background: var(--bg-surface);
+  background: var(--white);
   border-right: 1px solid var(--border-color);
   transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow-x: hidden;
   white-space: nowrap;
 
-  /* COLLAPSED STATE LOGIC */
   &.collapsed {
     width: var(--sidenav-collapsed-width);
     cursor: pointer;
     &:hover {
-      background-color: #fafafa;
+      background-color: var(--bg-hover);
     }
 
     .brand-header {
@@ -43,7 +39,6 @@
   }
 }
 
-/* 1. BRAND HEADER */
 .brand-header {
   min-height: 64px;
   display: flex;
@@ -62,11 +57,9 @@
       .icon-circle {
         width: 32px;
         height: 32px;
-        background: #e8f0fe;
+        background: var(--royal-blue-light);
         border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         color: var(--royal-blue);
       }
       .text h3 {
@@ -100,7 +93,6 @@
   }
 }
 
-/* 2. MENU AREA */
 .nav-menu {
   flex: 1;
   padding: 16px 12px;
@@ -108,21 +100,18 @@
   overflow-x: hidden;
 }
 
-/* GROUP STYLING (The Simplified Look) */
 .menu-group {
   margin-bottom: 12px;
 
-  /* The Header Text (e.g., ACADEMICS) */
   .group-header {
     padding: 8px 12px;
     font-size: 11px;
     font-weight: 700;
-    color: #9aa0a6; /* Lighter grey */
+    color: var(--text-secondary);
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
 
-  /* The Divider Line (Only shown when collapsed) */
   .group-divider {
     height: 1px;
     background-color: var(--border-color);
@@ -138,7 +127,6 @@
     margin-bottom: 2px;
   }
 
-  /* Link Styling */
   a {
     display: flex;
     align-items: center;
@@ -152,8 +140,7 @@
     .material-icons {
       font-size: 22px;
       min-width: 24px;
-      display: flex;
-      justify-content: center;
+      @include flex-center;
     }
     .label {
       margin-left: 12px;
@@ -166,7 +153,7 @@
       color: var(--text-primary);
     }
     &.active {
-      background: #e8f0fe;
+      background: var(--royal-blue-light);
       color: var(--royal-blue);
       .material-icons {
         color: var(--royal-blue);
@@ -175,7 +162,6 @@
   }
 }
 
-/* 3. FOOTER */
 .sidebar-footer {
   padding: 16px;
   border-top: 1px solid var(--border-color);
@@ -188,10 +174,8 @@
       height: 32px;
       border-radius: 50%;
       background: #7e57c2;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: var(--white);
+      @include flex-center;
       font-size: 12px;
       font-weight: 700;
     }
@@ -209,6 +193,7 @@
     }
   }
 }
+
 .sidenav-container.collapsed .sidebar-footer {
   justify-content: center;
   .info {
