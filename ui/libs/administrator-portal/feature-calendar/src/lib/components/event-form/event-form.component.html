@@ -1,0 +1,103 @@
+<div class="drawer-overlay" (click)="cancel.emit()">
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    <header class="drawer-header">
+      <div class="title-area">
+        <h2>{{ mode === 'add' ? 'Add New Event' : 'Edit Event' }}</h2>
+        <p>Schedule holidays, exams, or other activities</p>
+      </div>
+      <button class="close-btn" (click)="cancel.emit()">
+        <span class="material-icons">close</span>
+      </button>
+    </header>
+
+    <div class="drawer-body">
+      <form [formGroup]="eventForm" class="event-form-group">
+        <div class="form-field">
+          <label>Event Title <span class="required-star">*</span></label>
+          <input
+            type="text"
+            formControlName="title"
+            placeholder="e.g. Annual Sports Day"
+          />
+          <span
+            class="error-msg"
+            *ngIf="
+              eventForm.get('title')?.touched &&
+              eventForm.get('title')?.errors?.['required']
+            "
+          >
+            Title is required.
+          </span>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="form-field">
+            <label>Event Type <span class="required-star">*</span></label>
+            <select formControlName="event_type">
+              <option value="HOLIDAY">Holiday</option>
+              <option value="EXAM">Exam</option>
+              <option value="PTM">PTM</option>
+              <option value="CULTURAL">Cultural</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field checkbox-field">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="is_holiday" />
+              <span>Mark as Holiday</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="form-field">
+            <label
+              >Start Date & Time <span class="required-star">*</span></label
+            >
+            <input type="datetime-local" formControlName="start_date" />
+          </div>
+          <div class="form-field">
+            <label>End Date & Time <span class="required-star">*</span></label>
+            <input type="datetime-local" formControlName="end_date" />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Description</label>
+          <textarea
+            formControlName="description"
+            rows="3"
+            placeholder="Additional details..."
+          ></textarea>
+        </div>
+      </form>
+    </div>
+
+    <footer class="drawer-footer">
+      <button
+        *ngIf="mode === 'edit'"
+        type="button"
+        class="btn btn-danger btn-ghost delete-btn"
+        (click)="onDelete()"
+      >
+        <span class="material-icons">delete</span> Delete
+      </button>
+      <div class="actions-right">
+        <button type="button" class="btn btn-ghost" (click)="cancel.emit()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="eventForm.invalid"
+          (click)="onSubmit()"
+        >
+          <span class="material-icons" *ngIf="mode === 'add'">check</span>
+          <span class="material-icons" *ngIf="mode === 'edit'">save</span>
+          {{ mode === 'add' ? 'Create Event' : 'Save Changes' }}
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

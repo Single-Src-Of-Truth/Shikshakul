@@ -1,0 +1,42 @@
+<div class="content-card" style="max-width: 800px; margin: 0 auto">
+  <div class="card-header">
+    <h3 class="card-title">Issue Bonafide Certificate</h3>
+  </div>
+
+  <p *ngIf="student" style="margin-bottom: 24px; color: var(--text-secondary)">
+    Preparing Bonafide for:
+    <strong>{{ student.first_name }} {{ student.last_name }}</strong>
+  </p>
+
+  <form [formGroup]="bonafideForm" (ngSubmit)="onSubmit()" class="form-grid">
+    <div class="form-field full-width">
+      <label>Purpose of Certificate <span class="required">*</span></label>
+      <textarea
+        formControlName="purpose"
+        rows="3"
+        placeholder="e.g. Passport Application, Bank Account Opening, Scholarship"
+      ></textarea>
+    </div>
+
+    <div
+      class="full-width"
+      style="
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 24px;
+      "
+    >
+      <button type="button" class="btn-secondary" (click)="cancel.emit()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="bonafideForm.invalid"
+      >
+        Generate Bonafide
+      </button>
+    </div>
+  </form>
+</div>

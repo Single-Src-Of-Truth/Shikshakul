@@ -6,7 +6,7 @@ import {
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { environment } from '../environments/environment';
+import { environment } from '@shikshakul/shared/environments';
 import { ACAD_API_URL } from '@shikshakul/data-access/academic';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor, API_AUTH_TOKEN } from '@shikshakul/auth';

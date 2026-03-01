@@ -1,0 +1,27 @@
+<div class="calendar-header-container">
+  <div class="header-info">
+    <h2>{{ monthYear }}</h2>
+    <p>Manage academic events, holidays, and exams</p>
+  </div>
+
+  <div class="header-actions">
+    <div class="date-nav">
+      <button class="icon-btn-square" (click)="previousMonth()">
+        <span class="material-icons">chevron_left</span>
+      </button>
+      <button class="today-btn" (click)="goToday()">Today</button>
+      <button class="icon-btn-square" (click)="nextMonth()">
+        <span class="material-icons">chevron_right</span>
+      </button>
+    </div>
+
+    <div class="view-toggle">
+      <span>Month</span>
+      <span class="material-icons">expand_more</span>
+    </div>
+
+    <button class="btn-primary" (click)="addEvent.emit()">
+      <span class="material-icons">add</span> Add Event
+    </button>
+  </div>
+</div>

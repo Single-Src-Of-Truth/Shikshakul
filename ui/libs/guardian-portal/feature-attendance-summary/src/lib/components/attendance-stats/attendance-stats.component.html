@@ -5,11 +5,13 @@
       <span class="title">Overall Attendance</span>
     </div>
     <div class="value-row">
-      <span class="big-val">88.5%</span>
-      <span class="badge">Good</span>
+      <span class="big-val">{{ overallPercentage }}%</span>
+      <span class="badge" *ngIf="overallPercentage >= 75">Good</span>
+      <span class="badge" *ngIf="overallPercentage < 75 && overallPercentage > 0"
+        style="background:#fee2e2;color:#991b1b">Low</span>
     </div>
     <div class="progress-bar">
-      <div class="fill" style="width: 88.5%"></div>
+      <div class="fill" [style.width.%]="overallPercentage"></div>
     </div>
   </div>
 
@@ -21,9 +23,9 @@
       <span class="title">Working Days</span>
     </div>
     <div class="value-row">
-      <span class="big-val">142</span>
+      <span class="big-val">{{ totalDays }}</span>
     </div>
-    <div class="sub">Till Date (Oct 26)</div>
+    <div class="sub">Total Recorded</div>
   </div>
 
   <div class="stat-card">
@@ -34,9 +36,9 @@
       <span class="title">Days Present</span>
     </div>
     <div class="value-row">
-      <span class="big-val">126</span>
+      <span class="big-val">{{ presentDays }}</span>
     </div>
-    <div class="sub green-text">On track</div>
+    <div class="sub green-text">Including Late ({{lateDays}})</div>
   </div>
 
   <div class="stat-card">
@@ -45,8 +47,8 @@
       <span class="title">Days Absent</span>
     </div>
     <div class="value-row">
-      <span class="big-val">16</span>
+      <span class="big-val">{{ absentDays }}</span>
     </div>
-    <div class="sub red-text">Requires attention</div>
+    <div class="sub red-text" *ngIf="absentDays > 5">Requires attention</div>
   </div>
 </div>

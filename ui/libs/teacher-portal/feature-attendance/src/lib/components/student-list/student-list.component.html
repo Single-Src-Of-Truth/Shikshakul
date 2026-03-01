@@ -17,7 +17,8 @@
     <div class="col-remark">REMARKS</div>
   </div>
 
-  <div class="student-row" *ngFor="let student of students">
+  @for (student of students; track student.student_id) {
+  <div class="student-row">
     <div class="col-roll">{{ student.rollNo }}</div>
 
     <div class="col-name">
@@ -27,41 +28,29 @@
 
     <div class="col-status">
       <div class="status-group">
-        <button
-          class="status-btn p-btn"
-          [class.active]="student.status === 'P'"
-          (click)="setStatus(student, 'P')"
-        >
+        <button class="status-btn p-btn" [class.active]="student.status === 'PRESENT' || student.status === 'P'"
+          (click)="setStatus(student, 'PRESENT')">
           P
         </button>
 
-        <button
-          class="status-btn a-btn"
-          [class.active]="student.status === 'A'"
-          (click)="setStatus(student, 'A')"
-        >
+        <button class="status-btn a-btn" [class.active]="student.status === 'ABSENT' || student.status === 'A'"
+          (click)="setStatus(student, 'ABSENT')">
           A
         </button>
 
-        <button
-          class="status-btn l-btn"
-          [class.active]="student.status === 'L'"
-          (click)="setStatus(student, 'L')"
-        >
+        <button class="status-btn l-btn" [class.active]="student.status === 'LATE' || student.status === 'L'"
+          (click)="setStatus(student, 'LATE')">
           L
         </button>
       </div>
     </div>
 
     <div class="col-remark">
-      <input
-        type="text"
-        placeholder="Add note..."
-        [value]="student.remark || ''"
-        [class.has-text]="student.remark"
-      />
+      <input type="text" placeholder="Add note..." [value]="student.remark || ''"
+        (input)="student.remark = $any($event.target).value; statusChange.emit()" [class.has-text]="student.remark" />
     </div>
   </div>
+  }
 
   <div class="list-footer">
     View all {{ students.length }} students

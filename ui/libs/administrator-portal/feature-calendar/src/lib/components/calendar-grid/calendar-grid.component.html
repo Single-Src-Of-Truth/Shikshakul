@@ -1,0 +1,33 @@
+<div class="calendar-grid-container">
+  <div class="grid-header">
+    <div *ngFor="let day of weekDays" class="header-cell">
+      {{ day }}
+    </div>
+  </div>
+
+  <div class="grid-body">
+    <div
+      *ngFor="let day of calendarDays()"
+      class="day-cell"
+      [class.not-current-month]="!day.isCurrentMonth"
+    >
+      <div class="date-header">
+        <span class="day-number" [class.is-today]="day.isToday">
+          {{ day.date.getDate() }}
+        </span>
+      </div>
+
+      <div class="events-container">
+        <div
+          *ngFor="let event of day.events"
+          class="event-tag"
+          [ngClass]="getEventClass(event.event_type)"
+          (click)="eventClick.emit(event)"
+          [title]="event.title"
+        >
+          {{ event.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

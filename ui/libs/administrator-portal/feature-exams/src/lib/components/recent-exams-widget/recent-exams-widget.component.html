@@ -39,8 +39,8 @@
           <p class="name">{{ term.name }}</p>
           <p class="dates">{{ term.start_date | date:'mediumDate' }} - {{ term.end_date | date:'mediumDate' }}</p>
         </div>
-        <div class="status-badge" [ngClass]="(term.status || 'PENDING').toLowerCase()">
-          {{ term.status || 'PENDING' }}
+        <div class="status-badge" [ngClass]="term.is_published ? 'published' : 'pending'">
+          {{ term.is_published ? 'PUBLISHED' : 'DRAFT' }}
         </div>
       </div>
 

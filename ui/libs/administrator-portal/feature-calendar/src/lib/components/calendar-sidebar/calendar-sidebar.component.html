@@ -1,0 +1,94 @@
+<div class="calendar-sidebar-container">
+  <div class="content-card sidebar-card jump-card">
+    <h3 class="card-title">Jump To Date</h3>
+    <div class="form-field date-field">
+      <label>SELECT DATE</label>
+      <input type="date" [(ngModel)]="jumpDate" />
+    </div>
+    <button class="btn-outline jump-btn" (click)="onJumpDateChange()">
+      Go to Date
+    </button>
+  </div>
+
+  <div class="content-card sidebar-card">
+    <h3 class="card-title">Event Categories</h3>
+
+    <div class="category-list">
+      <div class="category-item">
+        <div class="category-label">
+          <div class="category-dot dot-red"></div>
+          Holidays
+        </div>
+        <span class="category-count">{{ categoryCounts().holidays }}</span>
+      </div>
+
+      <div class="category-item">
+        <div class="category-label">
+          <div class="category-dot dot-amber"></div>
+          Exams
+        </div>
+        <span class="category-count">{{ categoryCounts().exams }}</span>
+      </div>
+
+      <div class="category-item">
+        <div class="category-label">
+          <div class="category-dot dot-purple"></div>
+          PTM
+        </div>
+        <span class="category-count">{{ categoryCounts().ptm }}</span>
+      </div>
+
+      <div class="category-item">
+        <div class="category-label">
+          <div class="category-dot dot-emerald"></div>
+          Cultural
+        </div>
+        <span class="category-count">{{ categoryCounts().cultural }}</span>
+      </div>
+
+      <div class="category-item">
+        <div class="category-label">
+          <div class="category-dot dot-slate"></div>
+          Other
+        </div>
+        <span class="category-count">{{ categoryCounts().other }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card sidebar-card upcoming-card">
+    <div class="upcoming-header">
+      <h3 class="card-title">Upcoming Events</h3>
+      <a href="#" class="view-all-link">View All</a>
+    </div>
+
+    <div *ngIf="upcomingEvents().length === 0" class="empty-state">
+      <span class="material-icons">event_busy</span>
+      <p>No upcoming events this month.</p>
+    </div>
+
+    <div class="upcoming-list">
+      <div *ngFor="let ev of upcomingEvents()" class="upcoming-item">
+        <div class="date-block">
+          <span class="date-month">{{
+            formatDateShort(ev.start_date).split(' ')[0]
+          }}</span>
+          <span class="date-day">{{
+            formatDateShort(ev.start_date).split(' ')[1]
+          }}</span>
+        </div>
+
+        <div class="details">
+          <h4>{{ ev.title }}</h4>
+          <p>{{ formatTimeRange(ev.start_date, ev.end_date) }}</p>
+          <span
+            class="event-badge"
+            [ngClass]="getEventClassBadge(ev.event_type)"
+          >
+            {{ ev.event_type | titlecase }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

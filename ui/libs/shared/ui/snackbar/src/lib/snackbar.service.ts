@@ -49,4 +49,8 @@ export class SnackbarService {
   info(title: string, message: string, duration = 4000) {
     this.show(message, title, 'info', duration);
   }
+
+  warning(title: string, message: string, duration = 4000) {
+    this.show(message, title, 'warning', duration);
+  }
 }

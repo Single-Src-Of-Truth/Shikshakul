@@ -1,0 +1,146 @@
+@use 'styles/shared' as *;
+
+.calendar-grid-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--border-color);
+  background-color: #fafafa;
+}
+
+.header-cell {
+  padding: 12px 0;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.grid-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* 5 or 6 rows total depending on month, 1fr forces them to share height equally */
+  grid-auto-rows: 1fr;
+  /* min-height ensures cells don't collapse completely */
+  min-height: 450px;
+}
+
+.day-cell {
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--bg-hover);
+  }
+}
+
+.not-current-month {
+  background-color: #f9fafb;
+  opacity: 0.5;
+}
+
+.date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.day-number {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+
+  &.is-today {
+    background-color: #2563eb;
+    color: white;
+    border-radius: 50%;
+  }
+}
+
+.events-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 4px;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// Custom Scrollbar for events container
+.events-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.events-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.events-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+// Event Colors based on mockup design pattern
+.event-holiday {
+  background-color: #fee2e2; // red-100
+  color: #ef4444; // red-500
+  border-left: 2px solid #ef4444;
+}
+
+.event-exam {
+  background-color: #fef3c7; // amber-100
+  color: #f59e0b; // amber-500
+  border-left: 2px solid #f59e0b;
+}
+
+.event-ptm {
+  background-color: #f3e8ff; // purple-100
+  color: #a855f7; // purple-500
+  border-left: 2px solid #a855f7;
+}
+
+.event-cultural {
+  background-color: #d1fae5; // emerald-100
+  color: #10b981; // emerald-500
+  border-left: 2px solid #10b981;
+}
+
+.event-other {
+  background-color: #e2e8f0; // slate-200
+  color: #64748b; // slate-500
+  border-left: 2px solid #64748b;
+}

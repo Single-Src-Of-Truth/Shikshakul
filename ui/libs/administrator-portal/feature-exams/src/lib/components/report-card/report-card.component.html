@@ -1,0 +1,105 @@
+<div class="report-card-container" id="printable-report">
+    <div class="report-header">
+        <div class="school-info">
+            <img src="assets/logo.png" alt="School Logo" class="logo" onerror="this.style.display='none'" />
+            <div class="text">
+                <h1 class="school-name">SHIKSHAKUL ACADEMY</h1>
+                <p class="school-details">Academic Year: 2025-2026</p>
+            </div>
+        </div>
+        <div class="report-title">
+            <h2>PROGRESS REPORT</h2>
+            <p>{{ data.exam_info.term_name }}</p>
+        </div>
+    </div>
+
+    <div class="student-info">
+        <div class="info-row">
+            <div class="item"><span class="label">Name:</span> <span class="val">{{ data.student_info.name }}</span>
+            </div>
+            <div class="item"><span class="label">Roll No:</span> <span class="val">{{ data.student_info.roll_no
+                    }}</span></div>
+        </div>
+        <div class="info-row">
+            <div class="item"><span class="label">Class:</span> <span class="val">{{ data.student_info.class_name
+                    }}</span></div>
+            <div class="item"><span class="label">Adm. No:</span> <span class="val">{{ data.student_info.admission_no
+                    }}</span></div>
+        </div>
+    </div>
+
+    <table class="marks-table">
+        <thead>
+            <tr>
+                <th class="subject">SUBJECTS</th>
+                <th>MAX MARKS</th>
+                <th>OBTAINED</th>
+                <th>GRADE</th>
+                <th>REMARKS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (s of data.subjects; track s.subject_name) {
+            <tr>
+                <td class="subject">{{ s.subject_name }}</td>
+                <td>{{ s.max_marks }}</td>
+                <td>
+                    @if (s.is_absent) {
+                    <span class="absent">ABSENT</span>
+                    } @else {
+                    <span>{{ s.marks_obtained }}</span>
+                    }
+                </td>
+                <td>{{ s.grade }}</td>
+                <td>{{ s.remarks || '-' }}</td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="summary-row">
+                <td class="label">TOTAL</td>
+                <td>{{ data.summary.total_max }}</td>
+                <td>{{ data.summary.total_obtained }}</td>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="final-summary">
+        <div class="stats">
+            <div class="stat-item">
+                <span class="label">Percentage:</span>
+                <span class="value">{{ data.summary.percentage }}%</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Final Grade:</span>
+                <span class="value">{{ data.summary.grade }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Result Status:</span>
+                <span class="value status" [ngClass]="data.summary.status.toLowerCase()">{{ data.summary.status
+                    }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-signatures">
+        <div class="sig">
+            <div class="line"></div>
+            <p>Class Teacher</p>
+        </div>
+        <div class="sig">
+            <div class="line"></div>
+            <p>Principal</p>
+        </div>
+        <div class="sig">
+            <div class="line"></div>
+            <p>Parent/Guardian</p>
+        </div>
+    </div>
+</div>
+
+<button class="print-btn no-print" (click)="print()">
+    <span class="material-icons">print</span>
+    Print Report Card
+</button>

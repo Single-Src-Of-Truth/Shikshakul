@@ -1,0 +1,9 @@
+@use 'styles/shared' as *;
+
+.content-card {
+  margin-bottom: 24px;
+
+  .card-header {
+    margin-bottom: 0;
+  }
+}

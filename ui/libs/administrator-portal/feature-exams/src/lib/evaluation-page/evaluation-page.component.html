@@ -1,0 +1,178 @@
+<div class="evaluation-container">
+  <header class="page-header">
+    <div class="breadcrumbs">
+      <span class="link">Home</span> <span class="sep">/</span>
+      <span class="current">Evaluations</span>
+    </div>
+
+    <div class="header-main">
+      <div class="title-env">
+        <h1>Evaluation List</h1>
+        <p class="subtitle">
+          Manage and grade student exams for the current academic session.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <div class="filter-dropdowns">
+          <div class="filter-group">
+            <span class="label">Term:</span>
+            <select
+              [ngModel]="selectedTermId()"
+              (ngModelChange)="selectedTermId.set($event); onFilterChange()"
+            >
+              <option value="">Select Term</option>
+              <option *ngFor="let term of examTerms()" [value]="term.id">
+                {{ term.name }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="label">Class:</span>
+            <select
+              [ngModel]="selectedClassId()"
+              (ngModelChange)="selectedClassId.set($event); onFilterChange()"
+            >
+              <option value="">Select Class</option>
+              <option *ngFor="let c of classes()" [value]="c.id">
+                {{ c.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-new">
+          <span class="material-icons">add</span> New Entry
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats-row" *ngIf="!loading()">
+    <div class="stat-card pending">
+      <div class="icon-circle">
+        <span class="material-icons">assignment_late</span>
+      </div>
+      <div class="stat-info">
+        <span class="label">Pending Grading</span>
+        <span class="value">{{ getPendingCount() }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card draft">
+      <div class="icon-circle"><span class="material-icons">draw</span></div>
+      <div class="stat-info">
+        <span class="label">In Progress (Drafts)</span>
+        <span class="value">{{ getDraftCount() }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card completed">
+      <div class="icon-circle">
+        <span class="material-icons">check_circle_outline</span>
+      </div>
+      <div class="stat-info">
+        <span class="label">Completed</span>
+        <span class="value">{{ getCompletedCount() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-card" *ngIf="!loading()">
+    <div class="list-header">
+      <div class="col-exam">EXAM DETAILS</div>
+      <div class="col-class">SUBJECT</div>
+      <div class="col-progress">GRADING PROGRESS</div>
+      <div class="col-status">STATUS</div>
+      <div class="col-action">ACTION</div>
+    </div>
+
+    <div class="list-body">
+      <div class="list-row" *ngFor="let s of schedules()">
+        <div class="col-exam">
+          <h3>{{ s.exam_term?.name || 'Unknown Term' }}</h3>
+          <p class="meta">{{ s.exam_date | date: 'mediumDate' }}</p>
+        </div>
+
+        <div class="col-class">
+          <!-- <div class="class-badge">{{ getClassInitials(selectedClassId()) }}</div> -->
+          <span class="subject-name">{{
+            s.subject_name || s.subject?.name || 'Unknown Subject'
+          }}</span>
+        </div>
+
+        <div class="col-progress">
+          <div class="progress-info">
+            <span class="text">{{
+              s?.evaluation_status === 'FINALIZED'
+                ? 'All Graded'
+                : s?.evaluation_status === 'DRAFT'
+                  ? 'In Progress'
+                  : 'Not Started'
+            }}</span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="fill"
+              [ngClass]="(s.evaluation_status || 'NOT_STARTED').toLowerCase()"
+              [style.width]="
+                s?.evaluation_status === 'FINALIZED'
+                  ? '100%'
+                  : s?.evaluation_status === 'DRAFT'
+                    ? '50%'
+                    : '0%'
+              "
+            ></div>
+          </div>
+        </div>
+
+        <div class="col-status">
+          <span
+            class="status-pill"
+            [ngClass]="getStatusClass(s?.evaluation_status)"
+          >
+            <span class="dot"></span>
+            {{
+              s?.evaluation_status === 'FINALIZED'
+                ? 'Submitted'
+                : s?.evaluation_status === 'DRAFT'
+                  ? 'Draft'
+                  : 'Pending'
+            }}
+          </span>
+        </div>
+
+        <div class="col-action">
+          <button
+            class="btn-action"
+            [ngClass]="getButtonClass(s?.evaluation_status)"
+            (click)="enterMarks(s.id)"
+          >
+            {{ getButtonText(s?.evaluation_status) }}
+          </button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="schedules().length === 0">
+        <span class="material-icons">manage_search</span>
+        <p>Select a term and class to view evaluation schedules.</p>
+      </div>
+    </div>
+
+    <div class="list-footer" *ngIf="schedules().length > 0">
+      <span class="showing-text"
+        >Showing <strong>1</strong> to
+        <strong>{{ schedules().length }}</strong> of
+        <strong>{{ schedules().length }}</strong> results</span
+      >
+      <div class="pagination">
+        <button class="btn-page" disabled>Previous</button>
+        <button class="btn-page" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading()">
+    <span class="material-icons spin">refresh</span>
+    <p>Loading evaluations...</p>
+  </div>
+</div>

@@ -1,19 +1,8 @@
-/* --- GLOBAL DESIGN SYSTEM ENTRY POINT --- */
-
-// 1. Core Variables and Utils
 @use 'styles/variables';
 @use 'styles/mixins';
-
-// 2. Base Resets
 @use 'styles/base';
-
-// 3. Layout Patterns
 @use 'styles/layout';
-
-// 4. Element Styles
 @use 'styles/buttons';
 @use 'styles/forms';
 @use 'styles/tables';
-
-// 5. Shared Components
 @use 'styles/components';

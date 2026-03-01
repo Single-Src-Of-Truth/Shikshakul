@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ACAD_API_URL } from '../../academic.config';
 import { Observable } from 'rxjs';
-import { StudentOnboardData } from '../../models/academic.models';
+import { StudentOnboardData, ApiResponse } from '../../models/academic.models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +18,17 @@ export class StudentService {
   getStudents(filters?: {
     class_id?: string;
     status?: string;
-  }): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, { params: filters });
+  }): Observable<ApiResponse<any[]>> {
+    let params = new HttpParams();
+    if (filters) {
+      if (filters.class_id && filters.class_id !== 'undefined') {
+        params = params.set('class_id', filters.class_id);
+      }
+      if (filters.status) {
+        params = params.set('status', filters.status);
+      }
+    }
+    return this.http.get<ApiResponse<any[]>>(this.apiUrl, { params });
   }
 
   onboardStudent(data: StudentOnboardData): Observable<any> {

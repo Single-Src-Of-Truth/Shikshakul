@@ -1,0 +1,50 @@
+<div class="page-container">
+  <header class="page-header shrink-0">
+    <div class="text-group">
+      <div class="breadcrumbs">
+        Dashboard <span class="sep">/</span> School Calendar
+      </div>
+      <h1>School Calendar</h1>
+    </div>
+  </header>
+
+  <div class="calendar-layout">
+    <div class="calendar-main">
+      <div class="content-card calendar-content-wrapper">
+        <shikshakul-calendar-header
+          [currentDate]="currentDate()"
+          (dateChange)="onMonthChange($event)"
+          (addEvent)="onAddEvent()"
+        >
+        </shikshakul-calendar-header>
+
+        <shikshakul-calendar-grid
+          class="flex-1"
+          [currentDate]="currentDate()"
+          [events]="events()"
+          (eventClick)="onEditEvent($event)"
+        >
+        </shikshakul-calendar-grid>
+      </div>
+    </div>
+
+    <div class="calendar-sidebar">
+      <shikshakul-calendar-sidebar
+        [events]="events()"
+        [currentDate]="currentDate()"
+        (dateJump)="onMonthChange($event)"
+      >
+      </shikshakul-calendar-sidebar>
+    </div>
+  </div>
+
+  <shikshakul-event-form
+    *ngIf="viewMode() !== 'view'"
+    [mode]="viewMode()"
+    [event]="selectedEvent()"
+    (save)="onSaveEvent($event)"
+    (delete)="onDeleteEvent($event)"
+    (cancel)="viewMode.set('view')"
+  >
+  </shikshakul-event-form>
+</div>

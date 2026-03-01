@@ -38,7 +38,13 @@ export class StudentListComponent implements OnInit {
   loadClasses() {
     this.classService.getClasses().subscribe((res: any) => {
       const data = Array.isArray(res) ? res : (res?.data || []);
-      this.classes = data.sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
+      this.classes = data
+        .map((c: any) => ({
+          ...c,
+          id: c.id || c.class_id || c._id,
+          name: c.name || c.class_name,
+        }))
+        .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
       this.cdr.detectChanges();
     });
   }
@@ -47,7 +53,7 @@ export class StudentListComponent implements OnInit {
     this.loading = true;
     this.cdr.detectChanges();
     const filters: any = {};
-    if (this.selectedClassId) filters.class_id = this.selectedClassId;
+    if (this.selectedClassId && this.selectedClassId !== 'undefined') filters.class_id = this.selectedClassId;
 
     this.studentService.getStudents(filters).subscribe({
       next: (res: any) => {

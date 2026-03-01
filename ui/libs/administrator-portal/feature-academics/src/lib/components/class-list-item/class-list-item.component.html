@@ -8,7 +8,7 @@
   <div class="sections-group">
     <span class="label">SECTIONS</span>
     <div class="chips-container">
-      <div class="section-chip" *ngFor="let section of classData.sections">
+      <div class="section-chip" *ngFor="let section of classData.sectionNames">
         <span class="text">{{ section }}</span>
         <button class="remove-btn" (click)="removeSection.emit(section)">
           <span class="material-icons">close</span>

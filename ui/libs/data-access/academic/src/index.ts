@@ -7,4 +7,7 @@ export * from './lib/services/teacher/teacher.service';
 export * from './lib/services/fee/fee.service';
 export * from './lib/services/timetable/timetable.service';
 export * from './lib/services/exam/exam.service';
+export * from './lib/services/attendance/attendance.service';
+export * from './lib/services/certificate/certificate.service';
+export * from './lib/services/calendar/calendar.service';
 export * from './lib/academic.config';

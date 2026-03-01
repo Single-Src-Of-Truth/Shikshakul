@@ -41,6 +41,24 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'academics/attendance',
+        loadComponent: () =>
+          import('@shikshakul/admin/feature-academics').then(
+            (m) => m.AttendancePageComponent,
+          ),
+      },
+      {
+        path: 'academics/certificates',
+        loadChildren: () =>
+          import('@shikshakul/admin/feature-certificates').then(
+            (m) => m.featureCertificatesRoutes,
+          ),
+      },
+      {
+        path: 'academics/calendar',
+        loadChildren: () => import('@shikshakul/administrator-portal/feature-calendar').then((m) => m.featureCalendarRoutes),
+      },
+      {
         path: 'academics/timetable',
         loadChildren: () =>
           import('@shikshakul/admin/feature-timetable').then(
@@ -55,10 +73,10 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'exams/setup',
-        loadComponent: () =>
+        path: 'exams',
+        loadChildren: () =>
           import('@shikshakul/admin/feature-exams').then(
-            (m) => m.ExamSetupPageComponent,
+            (m) => m.featureExamsRoutes,
           ),
       },
       {

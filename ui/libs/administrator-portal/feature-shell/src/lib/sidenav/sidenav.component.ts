@@ -45,11 +45,28 @@ export class SidenavComponent {
           route: '/academics/subjects',
         },
         {
+          label: 'Attendance',
+          icon: 'fact_check',
+          route: '/academics/attendance',
+        },
+        {
           label: 'Timetable',
           icon: 'calendar_view_week',
           route: '/academics/timetable',
         },
+        {
+          label: 'Certificates',
+          icon: 'badge',
+          route: '/academics/certificates',
+        },
+        {
+          label: 'Calendar',
+          icon: 'event',
+          route: '/academics/calendar',
+        },
         { label: 'Exams', icon: 'assignment', route: '/exams/setup' },
+        { label: 'Evaluation', icon: 'edit_note', route: '/exams/evaluation' },
+        { label: 'Results', icon: 'auto_stories', route: '/exams/results' },
       ],
     },
     {

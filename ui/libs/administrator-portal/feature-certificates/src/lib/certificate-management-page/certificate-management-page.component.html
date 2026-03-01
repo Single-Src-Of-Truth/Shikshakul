@@ -1,0 +1,153 @@
+<div class="page-container" [ngSwitch]="viewMode">
+  <!-- MANAGEMENT VIEW -->
+  <div *ngSwitchCase="'MANAGEMENT'">
+    <header class="page-header">
+      <div class="text-group">
+        <div class="breadcrumbs">
+          Home <span class="sep">/</span> Academics
+          <span class="sep">/</span> Certificates
+        </div>
+        <h1>ID & Certificate Management</h1>
+      </div>
+    </header>
+
+    <div class="content-card">
+      <div class="form-grid three-col">
+        <div class="form-field">
+          <label>Select Class</label>
+          <select [(ngModel)]="selectedClassId" (change)="onClassChange()">
+            <option value="">-- Choose Class --</option>
+            <option *ngFor="let cls of classes()" [value]="cls.id">
+              {{ cls.name }}
+            </option>
+          </select>
+        </div>
+
+        <div
+          class="form-field"
+          style="
+            justify-content: flex-end;
+            flex-direction: row;
+            align-items: flex-end;
+          "
+        >
+          <button
+            class="btn-primary"
+            [disabled]="!selectedClassId"
+            (click)="generateIDCards()"
+          >
+            <span class="material-icons">badge</span> Generate ID Cards
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card" *ngIf="selectedClassId">
+      <div class="card-header">
+        <h3 class="card-title">Students in {{ selectedClassName }}</h3>
+      </div>
+
+      <div class="table-container" style="margin-top: 24px">
+        <table class="fee-table">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Adm No.</th>
+              <th>Roll No.</th>
+              <th style="text-align: right">Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="students().length > 0">
+            <tr *ngFor="let student of students()">
+              <td>{{ student.first_name }} {{ student.last_name }}</td>
+              <td>{{ student.admission_no }}</td>
+              <td>{{ student.roll_number }}</td>
+              <td>
+                <div style="display: flex; gap: 8px; justify-content: flex-end">
+                  <button class="btn-secondary" (click)="openTCForm(student)">
+                    <span
+                      class="material-icons"
+                      style="font-size: 18px; margin-right: 4px"
+                      >exit_to_app</span
+                    >
+                    Issue TC
+                  </button>
+                  <button
+                    class="btn-outline"
+                    (click)="openBonafideForm(student)"
+                  >
+                    <span
+                      class="material-icons"
+                      style="font-size: 18px; margin-right: 4px"
+                      >article</span
+                    >
+                    Bonafide
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="students().length === 0">
+            <tr>
+              <td
+                colspan="4"
+                style="
+                  text-align: center;
+                  padding: 48px;
+                  color: var(--text-secondary);
+                "
+              >
+                <span
+                  class="material-icons"
+                  style="
+                    font-size: 48px;
+                    display: block;
+                    margin-bottom: 12px;
+                    opacity: 0.5;
+                  "
+                  >people_outline</span
+                >
+                No students found in this class.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ID CARD PREVIEW -->
+  <shikshakul-id-card-view
+    *ngSwitchCase="'ID_CARD_PREVIEW'"
+    [idCards]="idCards()"
+    (close)="viewMode = 'MANAGEMENT'"
+  >
+  </shikshakul-id-card-view>
+
+  <!-- TC FORM -->
+  <shikshakul-tc-form
+    *ngSwitchCase="'TC_FORM'"
+    [student]="selectedStudent"
+    (cancel)="viewMode = 'MANAGEMENT'"
+    (success)="onSuccess($event, 'TC')"
+  >
+  </shikshakul-tc-form>
+
+  <!-- BONAFIDE FORM -->
+  <shikshakul-bonafide-form
+    *ngSwitchCase="'BONAFIDE_FORM'"
+    [student]="selectedStudent"
+    (cancel)="viewMode = 'MANAGEMENT'"
+    (success)="onSuccess($event, 'BONAFIDE')"
+  >
+  </shikshakul-bonafide-form>
+
+  <!-- CERTIFICATE PREVIEW -->
+  <shikshakul-certificate-preview
+    *ngSwitchCase="'CERTIFICATE_PREVIEW'"
+    [data]="generatedCertificate"
+    [type]="certificateType"
+    (close)="viewMode = 'MANAGEMENT'"
+  >
+  </shikshakul-certificate-preview>
+</div>

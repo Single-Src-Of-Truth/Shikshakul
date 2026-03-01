@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ClassGrade, Section, Subject } from '../../models/academic.models';
+import {
+  ClassGrade,
+  Section,
+  Subject,
+  ApiResponse,
+} from '../../models/academic.models';
 import { ACAD_API_URL } from '../../academic.config';
 
 @Injectable({
@@ -39,48 +44,59 @@ export class ClassManagementService {
     return `${this.baseUrl}/academics/sections/${sectionId}/allocations`;
   }
 
-  getClasses(): Observable<ClassGrade[]> {
-    return this.http.get<ClassGrade[]>(this.classEndpoint);
+  getClasses(): Observable<ApiResponse<ClassGrade[]>> {
+    return this.http.get<ApiResponse<ClassGrade[]>>(this.classEndpoint);
   }
 
   createClass(data: {
     name: string;
     sort_order: number;
-  }): Observable<ClassGrade> {
-    return this.http.post<ClassGrade>(this.classEndpoint, data);
+  }): Observable<ApiResponse<ClassGrade>> {
+    return this.http.post<ApiResponse<ClassGrade>>(this.classEndpoint, data);
   }
 
-  getSectionsByClass(classId: string): Observable<Section[]> {
+  getSectionsByClass(classId: string): Observable<ApiResponse<Section[]>> {
     if (!classId || classId === 'undefined') {
       return new Observable((subscriber) => {
-        subscriber.next([]);
+        subscriber.next({ data: [], message: '', success: true });
         subscriber.complete();
       });
     }
-    return this.http.get<Section[]>(this.getSectionEndpoint(classId));
+    return this.http.get<ApiResponse<Section[]>>(
+      this.getSectionEndpoint(classId),
+    );
   }
 
   createSection(
     classId: string,
     data: { name: string; capacity: number },
-  ): Observable<Section> {
-    return this.http.post<Section>(this.getSectionEndpoint(classId), data);
+  ): Observable<ApiResponse<Section>> {
+    return this.http.post<ApiResponse<Section>>(
+      this.getSectionEndpoint(classId),
+      data,
+    );
   }
 
-  getAllSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(this.subjectEndpoint);
+  getAllSubjects(): Observable<ApiResponse<Subject[]>> {
+    return this.http.get<ApiResponse<Subject[]>>(this.subjectEndpoint);
   }
 
   createSubject(data: {
     name: string;
     code: string;
     type: string;
-  }): Observable<Subject> {
-    return this.http.post<Subject>(this.subjectEndpoint, data);
+  }): Observable<ApiResponse<Subject>> {
+    return this.http.post<ApiResponse<Subject>>(this.subjectEndpoint, data);
   }
 
-  updateSubject(id: string, data: Partial<Subject>): Observable<Subject> {
-    return this.http.put<Subject>(`${this.subjectEndpoint}/${id}`, data);
+  updateSubject(
+    id: string,
+    data: Partial<Subject>,
+  ): Observable<ApiResponse<Subject>> {
+    return this.http.put<ApiResponse<Subject>>(
+      `${this.subjectEndpoint}/${id}`,
+      data,
+    );
   }
 
   assignSubjectToClass(
@@ -131,19 +147,33 @@ export class ClassManagementService {
     });
   }
 
-  updateClass(classId: string, data: { name: string; sort_order: number }): Observable<ClassGrade> {
-    return this.http.put<ClassGrade>(`${this.classEndpoint}/${classId}`, data);
+  updateClass(
+    classId: string,
+    data: { name: string; sort_order: number },
+  ): Observable<ApiResponse<ClassGrade>> {
+    return this.http.put<ApiResponse<ClassGrade>>(
+      `${this.classEndpoint}/${classId}`,
+      data,
+    );
   }
 
   deleteClass(classId: string): Observable<void> {
     return this.http.delete<void>(`${this.classEndpoint}/${classId}`);
   }
 
-  updateSection(sectionId: string, data: { name: string; capacity: number }): Observable<Section> {
-    return this.http.put<Section>(`${this.baseUrl}/academics/setup/sections/${sectionId}`, data);
+  updateSection(
+    sectionId: string,
+    data: { name: string; capacity: number },
+  ): Observable<ApiResponse<Section>> {
+    return this.http.put<ApiResponse<Section>>(
+      `${this.baseUrl}/academics/setup/sections/${sectionId}`,
+      data,
+    );
   }
 
   deleteSection(sectionId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/academics/setup/sections/${sectionId}`);
+    return this.http.delete<void>(
+      `${this.baseUrl}/academics/setup/sections/${sectionId}`,
+    );
   }
 }

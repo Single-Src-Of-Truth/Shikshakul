@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AcademicYear } from '../../models/academic.models';
+import { Observable, shareReplay } from 'rxjs';
+import { AcademicYear, ApiResponse } from '../../models/academic.models';
 import { ACAD_API_URL } from '../../academic.config';
 
 @Injectable({
@@ -15,26 +15,42 @@ export class AcademicYearService {
     return `${this.baseUrl}/academics/setup/academic-years`;
   }
 
-  getAcademicYears(): Observable<AcademicYear[]> {
-    return this.http.get<AcademicYear[]>(this.endpoint);
+  getAcademicYears(): Observable<ApiResponse<AcademicYear[]>> {
+    return this.http.get<ApiResponse<AcademicYear[]>>(this.endpoint);
   }
 
-  getCurrentAcademicYear(): Observable<AcademicYear> {
-    return this.http.get<AcademicYear>(`${this.endpoint}/current`);
+  private currentYear$?: Observable<ApiResponse<AcademicYear>>;
+
+  getCurrentAcademicYear(): Observable<ApiResponse<AcademicYear>> {
+    if (!this.currentYear$) {
+      this.currentYear$ = this.http
+        .get<ApiResponse<AcademicYear>>(`${this.endpoint}/current`)
+        .pipe(shareReplay(1));
+    }
+    return this.currentYear$;
   }
 
-  createAcademicYear(data: Partial<AcademicYear>): Observable<AcademicYear> {
-    return this.http.post<AcademicYear>(this.endpoint, data);
+  clearCurrentYearCache(): void {
+    this.currentYear$ = undefined;
+  }
+
+  createAcademicYear(
+    data: Partial<AcademicYear>,
+  ): Observable<ApiResponse<AcademicYear>> {
+    return this.http.post<ApiResponse<AcademicYear>>(this.endpoint, data);
   }
 
   updateAcademicYear(
     id: string,
     data: Partial<AcademicYear>,
-  ): Observable<AcademicYear> {
-    return this.http.put<AcademicYear>(`${this.endpoint}/${id}`, data);
+  ): Observable<ApiResponse<AcademicYear>> {
+    return this.http.put<ApiResponse<AcademicYear>>(
+      `${this.endpoint}/${id}`,
+      data,
+    );
   }
 
-  deleteAcademicYear(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.endpoint}/${id}`);
+  deleteAcademicYear(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.endpoint}/${id}`);
   }
 }
