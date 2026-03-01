@@ -18,20 +18,26 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() {
-	viper.SetConfigFile("config.env")
+	AppConfig = &Config{}
+
 	viper.AddConfigPath(".")
+	viper.SetConfigName("config")
+	viper.SetConfigType("env")
+
 	viper.AutomaticEnv()
 
+	viper.BindEnv("PORT")
+	viper.BindEnv("DATABASE_URL")
+	viper.BindEnv("REDIS_URL")
+	viper.BindEnv("JWT_SECRET")
+	viper.BindEnv("ENVIRONMENT")
+	viper.BindEnv("AUTO_MIGRATE")
+
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Println("No config.env file found, relying on System Env Variables")
-		} else {
-			log.Fatal("Error reading config file:", err)
-		}
+		log.Println("Config file not found, relying on System Env Variables")
 	}
 
-	err := viper.Unmarshal(&AppConfig)
-	if err != nil {
+	if err := viper.Unmarshal(AppConfig); err != nil {
 		log.Fatal("Unable to decode into struct:", err)
 	}
 

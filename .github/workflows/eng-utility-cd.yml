@@ -1,0 +1,109 @@
+name: Utility Service Deployment (eng)
+
+on:
+    push:
+        branches: ["beta"]
+        paths:
+            - "eng/utility-service/**"
+            - ".github/workflows/eng-utility-cd.yml"
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        outputs:
+            image_tag: ${{ steps.generate_tag.outputs.TAG }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Generate Image Tag
+              id: generate_tag
+              run: |
+                  # Format: YYYY-MM-DD-HH-MM-SS
+                  TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
+                  # Extract first 5 characters of the Git Commit SHA for collision avoidance
+                  SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-5)
+                  # Combine into final tag
+                  TAG="${TIMESTAMP}-${SHORT_SHA}-staging"
+
+                  # Set the output for subsequent steps and jobs
+                  echo "TAG=$TAG" >> $GITHUB_OUTPUT
+                  echo "Generated Tag: $TAG"
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push
+              uses: docker/build-push-action@v5
+              with:
+                  context: ./eng/utility-service
+                  file: ./eng/utility-service/Dockerfile
+                  push: true
+                  tags: |
+                      ${{ secrets.DOCKER_USERNAME }}/utility-service:${{ steps.generate_tag.outputs.TAG }}
+                      ${{ secrets.DOCKER_USERNAME }}/utility-service:beta
+
+    deploy-to-ec2:
+        needs: build-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy via SSH
+              uses: appleboy/ssh-action@v1.0.3
+              env:
+                  IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USER }}
+                  key: ${{ secrets.EC2_SSH_KEY }}
+                  envs: IMAGE_TAG
+                  script: |
+                      IMAGE_URI="docker.io/${{ secrets.DOCKER_USERNAME }}/utility-service:$IMAGE_TAG"
+
+                      # 1. Pre-cleanup (clear dangling partial downloads just in case)
+                      podman image prune -f
+
+                      # 2. Pull the newly built specific image
+                      echo "Pulling $IMAGE_URI..."
+                      podman pull $IMAGE_URI
+
+                      # 3. Graceful Shutdown of existing container (Wait up to 15s for active requests)
+                      echo "Gracefully stopping current service..."
+                      podman stop --time 15 utility-service || true
+                      podman rm utility-service || true
+
+                      # 4. Start the new container
+                      echo "Starting new container..."
+                      podman run -d \
+                        --name utility-service \
+                        --restart on-failure \
+                        -p 9004:9004 \
+                        -e PORT=9004 \
+                        -e ENVIRONMENT=staging \
+                        -e AWS_REGION='${{ secrets.AWS_REGION }}' \
+                        -e DOC_BUCKET_NAME='${{ secrets.DOC_BUCKET_NAME }}' \
+                        -e AWS_ACCESS_KEY_ID='${{ secrets.AWS_ACCESS_KEY_ID }}' \
+                        -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
+                        $IMAGE_URI
+
+                      # 5. Readiness Probe
+                      echo "Waiting 5 seconds for initialization..."
+                      sleep 5
+
+                      if curl -f http://localhost:9004/ping; then
+                          echo "Deployment Successful: Health check passed!"
+
+                          # 6. Deep Cleanup (Only runs if successful)
+                          # Removes the old image that was just orphaned by the container swap
+                          echo "Running disk cleanup..."
+                          podman image prune -a -f
+                      else
+                          echo "Deployment Failed: Health check failed!"
+                          podman logs utility-service
+                          exit 1
+                      fi
