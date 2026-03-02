@@ -1,0 +1,37 @@
+<div class="skl-datepicker-container">
+
+    <div class="skl-datepicker-trigger" [class.active]="isOpen()" [class.has-error]="hasError" (click)="toggle()">
+        <span class="material-icons skl-cal-icon">calendar_today</span>
+        <span class="skl-date-text" [class.placeholder]="!formattedDate()">
+            {{ formattedDate() || placeholder }}
+        </span>
+        <span class="material-icons skl-chevron">
+            {{ isOpen() ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+        </span>
+    </div>
+
+    <div class="skl-calendar-popover" *ngIf="isOpen()" (click)="$event.stopPropagation()">
+
+        <div class="skl-calendar-header">
+            <button class="skl-nav-btn" (click)="prevMonth($event)">
+                <span class="material-icons">chevron_left</span>
+            </button>
+            <span class="skl-month-year">{{ currentMonthYear() }}</span>
+            <button class="skl-nav-btn" (click)="nextMonth($event)">
+                <span class="material-icons">chevron_right</span>
+            </button>
+        </div>
+
+        <div class="skl-calendar-grid">
+            <!-- Days of week -->
+            <div class="skl-weekday" *ngFor="let day of weekDays">{{ day }}</div>
+
+            <!-- Calendar Days -->
+            <div class="skl-day-cell" *ngFor="let cell of calendarGrid()" [class.current-month]="cell.isCurrentMonth"
+                [class.other-month]="!cell.isCurrentMonth" [class.today]="cell.isToday"
+                [class.selected]="cell.isSelected" (click)="selectDate(cell, $event)">
+                <span>{{ cell.date | date:'d' }}</span>
+            </div>
+        </div>
+    </div>
+</div>
