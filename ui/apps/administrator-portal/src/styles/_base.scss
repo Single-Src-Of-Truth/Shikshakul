@@ -16,13 +16,29 @@ body {
   overflow: hidden;
 }
 
+.material-icons {
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+button .material-icons,
+a .material-icons,
+.skl-icon-btn .material-icons,
+.skl-btn-primary .material-icons,
+.skl-btn-ghost .material-icons {
+  pointer-events: none;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--text-disabled);
   border-radius: 4px;
