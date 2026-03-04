@@ -108,6 +108,12 @@
       "@shikshakul/administrator-portal/feature-student-management": [
         "libs/administrator-portal/feature-student-management/src/index.ts"
       ],
+      "@shikshakul/shared/ui/datepicker": [
+        "libs/shared/ui/datepicker/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/select": [
+        "libs/shared/ui/select/src/index.ts"
+      ],
       "@shikshakul/administrator-portal/feature-fees": [
         "libs/administrator-portal/feature-fees/src/index.ts"
       ],
