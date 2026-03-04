@@ -1,4 +1,12 @@
-import { Component, ElementRef, forwardRef, HostListener, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -17,22 +25,28 @@ export interface SelectOption {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SelectComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class SelectComponent implements ControlValueAccessor {
   @Input() options: SelectOption[] = [];
   @Input() placeholder = 'Select an option';
   @Input() disabled = false;
+  @Input() hasError = false;
+  @Output() onSelect = new EventEmitter<string>();
 
   isOpen = false;
   value: string | null = null;
   selectedLabel: string | null = null;
 
   // ControlValueAccessor functions
-  onChange: any = () => {};
-  onTouch: any = () => {};
+  onChange: any = () => {
+    /* Empty function for ControlValueAccessor */
+  };
+  onTouch: any = () => {
+    /* Empty function for ControlValueAccessor */
+  };
 
   constructor(private elementRef: ElementRef) {}
 
@@ -59,13 +73,14 @@ export class SelectComponent implements ControlValueAccessor {
     this.value = option.value;
     this.selectedLabel = option.label;
     this.onChange(this.value);
+    this.onSelect.emit(this.value);
     this.closeDropdown();
   }
 
   // Implementation of ControlValueAccessor
   writeValue(value: any): void {
     this.value = value;
-    const option = this.options.find(opt => opt.value === value);
+    const option = this.options.find((opt) => opt.value === value);
     this.selectedLabel = option ? option.label : null;
   }
 

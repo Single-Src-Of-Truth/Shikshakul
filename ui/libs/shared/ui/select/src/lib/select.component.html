@@ -2,6 +2,7 @@
   <div 
     class="skl-select-trigger" 
     [class.open]="isOpen" 
+    [class.has-error]="hasError"
     (click)="toggleDropdown()"
     tabindex="0"
     (keydown.enter)="toggleDropdown()"
@@ -21,10 +22,10 @@
       <li 
         class="skl-select-option" 
         *ngFor="let option of options"
-        [class.selected]="option.value === value"
+        [class.selected]="value && option.value === value"
         (click)="selectOption(option)">
         <span class="skl-option-label">{{ option.label }}</span>
-        <span class="material-icons check-icon" *ngIf="option.value === value">check</span>
+        <span class="material-icons check-icon" *ngIf="value && option.value === value">check</span>
       </li>
       
       <li class="skl-select-empty" *ngIf="options.length === 0">

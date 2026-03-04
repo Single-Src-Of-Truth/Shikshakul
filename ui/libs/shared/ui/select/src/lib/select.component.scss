@@ -35,6 +35,15 @@
     box-shadow: 0 0 0 3px var(--royal-blue-light);
   }
 
+  &.has-error {
+    border-color: #ef4444;
+    background: #fffafa;
+    
+    &:focus, &.open {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+
   .skl-select-value {
     font-size: 14px;
     color: var(--skl-text-main, #0f172a);
