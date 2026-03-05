@@ -114,6 +114,9 @@
       "@shikshakul/shared/ui/select": [
         "libs/shared/ui/select/src/index.ts"
       ],
+      "@shikshakul/shared/ui/time-picker": [
+        "libs/shared/ui/time-picker/src/index.ts"
+      ],
       "@shikshakul/administrator-portal/feature-fees": [
         "libs/administrator-portal/feature-fees/src/index.ts"
       ],

@@ -37,6 +37,7 @@ export class SelectComponent implements ControlValueAccessor {
   @Output() onSelect = new EventEmitter<string>();
 
   isOpen = false;
+  openUpwards = false;
   value: string | null = null;
   selectedLabel: string | null = null;
 
@@ -48,7 +49,7 @@ export class SelectComponent implements ControlValueAccessor {
     /* Empty function for ControlValueAccessor */
   };
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef) { }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
@@ -57,16 +58,52 @@ export class SelectComponent implements ControlValueAccessor {
     }
   }
 
+  @HostListener('window:resize')
+  @HostListener('window:scroll')
+  onWindowChange() {
+    if (this.isOpen) {
+      this.checkPosition();
+    }
+  }
+
   toggleDropdown() {
     if (this.disabled) return;
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
+      this.checkPosition();
+      this.scrollToSelected();
+    } else {
       this.onTouch();
     }
   }
 
+  private checkPosition() {
+    const rect = this.elementRef.nativeElement.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const dropdownHeight = 250;
+
+    this.openUpwards = spaceBelow < dropdownHeight && spaceAbove > spaceBelow;
+  }
+
+  private scrollToSelected() {
+    setTimeout(() => {
+      const dropdown = this.elementRef.nativeElement.querySelector('.skl-select-dropdown');
+      const selectedOption = dropdown?.querySelector('.skl-select-option.selected') as HTMLElement;
+
+      if (dropdown && selectedOption) {
+        const scrollAmount = selectedOption.offsetTop - (dropdown.clientHeight / 2) + (selectedOption.clientHeight / 2);
+        dropdown.scrollTo({ top: scrollAmount, behavior: 'instant' });
+      }
+    }, 50);
+  }
+
   closeDropdown() {
-    this.isOpen = false;
+    if (this.isOpen) {
+      this.isOpen = false;
+      this.onTouch();
+    }
   }
 
   selectOption(option: SelectOption) {

@@ -1,33 +1,24 @@
 <div class="skl-select-wrapper" [class.disabled]="disabled">
-  <div 
-    class="skl-select-trigger" 
-    [class.open]="isOpen" 
-    [class.has-error]="hasError"
-    (click)="toggleDropdown()"
-    tabindex="0"
-    (keydown.enter)="toggleDropdown()"
-    (keydown.space)="toggleDropdown()">
-    
+  <div class="skl-select-trigger" [class.open]="isOpen" [class.has-error]="hasError" (click)="toggleDropdown()"
+    tabindex="0" (keydown.enter)="toggleDropdown()" (keydown.space)="toggleDropdown()">
+
     <span class="skl-select-value" [class.placeholder]="!selectedLabel">
       {{ selectedLabel || placeholder }}
     </span>
-    
+
     <span class="material-icons skl-select-chevron">
       expand_more
     </span>
   </div>
 
-  <div class="skl-select-dropdown" *ngIf="isOpen">
+  <div class="skl-select-dropdown" *ngIf="isOpen" [class.open-upwards]="openUpwards">
     <ul class="skl-select-options">
-      <li 
-        class="skl-select-option" 
-        *ngFor="let option of options"
-        [class.selected]="value && option.value === value"
+      <li class="skl-select-option" *ngFor="let option of options" [class.selected]="value && option.value === value"
         (click)="selectOption(option)">
         <span class="skl-option-label">{{ option.label }}</span>
         <span class="material-icons check-icon" *ngIf="value && option.value === value">check</span>
       </li>
-      
+
       <li class="skl-select-empty" *ngIf="options.length === 0">
         No options available
       </li>
