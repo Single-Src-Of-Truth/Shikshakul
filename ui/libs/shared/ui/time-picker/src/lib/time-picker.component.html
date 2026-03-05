@@ -1,0 +1,48 @@
+<div class="skl-time-picker-container" [class.has-error]="hasError">
+    <div class="skl-time-input-display" (click)="toggle()" [class.open]="isOpen()">
+        <span class="material-icons">schedule</span>
+        <span class="skl-time-value" *ngIf="formattedTime()">
+            {{ formattedTime() }}
+        </span>
+        <span class="skl-placeholder" *ngIf="!formattedTime()">{{ placeholder }}</span>
+        <span class="material-icons skl-chevron">keyboard_arrow_down</span>
+    </div>
+
+    <div class="skl-time-dropdown" *ngIf="isOpen()" [class.open-upwards]="openUpwards()">
+        <div class="skl-time-columns">
+            <div class="skl-time-column">
+                <label>HRS</label>
+                <div class="skl-column-scroll">
+                    <div class="skl-time-option" *ngFor="let h of hours" [class.active]="selectedHour() === h"
+                        (click)="selectHour(h, $event)">
+                        {{ h }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="skl-time-column">
+                <label>MIN</label>
+                <div class="skl-column-scroll">
+                    <div class="skl-time-option" *ngFor="let m of minutes" [class.active]="selectedMinute() === m"
+                        (click)="selectMinute(m, $event)">
+                        {{ m }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="skl-time-column">
+                <label>PER</label>
+                <div class="skl-column-scroll">
+                    <div class="skl-time-option" *ngFor="let p of periods" [class.active]="selectedPeriod() === p"
+                        (click)="selectPeriod(p, $event)">
+                        {{ p }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="skl-time-footer">
+            <button type="button" class="skl-btn-apply" (click)="close()">Apply</button>
+        </div>
+    </div>
+</div>
