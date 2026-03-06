@@ -27,6 +27,10 @@ export class TimetableService {
     return this.http.post<any>(this.apiUrl, data);
   }
 
+  updateRoutine(id: string, data: CreateRoutineRequest): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
+  }
+
   deleteRoutine(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

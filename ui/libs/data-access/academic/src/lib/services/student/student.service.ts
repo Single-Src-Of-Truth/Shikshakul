@@ -2,7 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ACAD_API_URL } from '../../academic.config';
 import { Observable } from 'rxjs';
-import { StudentOnboardData, ApiResponse } from '../../models/academic.models';
+import {
+  StudentOnboardData,
+  ApiResponse,
+  StudentStatus,
+  StudentAction,
+} from '../../models/academic.models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +22,7 @@ export class StudentService {
 
   getStudents(filters?: {
     class_id?: string;
-    status?: string;
+    status?: StudentStatus;
   }): Observable<ApiResponse<any[]>> {
     let params = new HttpParams();
     if (filters) {
@@ -29,6 +34,16 @@ export class StudentService {
       }
     }
     return this.http.get<ApiResponse<any[]>>(this.apiUrl, { params });
+  }
+
+  getActiveStudents(class_id?: string): Observable<ApiResponse<any[]>> {
+    let params = new HttpParams();
+    if (class_id && class_id !== 'undefined') {
+      params = params.set('class_id', class_id);
+    }
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/active`, {
+      params,
+    });
   }
 
   onboardStudent(data: StudentOnboardData): Observable<any> {
@@ -46,8 +61,11 @@ export class StudentService {
     return this.http.put<any>(`${this.apiUrl}/${id}`, data);
   }
 
-  approveStudent(id: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${id}/approve`, {});
+  approveStudent(
+    id: string,
+    data: { action: StudentAction; section_id?: string },
+  ): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/approve`, data);
   }
 
   deleteStudent(id: string): Observable<void> {

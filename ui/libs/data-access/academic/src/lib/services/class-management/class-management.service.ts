@@ -69,7 +69,7 @@ export class ClassManagementService {
 
   createSection(
     classId: string,
-    data: { name: string; capacity: number },
+    data: { name: string; capacity: number; state?: string },
   ): Observable<ApiResponse<Section>> {
     return this.http.post<ApiResponse<Section>>(
       this.getSectionEndpoint(classId),

@@ -59,13 +59,20 @@ export interface Section {
   class_id?: string;
 }
 
-export type Status =
-  | 'PENDING'
-  | 'ACTIVE'
-  | 'INACTIVE'
-  | 'APPROVED'
-  | 'REJECTED'
-  | 'SUSPENDED';
+export enum StudentStatus {
+  PENDING = 'PENDING',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum StudentAction {
+  APPROVE = 'APPROVE',
+  REJECT = 'REJECT',
+  PENDING = 'PENDING',
+}
 
 export type SubjectType = 'THEORY' | 'PRACTICAL' | 'LAB';
 
@@ -272,7 +279,6 @@ export interface ReportCardResponse {
   summary: ResultSummary;
 }
 
-
 export interface AttendanceEntry {
   student_id: string;
   status: AttendanceStatus | string;
@@ -366,7 +372,12 @@ export interface BonafideResponse {
   purpose: string;
 }
 
-export type CalendarEventType = 'HOLIDAY' | 'EXAM' | 'PTM' | 'CULTURAL' | 'OTHER';
+export type CalendarEventType =
+  | 'HOLIDAY'
+  | 'EXAM'
+  | 'PTM'
+  | 'CULTURAL'
+  | 'OTHER';
 
 export interface CreateEventRequest {
   academic_year_id: string;
@@ -374,7 +385,7 @@ export interface CreateEventRequest {
   description?: string;
   event_type: CalendarEventType | string;
   start_date: string; // ISO string
-  end_date: string;   // ISO string
+  end_date: string; // ISO string
   is_holiday?: boolean;
 }
 
