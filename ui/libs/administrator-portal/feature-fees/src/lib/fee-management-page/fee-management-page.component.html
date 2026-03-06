@@ -1,28 +1,52 @@
-<div class="page-container">
-  <header class="page-header">
-    <h1>Fee Management</h1>
-    <p>Configure fee structures and collect payments.</p>
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-content">
+      <div class="skl-page-title-group">
+        <h1 class="skl-page-title">Fee Management</h1>
+        <p class="skl-page-subtitle">
+          Manage student fees, track collections, and configure institutional
+          fee structures.
+        </p>
+      </div>
+
+      <div class="skl-header-actions">
+        <div class="skl-segmented-control">
+          <button
+            type="button"
+            class="skl-segment-btn"
+            [class.active]="activeTab === 'COLLECTION'"
+            (click)="activeTab = 'COLLECTION'"
+          >
+            <span class="material-icons">payments</span>
+            <span>Fee Collection</span>
+          </button>
+          <button
+            type="button"
+            class="skl-segment-btn"
+            [class.active]="activeTab === 'SETUP'"
+            (click)="activeTab = 'SETUP'"
+          >
+            <span class="material-icons">settings</span>
+            <span>Fee Setup</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <div class="tabs">
-    <button
-      [class.active]="activeTab === 'COLLECTION'"
-      (click)="activeTab = 'COLLECTION'"
-    >
-      <span class="material-icons">point_of_sale</span> Fee Collection
-    </button>
-    <button
-      [class.active]="activeTab === 'SETUP'"
-      (click)="activeTab = 'SETUP'"
-    >
-      <span class="material-icons">settings</span> Configuration
-    </button>
-  </div>
-
-  <div class="tab-content">
+  <div class="skl-page-content">
+    <div class="skl-linear-loader" *ngIf="loading()">
+      <div class="skl-loader-progress"></div>
+    </div>
     <shikshakul-fee-collection
       *ngIf="activeTab === 'COLLECTION'"
-    ></shikshakul-fee-collection>
-    <shikshakul-fee-setup *ngIf="activeTab === 'SETUP'"></shikshakul-fee-setup>
+      (loadingState)="setLoading($event)"
+    >
+    </shikshakul-fee-collection>
+    <shikshakul-fee-setup
+      *ngIf="activeTab === 'SETUP'"
+      (loadingState)="setLoading($event)"
+    >
+    </shikshakul-fee-setup>
   </div>
 </div>
