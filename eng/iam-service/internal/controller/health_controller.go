@@ -6,6 +6,7 @@ import (
 
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/cache"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/db"
+	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/versioning"
 	"github.com/gin-gonic/gin"
 )
 
@@ -45,4 +46,12 @@ func (ctrl *HealthController) Ping(c *gin.Context) {
 		response["status"] = "DOWN"
 		c.JSON(http.StatusServiceUnavailable, response)
 	}
+}
+
+func (ctrl *HealthController) GetVersions(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"default": versioning.DefaultVersion,
+		"history": versioning.Registry,
+	})
 }

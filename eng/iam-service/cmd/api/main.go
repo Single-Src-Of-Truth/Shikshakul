@@ -17,6 +17,7 @@ import (
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/middleware"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/repository"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/service"
+	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/versioning"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -77,9 +78,11 @@ func main() {
 	inviteCtrl := controller.NewInviteController(onboardingSvc)
 
 	router := gin.Default()
+	router.Use(versioning.EnforceVersion())
 
 	router.GET("/ping", healthCtrl.Ping)
 	router.GET("/", healthCtrl.Ping)
+	router.GET("/iam/versions", healthCtrl.GetVersions)
 
 	api := router.Group("/api/v1/iam")
 	{
