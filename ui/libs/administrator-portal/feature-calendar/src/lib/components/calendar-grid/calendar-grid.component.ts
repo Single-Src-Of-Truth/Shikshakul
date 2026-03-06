@@ -5,7 +5,6 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  computed,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,6 +14,8 @@ interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   isToday: boolean;
+  isSelected: boolean;
+  isPast: boolean;
   events: EventResponse[];
 }
 
@@ -29,6 +30,7 @@ export class CalendarGridComponent implements OnChanges {
   @Input() currentDate!: Date;
   @Input() events: EventResponse[] = [];
   @Output() eventClick = new EventEmitter<EventResponse>();
+  @Output() addClick = new EventEmitter<Date>();
 
   weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   calendarDays = signal<CalendarDay[]>([]);
@@ -74,10 +76,19 @@ export class CalendarGridComponent implements OnChanges {
         return eStart.getTime() === cellDate.getTime();
       });
 
+      const isSelected =
+        cellDate.getFullYear() === this.currentDate.getFullYear() &&
+        cellDate.getMonth() === this.currentDate.getMonth() &&
+        cellDate.getDate() === this.currentDate.getDate();
+
+      const isPast = cellDate.getTime() < today.getTime();
+
       days.push({
         date: cellDate,
         isCurrentMonth,
         isToday,
+        isSelected,
+        isPast,
         events: dayEvents,
       });
     }

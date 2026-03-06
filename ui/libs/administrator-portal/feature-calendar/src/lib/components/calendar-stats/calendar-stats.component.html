@@ -1,0 +1,31 @@
+<div class="skl-calendar-stats-bar" [class.loading]="loading">
+  <div class="skl-stat-item">
+    <div class="skl-dot dot-red"></div>
+    <span class="skl-stat-label">Holidays</span>
+    <span class="skl-stat-value">{{ categoryCounts().holidays }}</span>
+  </div>
+
+  <div class="skl-stat-item">
+    <div class="skl-dot dot-amber"></div>
+    <span class="skl-stat-label">Exams</span>
+    <span class="skl-stat-value">{{ categoryCounts().exams }}</span>
+  </div>
+
+  <div class="skl-stat-item">
+    <div class="skl-dot dot-purple"></div>
+    <span class="skl-stat-label">PTM</span>
+    <span class="skl-stat-value">{{ categoryCounts().ptm }}</span>
+  </div>
+
+  <div class="skl-stat-item">
+    <div class="skl-dot dot-emerald"></div>
+    <span class="skl-stat-label">Cultural</span>
+    <span class="skl-stat-value">{{ categoryCounts().cultural }}</span>
+  </div>
+
+  <div class="skl-stat-item">
+    <div class="skl-dot dot-slate"></div>
+    <span class="skl-stat-label">Other</span>
+    <span class="skl-stat-value">{{ categoryCounts().other }}</span>
+  </div>
+</div>

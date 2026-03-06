@@ -1,146 +1,204 @@
 @use 'styles/shared' as *;
 
-.calendar-grid-container {
+:host {
   display: flex;
   flex-direction: column;
   height: 100%;
+  flex: 1;
 }
 
-.grid-header {
+.skl-calendar-grid-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: var(--white);
+}
+
+.skl-grid-header {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid var(--border-color);
-  background-color: #fafafa;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-bottom: 1px solid var(--skl-border);
 }
 
-.header-cell {
-  padding: 12px 0;
+.skl-header-cell {
+  padding: 8px 0;
   text-align: center;
-  font-weight: 700;
-  color: var(--text-secondary);
   font-size: 11px;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--skl-text-light);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.grid-body {
+.skl-grid-body {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  /* 5 or 6 rows total depending on month, 1fr forces them to share height equally */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   grid-auto-rows: 1fr;
-  /* min-height ensures cells don't collapse completely */
-  min-height: 450px;
+  height: 100%;
+  overflow-y: auto;
 }
 
-.day-cell {
-  border-right: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+.skl-day-cell {
+  border-right: 1px solid var(--skl-border);
+  border-bottom: 1px solid var(--skl-border);
   padding: 8px;
   display: flex;
   flex-direction: column;
-  min-height: 100px;
-  transition: background-color 0.2s;
+  min-height: 80px; // Reduced from 100px to avoid overflow on small screens
+  transition: background 0.2s;
+
+  &:nth-child(7n) {
+    border-right: none;
+  }
 
   &:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--skl-hover);
+  }
+
+  &.skl-not-current {
+    opacity: 0.5;
+    background-color: #f8fafc;
+  }
+
+  &.skl-selected-cell {
+    background-color: #f0f4ff;
+    box-shadow: inset 3px 0 0 var(--royal-blue);
   }
 }
 
-.not-current-month {
-  background-color: #f9fafb;
-  opacity: 0.5;
-}
-
-.date-header {
+.skl-date-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 4px;
 }
 
-.day-number {
+.skl-day-number {
+  font-size: 14px;
   font-weight: 500;
+  color: var(--skl-text-main);
+  transition: all 0.2s;
+
+  &.skl-today {
+    color: var(--royal-blue);
+    font-weight: 800;
+  }
+}
+
+.skl-add-event-btn {
+  background: transparent;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-
-  &.is-today {
-    background-color: #2563eb;
-    color: white;
-    border-radius: 50%;
-  }
-}
-
-.events-container {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 4px;
-  padding-right: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.event-tag {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--skl-text-light);
   cursor: pointer;
-  transition: transform 0.2s;
+  opacity: 0;
+  transition: all 0.2s;
 
   &:hover {
-    transform: scale(1.02);
+    background: var(--skl-bg-sidebar);
+    color: var(--royal-blue);
+  }
+
+  .material-icons {
+    font-size: 18px;
   }
 }
 
-// Custom Scrollbar for events container
-.events-container::-webkit-scrollbar {
-  width: 4px;
+.skl-day-cell:hover {
+  .skl-add-event-btn {
+    opacity: 1;
+  }
 }
 
-.events-container::-webkit-scrollbar-track {
-  background: transparent;
+.skl-events-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  overflow-y: auto;
+  padding: 0 4px 4px;
+
+  /* Hide scrollbar but allow scrolling */
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
-.events-container::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+.skl-event-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
   border-radius: 4px;
-}
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 0; // Allow truncation
 
-// Event Colors based on mockup design pattern
-.event-holiday {
-  background-color: #fee2e2; // red-100
-  color: #ef4444; // red-500
-  border-left: 2px solid #ef4444;
-}
+  &:hover {
+    filter: brightness(0.95);
+  }
 
-.event-exam {
-  background-color: #fef3c7; // amber-100
-  color: #f59e0b; // amber-500
-  border-left: 2px solid #f59e0b;
-}
+  .skl-event-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
 
-.event-ptm {
-  background-color: #f3e8ff; // purple-100
-  color: #a855f7; // purple-500
-  border-left: 2px solid #a855f7;
-}
+  .skl-event-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--skl-text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.event-cultural {
-  background-color: #d1fae5; // emerald-100
-  color: #10b981; // emerald-500
-  border-left: 2px solid #10b981;
-}
+  // --- Theme Variants (Subtle Backgrounds + Vibrant Dots) ---
+  &.event-holiday {
+    background-color: #fee2e2;
 
-.event-other {
-  background-color: #e2e8f0; // slate-200
-  color: #64748b; // slate-500
-  border-left: 2px solid #64748b;
+    .skl-event-dot {
+      background-color: #ef4444;
+    }
+  }
+
+  &.event-exam {
+    background-color: #fef3c7;
+
+    .skl-event-dot {
+      background-color: #f59e0b;
+    }
+  }
+
+  &.event-ptm {
+    background-color: #f3e8ff;
+
+    .skl-event-dot {
+      background-color: #a855f7;
+    }
+  }
+
+  &.event-cultural {
+    background-color: #d1fae5;
+
+    .skl-event-dot {
+      background-color: #10b981;
+    }
+  }
+
+  &.event-other {
+    background-color: #f1f5f9;
+
+    .skl-event-dot {
+      background-color: #64748b;
+    }
+  }
 }

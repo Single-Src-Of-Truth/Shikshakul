@@ -1,92 +1,77 @@
-<div class="calendar-sidebar-container">
-  <div class="content-card sidebar-card jump-card">
-    <h3 class="card-title">Jump To Date</h3>
-    <div class="form-field date-field">
-      <label>SELECT DATE</label>
-      <input type="date" [(ngModel)]="jumpDate" />
-    </div>
-    <button class="btn-outline jump-btn" (click)="onJumpDateChange()">
-      Go to Date
-    </button>
-  </div>
-
-  <div class="content-card sidebar-card">
-    <h3 class="card-title">Event Categories</h3>
-
-    <div class="category-list">
-      <div class="category-item">
-        <div class="category-label">
-          <div class="category-dot dot-red"></div>
-          Holidays
+<div class="skl-sidebar-drawer-content">
+  <div class="skl-sidebar-section">
+    <h3 class="skl-section-label">Event Categories</h3>
+    <div class="skl-category-list">
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-red"></div>
+          <span>Holidays</span>
         </div>
-        <span class="category-count">{{ categoryCounts().holidays }}</span>
+        <span class="skl-count">{{ categoryCounts().holidays }}</span>
       </div>
 
-      <div class="category-item">
-        <div class="category-label">
-          <div class="category-dot dot-amber"></div>
-          Exams
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-amber"></div>
+          <span>Exams</span>
         </div>
-        <span class="category-count">{{ categoryCounts().exams }}</span>
+        <span class="skl-count">{{ categoryCounts().exams }}</span>
       </div>
 
-      <div class="category-item">
-        <div class="category-label">
-          <div class="category-dot dot-purple"></div>
-          PTM
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-purple"></div>
+          <span>PTM</span>
         </div>
-        <span class="category-count">{{ categoryCounts().ptm }}</span>
+        <span class="skl-count">{{ categoryCounts().ptm }}</span>
       </div>
 
-      <div class="category-item">
-        <div class="category-label">
-          <div class="category-dot dot-emerald"></div>
-          Cultural
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-emerald"></div>
+          <span>Cultural</span>
         </div>
-        <span class="category-count">{{ categoryCounts().cultural }}</span>
+        <span class="skl-count">{{ categoryCounts().cultural }}</span>
       </div>
 
-      <div class="category-item">
-        <div class="category-label">
-          <div class="category-dot dot-slate"></div>
-          Other
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-slate"></div>
+          <span>Other</span>
         </div>
-        <span class="category-count">{{ categoryCounts().other }}</span>
+        <span class="skl-count">{{ categoryCounts().other }}</span>
       </div>
     </div>
   </div>
 
-  <div class="content-card sidebar-card upcoming-card">
-    <div class="upcoming-header">
-      <h3 class="card-title">Upcoming Events</h3>
-      <a href="#" class="view-all-link">View All</a>
+  <div class="skl-divider"></div>
+
+  <div class="skl-sidebar-section">
+    <div class="skl-section-header">
+      <h3 class="skl-section-label">Upcoming Events</h3>
+      <button class="skl-text-btn">View All</button>
     </div>
 
-    <div *ngIf="upcomingEvents().length === 0" class="empty-state">
+    <div *ngIf="upcomingEvents().length === 0" class="skl-empty-state">
       <span class="material-icons">event_busy</span>
-      <p>No upcoming events this month.</p>
+      <p>No upcoming events.</p>
     </div>
 
-    <div class="upcoming-list">
-      <div *ngFor="let ev of upcomingEvents()" class="upcoming-item">
-        <div class="date-block">
-          <span class="date-month">{{
-            formatDateShort(ev.start_date).split(' ')[0]
-          }}</span>
-          <span class="date-day">{{
+    <div class="skl-upcoming-list">
+      <div *ngFor="let ev of upcomingEvents()" class="skl-upcoming-card">
+        <div class="skl-card-date">
+          <span class="day">{{
             formatDateShort(ev.start_date).split(' ')[1]
           }}</span>
+          <span class="month">{{
+            formatDateShort(ev.start_date).split(' ')[0]
+          }}</span>
         </div>
-
-        <div class="details">
-          <h4>{{ ev.title }}</h4>
-          <p>{{ formatTimeRange(ev.start_date, ev.end_date) }}</p>
-          <span
-            class="event-badge"
-            [ngClass]="getEventClassBadge(ev.event_type)"
-          >
-            {{ ev.event_type | titlecase }}
-          </span>
+        <div class="skl-card-details">
+          <div class="title">{{ ev.title }}</div>
+          <div class="time">
+            {{ formatTimeRange(ev.start_date, ev.end_date) }}
+          </div>
         </div>
       </div>
     </div>

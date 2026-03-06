@@ -2,7 +2,8 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalendarHeaderComponent } from '../components/calendar-header/calendar-header.component';
 import { CalendarGridComponent } from '../components/calendar-grid/calendar-grid.component';
-import { CalendarSidebarComponent } from '../components/calendar-sidebar/calendar-sidebar.component';
+import { CalendarStatsComponent } from '../components/calendar-stats/calendar-stats.component';
+import { CalendarUpcomingComponent } from '../components/calendar-upcoming/calendar-upcoming.component';
 import { EventFormComponent } from '../components/event-form/event-form.component';
 import {
   CalendarService,
@@ -20,7 +21,8 @@ import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
     CommonModule,
     CalendarHeaderComponent,
     CalendarGridComponent,
-    CalendarSidebarComponent,
+    CalendarStatsComponent,
+    CalendarUpcomingComponent,
     EventFormComponent,
   ],
   templateUrl: './calendar-page.component.html',
@@ -33,9 +35,13 @@ export class CalendarPageComponent implements OnInit {
 
   currentDate = signal<Date>(new Date());
   events = signal<EventResponse[]>([]);
+  isUpcomingDrawerOpen = signal<boolean>(false);
 
   viewMode = signal<'view' | 'add' | 'edit'>('view');
   selectedEvent = signal<EventResponse | null>(null);
+  selectedDate = signal<Date | null>(null);
+  loading = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
 
   // Derived signals
   currentMonth = computed(() => this.currentDate().getMonth() + 1);
@@ -46,10 +52,15 @@ export class CalendarPageComponent implements OnInit {
   }
 
   loadEvents() {
+    this.loading.set(true);
     this.calendarService
       .getEvents(this.currentMonth(), this.currentYear())
-      .subscribe((res: any) => {
-        this.events.set(res.data || []);
+      .subscribe({
+        next: (res: any) => {
+          this.events.set(res.data || []);
+          this.loading.set(false);
+        },
+        error: () => this.loading.set(false),
       });
   }
 
@@ -58,8 +69,9 @@ export class CalendarPageComponent implements OnInit {
     this.loadEvents();
   }
 
-  onAddEvent() {
+  onAddEvent(date?: Date) {
     this.selectedEvent.set(null);
+    this.selectedDate.set(date || null);
     this.viewMode.set('add');
   }
 
@@ -69,27 +81,17 @@ export class CalendarPageComponent implements OnInit {
   }
 
   onSaveEvent(data: any) {
+    this.isSubmitting.set(true);
     this.academicYearService.getCurrentAcademicYear().subscribe({
       next: (res: any) => {
-        console.log('Full Academic Year Response:', JSON.stringify(res));
-
-        // Try all possible ways to find the ID
         const yearData = res?.data || res;
         const actualYear = Array.isArray(yearData) ? yearData[0] : yearData;
-
         const currentAcademicYearId =
-          actualYear?.id ||
-          actualYear?.academic_year_id ||
-          actualYear?._id ||
-          res?.data?.id;
-
-        console.log('Extracted Year ID:', currentAcademicYearId);
+          actualYear?.id || actualYear?.academic_year_id || res?.data?.id;
 
         if (!currentAcademicYearId) {
-          this.snackbar.error(
-            'Error',
-            'No active academic year ID found in response.',
-          );
+          this.snackbar.error('Error', 'No active academic year found.');
+          this.isSubmitting.set(false);
           return;
         }
 
@@ -98,35 +100,65 @@ export class CalendarPageComponent implements OnInit {
             academic_year_id: currentAcademicYearId,
             ...data,
           };
-          this.calendarService.createEvent(payload).subscribe(() => {
-            this.viewMode.set('view');
-            this.loadEvents();
+          this.calendarService.createEvent(payload).subscribe({
+            next: () => {
+              this.snackbar.success('Success', 'Event created successfully');
+              this.isSubmitting.set(false);
+              this.viewMode.set('view');
+              this.loadEvents();
+            },
+            error: (err) => {
+              this.snackbar.error(
+                'Error',
+                err.error?.message || 'Failed to create event',
+              );
+              this.isSubmitting.set(false);
+            },
           });
         } else if (this.viewMode() === 'edit' && this.selectedEvent()) {
           const payload: UpdateEventRequest = { ...data };
           this.calendarService
             .updateEvent(this.selectedEvent()!.id, payload)
-            .subscribe(() => {
-              this.snackbar.success('Success', 'Event updated successfully');
-              this.viewMode.set('view');
-              this.loadEvents();
+            .subscribe({
+              next: () => {
+                this.snackbar.success('Success', 'Event updated successfully');
+                this.isSubmitting.set(false);
+                this.viewMode.set('view');
+                this.loadEvents();
+              },
+              error: (err) => {
+                this.snackbar.error(
+                  'Error',
+                  err.error?.message || 'Failed to update event',
+                );
+                this.isSubmitting.set(false);
+              },
             });
         }
       },
-      error: (err: any) => {
-        console.error('Calendar Page - Error fetching Academic Year:', err);
+      error: () => {
         this.snackbar.error('Error', 'Cannot fetch active academic year.');
+        this.isSubmitting.set(false);
       },
     });
   }
 
   onDeleteEvent(id: string) {
-    if (confirm('Are you sure you want to delete this event?')) {
-      this.calendarService.deleteEvent(id).subscribe(() => {
+    this.isSubmitting.set(true);
+    this.calendarService.deleteEvent(id).subscribe({
+      next: () => {
         this.snackbar.success('Success', 'Event deleted successfully');
+        this.isSubmitting.set(false);
         this.viewMode.set('view');
         this.loadEvents();
-      });
-    }
+      },
+      error: (err) => {
+        this.snackbar.error(
+          'Error',
+          err.error?.message || 'Failed to delete event',
+        );
+        this.isSubmitting.set(false);
+      },
+    });
   }
 }

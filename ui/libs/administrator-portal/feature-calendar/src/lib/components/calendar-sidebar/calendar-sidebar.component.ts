@@ -1,8 +1,6 @@
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   OnChanges,
   SimpleChanges,
   signal,
@@ -21,9 +19,6 @@ import { EventResponse } from '@shikshakul/data-access/academic';
 export class CalendarSidebarComponent implements OnChanges {
   @Input() events: EventResponse[] = [];
   @Input() currentDate!: Date;
-  @Output() dateJump = new EventEmitter<Date>();
-
-  jumpDate = '';
 
   categoryCounts = signal({
     holidays: 0,
@@ -36,22 +31,9 @@ export class CalendarSidebarComponent implements OnChanges {
   upcomingEvents = signal<EventResponse[]>([]);
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentDate']) {
-      const yyyy = this.currentDate.getFullYear();
-      const mm = String(this.currentDate.getMonth() + 1).padStart(2, '0');
-      const dd = String(this.currentDate.getDate()).padStart(2, '0');
-      this.jumpDate = `${yyyy}-${mm}-${dd}`;
-    }
-
     if (changes['events']) {
       this.calculateCounts();
       this.filterUpcomingEvents();
-    }
-  }
-
-  onJumpDateChange() {
-    if (this.jumpDate) {
-      this.dateJump.emit(new Date(this.jumpDate));
     }
   }
 

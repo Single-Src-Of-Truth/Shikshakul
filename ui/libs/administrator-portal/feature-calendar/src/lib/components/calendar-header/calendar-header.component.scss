@@ -1,85 +1,103 @@
 @use 'styles/shared' as *;
 
-.calendar-header-container {
+.skl-calendar-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
-  border-bottom: 1px solid var(--border-color);
+  width: 100%;
 }
 
-.header-info {
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  p {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin: 4px 0 0 0;
-  }
-}
-
-.header-actions {
+.skl-nav-group {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.date-nav {
-  display: flex;
-  align-items: center;
-  background: var(--surface-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 4px;
+.skl-today-btn {
+  background: white;
+  border: 1px solid var(--skl-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--skl-text-main);
+  cursor: pointer;
+  transition: all 0.2s;
 
-  .icon-btn-square {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: var(--text-secondary);
-
-    &:hover {
-      background: var(--bg-hover);
-      color: var(--text-primary);
-    }
-  }
-
-  .today-btn {
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    padding: 0 12px;
-    cursor: pointer;
+  &:hover {
+    background: var(--skl-bg-sidebar);
+    border-color: #cbd5e1;
   }
 }
 
-.view-toggle {
+.skl-nav-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.skl-icon-btn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--surface-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 600;
+  justify-content: center;
+  color: var(--skl-text-light);
   cursor: pointer;
 
-  span.material-icons {
-    font-size: 18px;
-    color: var(--text-secondary);
+  &:hover {
+    background: #e2e8f0;
+    color: var(--skl-text-main);
+  }
+
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+.skl-current-month {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--skl-text-main);
+  min-width: 150px;
+}
+
+.skl-custom-datepicker-wrapper {
+  ::ng-deep {
+    .skl-datepicker-container {
+      width: 160px;
+    }
+
+    .skl-datepicker-trigger {
+      background: #fbfbfc;
+      border: 1px solid var(--skl-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      height: 32px;
+
+      &:hover {
+        border-color: var(--skl-text-light);
+        background: white;
+      }
+
+      .skl-date-text {
+        font-size: 13px;
+        color: var(--skl-text-main);
+        font-weight: 500;
+      }
+
+      .material-icons {
+        font-size: 16px;
+      }
+    }
+
+    .skl-calendar-popover {
+      left: auto !important;
+      right: 0 !important;
+      transform-origin: top right;
+    }
   }
 }
