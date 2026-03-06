@@ -1,26 +1,33 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  inject,
-  OnInit,
-  Output,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { ClassListItemComponent } from '../components/class-list-item/class-list-item.component';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ClassStatsComponent } from '../components/class-stats/class-stats.component';
-import { ClassDialogComponent } from '../components/class-dialog/class-dialog.component';
+import { ClassFormComponent } from '../components/class-form/class-form.component';
 import {
   ClassGrade,
   ClassManagementService,
 } from '@shikshakul/data-access/academic';
-import { SectionDialogComponent } from '../components/section-dialog/section-dialog.component';
+import { SectionFormComponent } from '../components/section-form/section-form.component';
 import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
 import { SubjectAllocationDialogComponent } from '../components/subject-allocation-dialog/subject-allocation-dialog.component';
+import {
+  StudentService,
+  AcademicYearService,
+} from '@shikshakul/data-access/academic';
+import { ClassListItemComponent } from '../components/class-list-item/class-list-item.component';
 
-interface UIClassItem extends ClassGrade {
+interface UISectionItem {
+  id: string;
+  name: string;
+  capacity: number;
+  studentCount: number;
+}
+
+export interface UIClassItem extends ClassGrade {
   stream: string;
   description: string;
+  sections: UISectionItem[];
   sectionNames: string[];
   studentCount: number;
 }
@@ -30,24 +37,32 @@ interface UIClassItem extends ClassGrade {
   standalone: true,
   imports: [
     CommonModule,
-    ClassListItemComponent,
     ClassStatsComponent,
-    ClassDialogComponent,
-    SectionDialogComponent,
+    ClassFormComponent,
+    SectionFormComponent,
     SubjectAllocationDialogComponent,
+    ClassListItemComponent,
   ],
   templateUrl: './class-management-page.component.html',
   styleUrl: './class-management-page.component.scss',
 })
 export class ClassManagementPageComponent implements OnInit {
   private classService = inject(ClassManagementService);
+  private studentService = inject(StudentService);
+  private acadYearService = inject(AcademicYearService);
   private snackbar = inject(SnackbarService);
   private cdr = inject(ChangeDetectorRef);
+
+  currentSessionName = '...';
 
   classes: UIClassItem[] = [];
   loading = true;
 
-  showClassDialog = false;
+  totalClasses = 0;
+  totalSections = 0;
+  totalStudents = 0;
+
+  showDrawer = false;
   showSectionDialog = false;
   showSubjectDialog = false;
 
@@ -58,7 +73,19 @@ export class ClassManagementPageComponent implements OnInit {
   isEditMode = false;
 
   ngOnInit(): void {
+    this.fetchCurrentYear();
     this.loadClasses();
+  }
+
+  fetchCurrentYear() {
+    this.acadYearService.getCurrentAcademicYear().subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.currentSessionName = res.data.name;
+          this.cdr.detectChanges();
+        }
+      },
+    });
   }
 
   loadClasses() {
@@ -66,10 +93,11 @@ export class ClassManagementPageComponent implements OnInit {
     this.cdr.detectChanges();
     this.classService.getClasses().subscribe({
       next: (apiData) => {
-        const dataArr = Array.isArray(apiData)
+        let dataArr = Array.isArray(apiData)
           ? apiData
           : (apiData as any)?.data || [];
-        this.classes = dataArr
+
+        dataArr = dataArr
           .sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0))
           .map((cls: any) => ({
             ...cls,
@@ -78,8 +106,64 @@ export class ClassManagementPageComponent implements OnInit {
             sectionNames: [],
             studentCount: 0,
           }));
-        this.loading = false;
-        this.cdr.detectChanges();
+
+        if (dataArr.length === 0) {
+          this.classes = [];
+          this.loading = false;
+          this.cdr.detectChanges();
+          return;
+        }
+
+        const requests = dataArr.map((cls: any) => {
+          const sectionsReq = this.classService
+            .getSectionsByClass(cls.id)
+            .pipe(catchError(() => of({ data: [] })));
+          const studentsReq = this.studentService
+            .getStudents({ class_id: cls.id })
+            .pipe(catchError(() => of({ data: [] })));
+
+          return forkJoin({
+            sections: sectionsReq,
+            students: studentsReq,
+          }).pipe(
+            map(({ sections, students }) => {
+              const sectionData = Array.isArray(sections)
+                ? sections
+                : sections?.data || [];
+              const studentData = Array.isArray(students)
+                ? students
+                : students?.data || [];
+
+              cls.sections = sectionData.map((s: any) => ({
+                id: s.id,
+                name: s.name,
+                capacity: s.capacity || 40,
+                studentCount: studentData.filter(
+                  (stu: any) => stu.section_id === s.id,
+                ).length,
+              }));
+
+              cls.sectionNames = cls.sections.map((s: any) => s.name);
+              cls.studentCount = studentData.length;
+              return cls;
+            }),
+          );
+        });
+
+        forkJoin(requests).subscribe({
+          next: (enrichedClasses: any) => {
+            this.classes = enrichedClasses;
+            this.calculateTotals();
+
+            this.loading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.classes = dataArr; // fallback
+            this.loading = false;
+            this.cdr.detectChanges();
+          },
+        });
       },
       error: () => {
         this.snackbar.error('Error', 'Failed to load classes.');
@@ -89,17 +173,17 @@ export class ClassManagementPageComponent implements OnInit {
     });
   }
 
-  openCreateClassDialog() {
+  openDrawer() {
     this.selectedClassData = {
       name: '',
-      sort_order: (this.classes.length + 1) * 10,
+      sort_order: this.classes.length + 1,
     };
     this.isEditMode = false;
-    this.showClassDialog = true;
+    this.showDrawer = true;
   }
 
   closeClassDialog() {
-    this.showClassDialog = false;
+    this.showDrawer = false;
   }
 
   saveClass(data: Partial<ClassGrade>) {
@@ -151,17 +235,20 @@ export class ClassManagementPageComponent implements OnInit {
     }
   }
 
-  onEditClass(cls: UIClassItem) {
+  editClass(cls: UIClassItem) {
     this.selectedClassData = {
       id: cls.id,
       name: cls.name,
       sort_order: cls.sort_order,
     };
     this.isEditMode = true;
-    this.showClassDialog = true;
+    this.showDrawer = true;
   }
 
-  onDeleteClass(cls: UIClassItem) {
+  deleteClass(classId: string) {
+    const cls = this.classes.find((c) => c.id === classId);
+    if (!cls) return;
+
     if (confirm(`Are you sure you want to delete class ${cls.name}?`)) {
       this.classService.deleteClass(cls.id).subscribe({
         next: () => {
@@ -186,36 +273,21 @@ export class ClassManagementPageComponent implements OnInit {
 
   closeSectionDialog() {
     this.showSectionDialog = false;
-    this.selectedClassForSection = null;
+    // Retain selectedClassForSection so formData is not lost when reopening for the same class
   }
 
   onSectionSaved() {
-    if (!this.selectedClassForSection?.id) return;
-    const classId = this.selectedClassForSection.id;
-
-    this.classService.getSectionsByClass(classId).subscribe({
-      next: (sections) => {
-        const classIdx = this.classes.findIndex((c) => c.id === classId);
-        if (classIdx !== -1) {
-          this.classes[classIdx].sectionNames =
-            sections.data?.map((s) => s.name) || [];
-        }
-
-        this.snackbar.success(
-          'Section Added',
-          `New section added to ${this.selectedClassForSection?.name}.`,
-        );
-      },
-      error: () => {
-        this.snackbar.error(
-          'Warning',
-          'Section saved, but failed to refresh list.',
-        );
-      },
-    });
+    this.loadClasses();
+    this.snackbar.success(
+      'Section Added',
+      `New section added to ${this.selectedClassForSection?.name}.`,
+    );
   }
 
-  onRemoveSection(cls: UIClassItem, sectionName: string) {
+  removeSection(classId: string, sectionName: string) {
+    const cls = this.classes.find((c) => c.id === classId);
+    if (!cls) return;
+
     if (
       confirm(
         `Are you sure you want to remove section ${sectionName} from ${cls.name}?`,
@@ -259,6 +331,18 @@ export class ClassManagementPageComponent implements OnInit {
 
   closeSubjectDialog() {
     this.showSubjectDialog = false;
-    this.selectedClassForSubjects = null;
+    // Retain selectedClassForSubjects so selections are not lost when reopening for the same class
+  }
+
+  private calculateTotals() {
+    this.totalClasses = this.classes.length;
+    this.totalSections = this.classes.reduce(
+      (acc, cls) => acc + (cls.sections?.length || 0),
+      0,
+    );
+    this.totalStudents = this.classes.reduce(
+      (acc, cls) => acc + (cls.studentCount || 0),
+      0,
+    );
   }
 }

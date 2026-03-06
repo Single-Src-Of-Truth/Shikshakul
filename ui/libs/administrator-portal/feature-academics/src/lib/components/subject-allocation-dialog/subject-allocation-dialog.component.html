@@ -1,46 +1,55 @@
-<div class="modal-backdrop" (click)="onCancel()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <div class="text">
-        <h2>Manage Subjects</h2>
-        <p class="sub">Assign subjects to {{ className }}</p>
-      </div>
-      <button class="close-btn" (click)="onCancel()">
+<div class="skl-drawer-backdrop" *ngIf="isOpen" (click)="onCancel()"></div>
+
+<div class="skl-floating-drawer" [class.open]="isOpen">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">Manage Subjects</h2>
+      <p class="skl-drawer-subtitle">Assign subjects to {{ className }}</p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button class="skl-icon-btn" (click)="onCancel()" title="Close Drawer">
         <span class="material-icons">close</span>
       </button>
     </div>
+  </div>
 
-    <div *ngIf="loading" class="loading-state">
-      <span class="material-icons spin">sync</span> Loading subjects...
+  <div class="skl-drawer-body">
+    <div class="skl-linear-loader" *ngIf="loading">
+      <div class="skl-loader-progress"></div>
     </div>
 
-    <div class="subject-list" *ngIf="!loading">
+    <div *ngIf="loading" class="skl-loading-state">
+      <p>Fetching subjects...</p>
+    </div>
+
+    <div class="skl-subject-list" *ngIf="!loading && subjects.length > 0">
       <div
-        class="subject-row"
+        class="skl-subject-row"
         *ngFor="let sub of subjects"
         [class.selected]="sub.isSelected"
       >
-        <div class="main-info" (click)="toggleSelection(sub)">
-          <div class="checkbox">
+        <div class="skl-subject-main" (click)="toggleSelection(sub)">
+          <div class="skl-checkbox" [class.checked]="sub.isSelected">
             <span class="material-icons" *ngIf="sub.isSelected">check</span>
           </div>
-          <div>
-            <div class="name">{{ sub.name }}</div>
-            <div class="code">{{ sub.code }}</div>
+          <div class="skl-subject-info">
+            <div class="skl-subject-name">{{ sub.name }}</div>
+            <div class="skl-subject-code">{{ sub.code }}</div>
           </div>
         </div>
 
-        <div class="config" *ngIf="sub.isSelected">
-          <div class="field">
+        <div class="skl-subject-config" *ngIf="sub.isSelected">
+          <div class="skl-config-field">
             <label>Lectures/Week</label>
             <input
               type="number"
               [(ngModel)]="sub.weeklyLectures"
               min="1"
               max="20"
+              class="skl-input-sm"
             />
           </div>
-          <div class="field checkbox-field">
+          <div class="skl-config-field skl-check-field">
             <input
               type="checkbox"
               [(ngModel)]="sub.isOptional"
@@ -52,15 +61,21 @@
       </div>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn-text" (click)="onCancel()">Cancel</button>
-      <button
-        class="btn-primary"
-        (click)="onSubmit()"
-        [disabled]="isSubmitting || loading"
-      >
-        {{ isSubmitting ? 'Saving...' : 'Save Assignments' }}
-      </button>
+    <div class="skl-empty-state" *ngIf="!loading && subjects.length === 0">
+      <span class="material-icons">auto_book</span>
+      <p>No subjects found. Please create subjects first.</p>
     </div>
+  </div>
+
+  <div class="skl-drawer-footer">
+    <button
+      type="button"
+      class="skl-btn-primary"
+      (click)="onSubmit()"
+      [disabled]="isSubmitting || loading"
+    >
+      <span *ngIf="!isSubmitting">Save Assignments</span>
+      <div class="skl-spinner" *ngIf="isSubmitting"></div>
+    </button>
   </div>
 </div>

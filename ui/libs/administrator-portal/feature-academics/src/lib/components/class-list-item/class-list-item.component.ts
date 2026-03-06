@@ -13,10 +13,18 @@ export class ClassListItemComponent {
 
   @Output() addSectionClick = new EventEmitter<void>();
   @Output() removeSection = new EventEmitter<string>();
+  @Output() manageSubjects = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
 
-  onAddSection() {
+  isExpanded = false;
+
+  onAddSection(event: Event) {
+    event.stopPropagation();
     this.addSectionClick.emit();
+  }
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
   }
 }
