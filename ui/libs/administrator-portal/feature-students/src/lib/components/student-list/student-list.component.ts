@@ -6,6 +6,7 @@ import {
   ClassGrade,
   ClassManagementService,
   StudentService,
+  StudentAction,
 } from '@shikshakul/data-access/academic';
 import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
 
@@ -37,7 +38,7 @@ export class StudentListComponent implements OnInit {
 
   loadClasses() {
     this.classService.getClasses().subscribe((res: any) => {
-      const data = Array.isArray(res) ? res : (res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
       this.classes = data
         .map((c: any) => ({
           ...c,
@@ -53,11 +54,12 @@ export class StudentListComponent implements OnInit {
     this.loading = true;
     this.cdr.detectChanges();
     const filters: any = {};
-    if (this.selectedClassId && this.selectedClassId !== 'undefined') filters.class_id = this.selectedClassId;
+    if (this.selectedClassId && this.selectedClassId !== 'undefined')
+      filters.class_id = this.selectedClassId;
 
     this.studentService.getStudents(filters).subscribe({
       next: (res: any) => {
-        this.students = Array.isArray(res) ? res : (res?.data || []);
+        this.students = Array.isArray(res) ? res : res?.data || [];
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -83,32 +85,48 @@ export class StudentListComponent implements OnInit {
 
   approveStudent(event: Event, student: any) {
     event.stopPropagation();
-    if (confirm(`Are you sure you want to approve ${student.first_name} ${student.last_name}?`)) {
-      this.studentService.approveStudent(student.id).subscribe({
-        next: () => {
-          this.snackbar.success('Student Approved', `${student.first_name} has been approved.`);
-          this.loadStudents();
-        },
-        error: (err) => {
-          this.snackbar.error('Error', 'Failed to approve student.');
-          console.error(err);
-        }
-      });
+    if (
+      confirm(
+        `Are you sure you want to approve ${student.first_name} ${student.last_name}?`,
+      )
+    ) {
+      this.studentService
+        .approveStudent(student.id, { action: StudentAction.APPROVE })
+        .subscribe({
+          next: () => {
+            this.snackbar.success(
+              'Student Approved',
+              `${student.first_name} has been approved.`,
+            );
+            this.loadStudents();
+          },
+          error: (err) => {
+            this.snackbar.error('Error', 'Failed to approve student.');
+            console.error(err);
+          },
+        });
     }
   }
 
   deleteStudent(event: Event, student: any) {
     event.stopPropagation();
-    if (confirm(`Are you sure you want to delete ${student.first_name} ${student.last_name}?`)) {
+    if (
+      confirm(
+        `Are you sure you want to delete ${student.first_name} ${student.last_name}?`,
+      )
+    ) {
       this.studentService.deleteStudent(student.id).subscribe({
         next: () => {
-          this.snackbar.success('Student Deleted', `${student.first_name} has been deleted.`);
+          this.snackbar.success(
+            'Student Deleted',
+            `${student.first_name} has been deleted.`,
+          );
           this.loadStudents();
         },
         error: (err) => {
           this.snackbar.error('Error', 'Failed to delete student.');
           console.error(err);
-        }
+        },
       });
     }
   }

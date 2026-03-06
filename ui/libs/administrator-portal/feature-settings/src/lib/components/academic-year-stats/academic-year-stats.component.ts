@@ -11,18 +11,25 @@ import { AcademicYear } from '@shikshakul/data-access/academic';
 })
 export class AcademicYearStatsComponent {
   @Input() currentYear: AcademicYear[] = [];
+  @Input() loading = false;
 
   get activeYearName(): string {
-    return this.currentYear.find(y => y.is_current)?.name || 'None';
+    return this.currentYear.find((y) => y.is_current)?.name || 'None';
   }
 
   get upcomingYearName(): string {
     const today = new Date();
-    return this.currentYear.find(y => !y.is_current && new Date(y.start_date) > today)?.name || 'N/A';
+    return (
+      this.currentYear.find(
+        (y) => !y.is_current && new Date(y.start_date) > today,
+      )?.name || 'N/A'
+    );
   }
 
   get archivedCount(): number {
     const today = new Date();
-    return this.currentYear.filter(y => !y.is_current && new Date(y.start_date) <= today).length;
+    return this.currentYear.filter(
+      (y) => !y.is_current && new Date(y.start_date) <= today,
+    ).length;
   }
 }

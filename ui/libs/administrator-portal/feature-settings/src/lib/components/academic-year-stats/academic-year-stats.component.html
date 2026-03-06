@@ -1,34 +1,31 @@
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="top">
-      <span class="label">CURRENT SESSION</span>
-      <div class="icon-box green">
-        <span class="material-icons">calendar_today</span>
-  <div class="stat-item active">
-    <div class="icon-env">
+<div class="skl-stats-grid">
+  <div class="skl-ay-stat-card skl-active">
+    <div class="skl-ay-icon-box">
       <span class="material-icons">event_available</span>
     </div>
-    <div class="stat-info">
-      <span class="label">Current Active Session</span>
-      <span class="value">{{ activeYearName }}</span>
+    <div class="skl-stat-content">
+      <span class="skl-stat-label">Active Session</span>
+      <span class="skl-stat-value">{{ activeYearName }}</span>
     </div>
   </div>
-  <div class="stat-item upcoming">
-    <div class="icon-env">
-      <span class="material-icons">event_upcoming</span>
+
+  <div class="skl-ay-stat-card skl-upcoming">
+    <div class="skl-ay-icon-box">
+      <span class="material-icons">calendar_month</span>
     </div>
-    <div class="stat-info">
-      <span class="label">Next Scheduled Session</span>
-      <span class="value">{{ upcomingYearName }}</span>
+    <div class="skl-stat-content">
+      <span class="skl-stat-label">Upcoming Session</span>
+      <span class="skl-stat-value">{{ upcomingYearName }}</span>
     </div>
   </div>
-  <div class="stat-item archived">
-    <div class="icon-env">
+
+  <div class="skl-ay-stat-card skl-archived">
+    <div class="skl-ay-icon-box">
       <span class="material-icons">inventory_2</span>
     </div>
-    <div class="stat-info">
-      <span class="label">Past Archived Sessions</span>
-      <span class="value">{{ archivedCount }}</span>
+    <div class="skl-stat-content">
+      <span class="skl-stat-label">Archived Sessions</span>
+      <span class="skl-stat-value">{{ archivedCount }}</span>
     </div>
   </div>
 </div>
