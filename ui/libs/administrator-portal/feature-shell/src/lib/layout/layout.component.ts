@@ -6,19 +6,57 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 import { AcademicYearService, ApiResponse, AcademicYear } from '@shikshakul/data-access/academic';
 import { Observable } from 'rxjs';
 
+import { HostListener, OnInit } from '@angular/core';
+
 @Component({
   selector: 'shikshakul-layout',
+  standalone: true,
   imports: [CommonModule, RouterOutlet, SidenavComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   isSidebarCollapsed = false;
-  private academicYearService = inject(AcademicYearService);
+  isMobile = false;
+  showMobileMenu = false;
 
+  private academicYearService = inject(AcademicYearService);
   currentYear$: Observable<ApiResponse<AcademicYear>> = this.academicYearService.getCurrentAcademicYear();
 
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    const width = window.innerWidth;
+    this.isMobile = width <= 768;
+
+    // Auto-collapse on tablet, hide on mobile
+    if (width <= 1024 && width > 768) {
+      this.isSidebarCollapsed = true;
+    } else if (width > 1024) {
+      this.isSidebarCollapsed = false;
+    }
+
+    if (!this.isMobile) {
+      this.showMobileMenu = false;
+    }
+  }
+
   toggleSidebar() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    if (this.isMobile) {
+      this.showMobileMenu = !this.showMobileMenu;
+    } else {
+      this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    }
+  }
+
+  closeMobileMenu() {
+    this.showMobileMenu = false;
   }
 }
