@@ -1,167 +1,242 @@
-<div class="drawer-overlay" (click)="close.emit()">
-  <div class="drawer-content" (click)="$event.stopPropagation()">
-    <header class="drawer-header">
-      <div class="title-area">
-        <h2>Add Routine Slot</h2>
-        <p>Assign subject and teacher to a section</p>
-      </div>
-      <button class="close-btn" (click)="close.emit()">
+<div
+  class="skl-drawer-backdrop"
+  (click)="close.emit()"
+  [class.open]="isOpen"
+></div>
+
+<div class="skl-floating-drawer" [class.open]="isOpen">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">Add Routine Slot</h2>
+      <p class="skl-drawer-subtitle">Assign subject and teacher to a section</p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button class="skl-icon-btn" (click)="onReset()" title="Reset Form">
+        <span class="material-icons">restart_alt</span>
+      </button>
+      <button class="skl-icon-btn" (click)="close.emit()" title="Close Drawer">
         <span class="material-icons">close</span>
       </button>
-    </header>
+    </div>
+  </div>
 
-    <form [formGroup]="routineForm" (ngSubmit)="onSubmit()" class="drawer-body">
-      <div class="form-section">
-        <h3>Class & Section</h3>
-        <div class="form-row">
-          <div
-            class="field"
-            [class.error]="
-              routineForm.get('class_id')?.touched &&
-              routineForm.get('class_id')?.invalid
-            "
-          >
-            <label>Class</label>
-            <div class="select-box">
-              <select formControlName="class_id" (change)="onClassChange()">
-                <option value="">Select Class</option>
-                <option *ngFor="let c of classes()" [value]="c.id">
-                  {{ c.name }}
-                </option>
-              </select>
-              <span class="material-icons dropdown-icon">expand_more</span>
-            </div>
+  <div class="skl-drawer-body">
+    <form [formGroup]="routineForm" class="skl-drawer-form">
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Class & Section</h3>
+        <div class="skl-form-row">
+          <div class="skl-form-group">
+            <label class="skl-label">Class</label>
+            <shikshakul-select
+              formControlName="class_id"
+              [options]="classOptions()"
+              placeholder="Select Class"
+              (onSelect)="onClassChange()"
+              [hasError]="
+                !!(
+                  routineForm.get('class_id')?.invalid &&
+                  routineForm.get('class_id')?.touched
+                )
+              "
+            ></shikshakul-select>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('class_id')?.invalid &&
+                routineForm.get('class_id')?.touched
+              "
+            >
+              Class is required.
+            </span>
           </div>
-          <div
-            class="field"
-            [class.error]="
-              routineForm.get('section_id')?.touched &&
-              routineForm.get('section_id')?.invalid
-            "
-          >
-            <label>Section</label>
-            <div class="select-box">
-              <select
-                formControlName="section_id"
-                [disabled]="!routineForm.get('class_id')?.value"
-              >
-                <option value="">Select Section</option>
-                <option *ngFor="let s of sections()" [value]="s.id">
-                  {{ s.name }}
-                </option>
-              </select>
-              <span class="material-icons dropdown-icon">expand_more</span>
-            </div>
+
+          <div class="skl-form-group">
+            <label class="skl-label">Section</label>
+            <shikshakul-select
+              formControlName="section_id"
+              [options]="sectionOptions()"
+              placeholder="Select Section"
+              [disabled]="!routineForm.get('class_id')?.value"
+              [hasError]="
+                !!(
+                  routineForm.get('section_id')?.invalid &&
+                  routineForm.get('section_id')?.touched
+                )
+              "
+            ></shikshakul-select>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('section_id')?.invalid &&
+                routineForm.get('section_id')?.touched
+              "
+            >
+              Section is required.
+            </span>
           </div>
         </div>
       </div>
 
-      <div class="form-section">
-        <h3>Subject & Teacher</h3>
-        <div
-          class="field"
-          [class.error]="
-            routineForm.get('subject_id')?.touched &&
-            routineForm.get('subject_id')?.invalid
-          "
-        >
-          <label>Subject</label>
-          <div class="select-box">
-            <select formControlName="subject_id">
-              <option value="">Select Subject</option>
-              <option *ngFor="let s of subjects()" [value]="s.id">
-                {{ s.name }}
-              </option>
-            </select>
-            <span class="material-icons dropdown-icon">expand_more</span>
-          </div>
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Subject & Teacher</h3>
+        <div class="skl-form-group">
+          <label class="skl-label">Subject</label>
+          <shikshakul-select
+            formControlName="subject_id"
+            [options]="subjectOptions()"
+            placeholder="Select Subject"
+            [hasError]="
+              !!(
+                routineForm.get('subject_id')?.invalid &&
+                routineForm.get('subject_id')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('subject_id')?.invalid &&
+              routineForm.get('subject_id')?.touched
+            "
+          >
+            Subject is required.
+          </span>
         </div>
-        <div
-          class="field"
-          [class.error]="
-            routineForm.get('teacher_id')?.touched &&
-            routineForm.get('teacher_id')?.invalid
-          "
-        >
-          <label>Teacher</label>
-          <div class="select-box">
-            <select formControlName="teacher_id">
-              <option value="">Select Teacher</option>
-              <option *ngFor="let t of teachers()" [value]="t.id">
-                {{ t.first_name }} {{ t.last_name }}
-              </option>
-            </select>
-            <span class="material-icons dropdown-icon">expand_more</span>
-          </div>
+
+        <div class="skl-form-group">
+          <label class="skl-label">Teacher</label>
+          <shikshakul-select
+            formControlName="teacher_id"
+            [options]="teacherOptions()"
+            placeholder="Select Teacher"
+            [hasError]="
+              !!(
+                routineForm.get('teacher_id')?.invalid &&
+                routineForm.get('teacher_id')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('teacher_id')?.invalid &&
+              routineForm.get('teacher_id')?.touched
+            "
+          >
+            Teacher is required.
+          </span>
         </div>
       </div>
 
-      <div class="form-section">
-        <h3>Schedule</h3>
-        <div
-          class="field"
-          [class.error]="
-            routineForm.get('day_of_week')?.touched &&
-            routineForm.get('day_of_week')?.invalid
-          "
-        >
-          <label>Day</label>
-          <div class="select-box">
-            <select formControlName="day_of_week">
-              <option value="">Select Day</option>
-              <option *ngFor="let d of days" [value]="d">
-                {{ d | titlecase }}
-              </option>
-            </select>
-            <span class="material-icons dropdown-icon">expand_more</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <div
-            class="field"
-            [class.error]="
-              routineForm.get('start_time')?.touched &&
-              routineForm.get('start_time')?.invalid
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Schedule</h3>
+        <div class="skl-form-group">
+          <label class="skl-label">Day</label>
+          <shikshakul-select
+            formControlName="day_of_week"
+            [options]="dayOptions()"
+            placeholder="Select Day"
+            [hasError]="
+              !!(
+                routineForm.get('day_of_week')?.invalid &&
+                routineForm.get('day_of_week')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('day_of_week')?.invalid &&
+              routineForm.get('day_of_week')?.touched
             "
           >
-            <label>Start Time</label>
-            <input type="time" formControlName="start_time" />
+            Day is required.
+          </span>
+        </div>
+
+        <div class="skl-form-row">
+          <div class="skl-form-group">
+            <label class="skl-label">Start Time</label>
+            <shikshakul-time-picker
+              formControlName="start_time"
+              placeholder="09:00 AM"
+              [hasError]="
+                !!(
+                  routineForm.get('start_time')?.invalid &&
+                  routineForm.get('start_time')?.touched
+                )
+              "
+            ></shikshakul-time-picker>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('start_time')?.invalid &&
+                routineForm.get('start_time')?.touched
+              "
+            >
+              Start time is required.
+            </span>
           </div>
-          <div
-            class="field"
-            [class.error]="
-              routineForm.get('end_time')?.touched &&
-              routineForm.get('end_time')?.invalid
-            "
-          >
-            <label>End Time</label>
-            <input type="time" formControlName="end_time" />
+
+          <div class="skl-form-group">
+            <label class="skl-label">End Time</label>
+            <shikshakul-time-picker
+              formControlName="end_time"
+              placeholder="10:00 AM"
+              defaultHour="10"
+              [hasError]="
+                !!(
+                  routineForm.get('end_time')?.invalid &&
+                  routineForm.get('end_time')?.touched
+                )
+              "
+            ></shikshakul-time-picker>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('end_time')?.invalid &&
+                routineForm.get('end_time')?.touched
+              "
+            >
+              End time is required.
+            </span>
           </div>
         </div>
-        <div class="field">
-          <label>Room Number</label>
+
+        <div class="skl-form-group">
+          <label class="skl-label">Room Number</label>
           <input
             type="text"
+            class="skl-input"
             formControlName="room_number"
             placeholder="e.g. 101"
+            [class.has-error]="
+              routineForm.get('room_number')?.invalid &&
+              routineForm.get('room_number')?.touched
+            "
           />
         </div>
       </div>
     </form>
+  </div>
 
-    <footer class="drawer-footer">
-      <button class="btn btn-ghost" (click)="close.emit()" type="button">
-        Cancel
-      </button>
-      <button
-        class="btn btn-primary"
-        (click)="onSubmit()"
-        [disabled]="submitting"
-      >
-        <span class="material-icons" *ngIf="!submitting">check</span>
-        <span class="material-icons spin" *ngIf="submitting">refresh</span>
-        {{ submitting ? 'Processing...' : 'Publish Routine' }}
-      </button>
-    </footer>
+  <div class="skl-drawer-footer">
+    <button
+      type="button"
+      class="skl-btn-ghost"
+      (click)="close.emit()"
+      [disabled]="submitting"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="skl-btn-primary"
+      (click)="onSubmit()"
+      [disabled]="submitting"
+    >
+      <span *ngIf="!submitting">Publish Routine</span>
+      <div class="skl-spinner" *ngIf="submitting"></div>
+    </button>
   </div>
 </div>

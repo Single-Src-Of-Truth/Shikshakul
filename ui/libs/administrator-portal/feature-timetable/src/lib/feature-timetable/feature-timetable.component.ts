@@ -4,7 +4,6 @@ import {
   inject,
   OnInit,
   ChangeDetectorRef,
-  effect,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,12 +17,18 @@ import {
   TimetableService,
 } from '@shikshakul/data-access/academic';
 import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
+import { SelectComponent } from '@shikshakul/shared/ui/select';
 import { AddRoutineDrawerComponent } from '../components/add-routine-drawer/add-routine-drawer.component';
 
 @Component({
   selector: 'shikshakul-feature-timetable',
   standalone: true,
-  imports: [CommonModule, FormsModule, AddRoutineDrawerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AddRoutineDrawerComponent,
+    SelectComponent,
+  ],
   templateUrl: './feature-timetable.component.html',
   styleUrl: './feature-timetable.component.scss',
 })
@@ -41,11 +46,16 @@ export class FeatureTimetableComponent implements OnInit {
   routines = signal<any[]>([]);
   currentYear = signal<AcademicYear | undefined>(undefined);
 
+  classOptions = signal<{ label: string; value: string }[]>([]);
+  sectionOptions = signal<{ label: string; value: string }[]>([]);
+  teacherOptions = signal<{ label: string; value: string }[]>([]);
+
   selectedClassId = '';
   selectedSectionId = '';
   selectedTeacherId = '';
-  loading = false;
+  loading = signal(false);
   showAddDrawer = false;
+  selectedRoutineForEdit: any = null;
 
   days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
   timeSlots = [
@@ -75,14 +85,28 @@ export class FeatureTimetableComponent implements OnInit {
 
   loadClasses() {
     this.classService.getClasses().subscribe((res: any) => {
-      this.classes.set(Array.isArray(res) ? res : res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
+      this.classes.set(data);
+      this.classOptions.set(
+        data.map((c: any) => ({
+          label: c.name,
+          value: c.id || c._id || c.class_id,
+        })),
+      );
       this.cdr.detectChanges();
     });
   }
 
   loadTeachers() {
     this.teacherService.getTeachers().subscribe((res: any) => {
-      this.teachers.set(Array.isArray(res) ? res : res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
+      this.teachers.set(data);
+      this.teacherOptions.set(
+        data.map((t: any) => ({
+          label: `${t.first_name} ${t.last_name}`,
+          value: t.id || t._id || t.teacher_id,
+        })),
+      );
       this.cdr.detectChanges();
     });
   }
@@ -93,11 +117,20 @@ export class FeatureTimetableComponent implements OnInit {
 
     this.selectedSectionId = '';
     this.sections.set([]);
+    this.sectionOptions.set([]);
+
     if (this.selectedClassId && this.selectedClassId !== 'undefined') {
       this.classService
         .getSectionsByClass(this.selectedClassId)
         .subscribe((res: any) => {
-          this.sections.set(Array.isArray(res) ? res : res?.data || []);
+          const data = Array.isArray(res) ? res : res?.data || [];
+          this.sections.set(data);
+          this.sectionOptions.set(
+            data.map((s: any) => ({
+              label: s.name,
+              value: s.id || s._id || s.section_id,
+            })),
+          );
           this.cdr.detectChanges();
         });
     }
@@ -130,17 +163,17 @@ export class FeatureTimetableComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.cdr.detectChanges();
 
     this.timetableService.getTimetable(filters).subscribe({
       next: (res: any) => {
         this.routines.set(Array.isArray(res) ? res : res?.data || []);
-        this.loading = false;
+        this.loading.set(false);
         this.cdr.detectChanges();
       },
       error: () => {
-        this.loading = false;
+        this.loading.set(false);
         this.snackbar.error('Error', 'Failed to load timetable.');
         this.cdr.detectChanges();
       },
@@ -171,6 +204,13 @@ export class FeatureTimetableComponent implements OnInit {
   }
 
   openAddRoutine() {
+    this.selectedRoutineForEdit = null;
+    this.showAddDrawer = true;
+    this.cdr.detectChanges();
+  }
+
+  editRoutine(routine: any) {
+    this.selectedRoutineForEdit = routine;
     this.showAddDrawer = true;
     this.cdr.detectChanges();
   }
