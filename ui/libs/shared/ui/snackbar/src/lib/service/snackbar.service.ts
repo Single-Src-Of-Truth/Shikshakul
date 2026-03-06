@@ -23,7 +23,7 @@ export class SnackbarService {
     message: string,
     title?: string,
     type: SnackbarType = 'info',
-    duration = 4000,
+    duration = 5000,
   ) {
     if (this.timer) clearTimeout(this.timer);
 
@@ -38,7 +38,7 @@ export class SnackbarService {
     this.snackbarState.next(null);
   }
 
-  success(title: string, message: string, duration = 4000) {
+  success(title: string, message: string, duration = 5000) {
     this.show(message, title, 'success', duration);
   }
 
@@ -46,11 +46,11 @@ export class SnackbarService {
     this.show(message, title, 'error', duration);
   }
 
-  info(title: string, message: string, duration = 4000) {
+  info(title: string, message: string, duration = 5000) {
     this.show(message, title, 'info', duration);
   }
 
-  warning(title: string, message: string, duration = 4000) {
+  warning(title: string, message: string, duration = 5000) {
     this.show(message, title, 'warning', duration);
   }
 }

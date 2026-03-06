@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { SnackbarService } from '../snackbar.service';
+import { SnackbarService } from '../service/snackbar.service';
 
 @Component({
   selector: 'shikshakul-snackbar',
