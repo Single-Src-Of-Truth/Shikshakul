@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/teacher-portal",
         "browser": "apps/teacher-portal/src/main.ts",
@@ -20,7 +22,14 @@
             "input": "apps/teacher-portal/public"
           }
         ],
-        "styles": ["apps/teacher-portal/src/styles.scss"]
+        "styles": [
+          "apps/teacher-portal/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/shared/styles/src/lib"
+          ]
+        }
       },
       "configurations": {
         "production": {

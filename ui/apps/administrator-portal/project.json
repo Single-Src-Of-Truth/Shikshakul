@@ -27,7 +27,8 @@
         ],
         "stylePreprocessorOptions": {
           "includePaths": [
-            "apps/administrator-portal/src"
+            "apps/administrator-portal/src",
+            "libs/shared/styles/src/lib"
           ]
         }
       },
