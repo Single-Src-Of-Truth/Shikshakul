@@ -119,9 +119,9 @@ export class CreateStudentPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (year) => {
-          if (year) {
-            this.activeAcademicYearId = year.id;
-            this.studentForm.get('admission.academicYear')?.setValue(year.name);
+          if (year?.data) {
+            this.activeAcademicYearId = year.data.id;
+            this.studentForm.get('admission.academicYear')?.setValue(year.data.name);
           }
         },
         error: () =>

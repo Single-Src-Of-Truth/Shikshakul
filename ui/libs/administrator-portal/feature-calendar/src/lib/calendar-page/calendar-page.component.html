@@ -1,0 +1,97 @@
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-content">
+      <div class="skl-page-title-group">
+        <h1 class="skl-page-title">School Calendar</h1>
+        <p class="skl-page-subtitle">
+          Manage holidays, exams, events, and other academic activities.
+        </p>
+      </div>
+      <div class="skl-header-actions">
+        <button class="skl-btn-ghost" (click)="isUpcomingDrawerOpen.set(true)">
+          <span class="material-icons">event_note</span>
+          <span>Upcoming Events</span>
+        </button>
+        <button class="skl-btn-primary" (click)="onAddEvent()">
+          <span class="material-icons">add</span>
+          <span>New Event</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="skl-page-content">
+    <shikshakul-calendar-stats [events]="events()" [loading]="loading()">
+    </shikshakul-calendar-stats>
+
+    <div class="skl-card">
+      <div class="skl-card-header">
+        <shikshakul-calendar-header
+          class="calendar-header-wrapper"
+          [currentDate]="currentDate()"
+          (dateChange)="onMonthChange($event)"
+        >
+        </shikshakul-calendar-header>
+      </div>
+
+      <div class="skl-linear-loader" *ngIf="loading()">
+        <div class="skl-loader-progress"></div>
+      </div>
+
+      <div class="skl-calendar-body-wrapper">
+        <shikshakul-calendar-grid
+          [currentDate]="currentDate()"
+          [events]="events()"
+          (eventClick)="onEditEvent($event)"
+          (addClick)="onAddEvent($event)"
+        >
+        </shikshakul-calendar-grid>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="skl-drawer-backdrop"
+  [class.open]="isUpcomingDrawerOpen()"
+  (click)="isUpcomingDrawerOpen.set(false)"
+></div>
+
+<div
+  class="skl-floating-drawer upcoming-drawer"
+  [class.open]="isUpcomingDrawerOpen()"
+>
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">Upcoming Activities</h2>
+      <p class="skl-drawer-subtitle">
+        All scheduled events across the academic year.
+      </p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button
+        class="skl-icon-btn"
+        (click)="isUpcomingDrawerOpen.set(false)"
+        title="Close Drawer"
+      >
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="skl-drawer-body">
+    <shikshakul-calendar-upcoming [events]="events()" [loading]="loading()">
+    </shikshakul-calendar-upcoming>
+  </div>
+</div>
+
+<shikshakul-event-form
+  [mode]="viewMode()"
+  [event]="selectedEvent()"
+  [initialDate]="selectedDate()"
+  [submitting]="isSubmitting()"
+  (save)="onSaveEvent($event)"
+  (delete)="onDeleteEvent($event)"
+  (cancel)="viewMode.set('view')"
+>
+</shikshakul-event-form>

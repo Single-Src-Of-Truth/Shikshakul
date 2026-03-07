@@ -1,24 +1,29 @@
-<div class="header-card">
+<div class="header-card" *ngIf="student">
   <div class="avatar-box">
-    <img src="assets/student-rahul.jpg" alt="Student" />
+    <!-- Placeholder for student avatar if any, otherwise initials or default -->
+    <div
+      style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #e0e7ff; color: #4f46e5; border-radius: 50%; font-size: 24px; font-weight: bold;">
+      {{ student.first_name ? student.first_name[0] : 'S' }}{{ student.last_name ? student.last_name[0] : '' }}
+    </div>
   </div>
 
   <div class="info-grid">
     <div class="info-item">
       <span class="label">STUDENT NAME</span>
-      <span class="value">Arjun Sharma</span>
+      <span class="value">{{ student.first_name }} {{ student.last_name }}</span>
     </div>
     <div class="info-item">
       <span class="label">CLASS / SECTION</span>
-      <span class="value">Class X - B</span>
+      <span class="value">{{ student.class?.name || student.class_name || 'N/A' }} {{ student.section?.name ? '- ' +
+        student.section.name : '' }}</span>
     </div>
     <div class="info-item">
       <span class="label">ROLL NUMBER</span>
-      <span class="value">24</span>
+      <span class="value">{{ student.roll_number || student.admission_no || 'N/A' }}</span>
     </div>
     <div class="info-item">
-      <span class="label">CLASS TEACHER</span>
-      <span class="value">Mrs. R. Gupta</span>
+      <span class="label">ADMISSION NO</span>
+      <span class="value">{{ student.admission_no || 'N/A' }}</span>
     </div>
   </div>
 </div>

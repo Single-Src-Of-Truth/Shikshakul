@@ -1,0 +1,54 @@
+<div class="id-card-container">
+  <div class="no-print" style="display: flex; gap: 12px; margin-bottom: 32px">
+    <button class="btn-secondary" (click)="close.emit()">
+      <span class="material-icons" style="font-size: 18px; margin-right: 4px"
+        >arrow_back</span
+      >
+      Back
+    </button>
+    <button class="btn-primary" (click)="printPage()">
+      <span class="material-icons" style="font-size: 18px; margin-right: 4px"
+        >print</span
+      >
+      Print All ID Cards
+    </button>
+  </div>
+
+  <div class="cards-grid">
+    <div *ngFor="let card of idCards" class="id-card">
+      <div class="card-header">
+        <div class="school-info">
+          <h3>SHIKSHAKUL ACADEMY</h3>
+          <p>Excellence in Education</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="student-photo">
+          <img
+            [src]="card.photo_url || 'assets/default-avatar.png'"
+            alt="Student Photo"
+          />
+        </div>
+
+        <div class="student-details">
+          <div class="name">{{ card.full_name }}</div>
+          <div class="detail"><span>Adm No:</span> {{ card.admission_no }}</div>
+          <div class="detail"><span>Class:</span> {{ card.class_details }}</div>
+          <div class="detail"><span>DOB:</span> {{ card.dob }}</div>
+          <div class="detail">
+            <span>Blood Gp:</span> {{ card.blood_group }}
+          </div>
+          <div class="detail"><span>Father:</span> {{ card.father_name }}</div>
+          <div class="detail">
+            <span>Contact:</span> {{ card.contact_number }}
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="signature">Principal</div>
+      </div>
+    </div>
+  </div>
+</div>

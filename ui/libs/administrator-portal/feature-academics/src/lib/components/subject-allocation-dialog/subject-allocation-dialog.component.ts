@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   inject,
@@ -32,9 +33,11 @@ export class SubjectAllocationDialogComponent implements OnInit {
   private subjectService = inject(SubjectService);
   private classService = inject(ClassManagementService);
   private snackbar = inject(SnackbarService);
+  private cdr = inject(ChangeDetectorRef);
 
   @Input() classId!: string;
   @Input() className!: string;
+  @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
 
@@ -49,18 +52,23 @@ export class SubjectAllocationDialogComponent implements OnInit {
   loadSubjects() {
     this.loading = true;
     this.subjectService.getSubjects().subscribe({
-      next: (data) => {
-        this.subjects = data.map((s) => ({
+      next: (apiData: any) => {
+        const dataArr = Array.isArray(apiData) ? apiData : apiData?.data || [];
+
+        this.subjects = dataArr.map((s: any) => ({
           ...s,
           isSelected: false,
           weeklyLectures: 5,
           isOptional: false,
         }));
         this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err) => {
+        console.error('Error loading subjects:', err);
         this.snackbar.error('Error', 'Failed to load subjects list.');
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
@@ -81,7 +89,7 @@ export class SubjectAllocationDialogComponent implements OnInit {
 
     const payload = {
       subjects: selected.map((s) => ({
-        subject_id: s.subject_id!,
+        subject_id: s.id!,
         is_optional: s.isOptional,
         weekly_lectures: s.weeklyLectures,
       })),

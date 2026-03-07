@@ -1,0 +1,64 @@
+<div class="content-card" style="max-width: 800px; margin: 0 auto">
+  <div class="card-header">
+    <h3 class="card-title">Issue Transfer Certificate (TC)</h3>
+  </div>
+
+  <p *ngIf="student" style="margin-bottom: 24px; color: var(--text-secondary)">
+    Preparing TC for:
+    <strong>{{ student.first_name }} {{ student.last_name }}</strong>
+  </p>
+
+  <form [formGroup]="tcForm" (ngSubmit)="onSubmit()" class="form-grid">
+    <div class="form-field">
+      <label>Last Date of Schooling <span class="required">*</span></label>
+      <input type="date" formControlName="leaving_date" class="form-control" />
+    </div>
+
+    <div class="form-field">
+      <label>Conduct & Behavior <span class="required">*</span></label>
+      <select formControlName="conduct" class="form-control">
+        <option value="Excellent">Excellent</option>
+        <option value="Very Good">Very Good</option>
+        <option value="Good">Good</option>
+        <option value="Satisfactory">Satisfactory</option>
+      </select>
+    </div>
+
+    <div class="form-field full-width">
+      <label>Reason for Leaving <span class="required">*</span></label>
+      <textarea
+        formControlName="reason"
+        rows="3"
+        placeholder="e.g. Higher Studies, Migration"
+      ></textarea>
+    </div>
+
+    <div class="checkbox-row full-width">
+      <input
+        type="checkbox"
+        formControlName="mark_inactive"
+        id="mark_inactive"
+      />
+      <label for="mark_inactive" class="checkbox-label"
+        >Mark student as Inactive after issuance</label
+      >
+    </div>
+
+    <div
+      class="full-width"
+      style="
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 24px;
+      "
+    >
+      <button type="button" class="btn-secondary" (click)="cancel.emit()">
+        Cancel
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="tcForm.invalid">
+        Generate TC
+      </button>
+    </div>
+  </form>
+</div>

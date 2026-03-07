@@ -16,9 +16,10 @@
     </div>
   </header>
 
-  <shikshakul-student-header></shikshakul-student-header>
+  <shikshakul-student-header [student]="student()"></shikshakul-student-header>
 
-  <shikshakul-attendance-stats></shikshakul-attendance-stats>
+  <shikshakul-attendance-stats [totalDays]="totalDays()" [presentDays]="presentDays()" [absentDays]="absentDays()"
+    [lateDays]="lateDays()"></shikshakul-attendance-stats>
 
   <div class="grid-layout">
     <div class="main-col">

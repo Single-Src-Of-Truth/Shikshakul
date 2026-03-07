@@ -6,7 +6,14 @@ import {
   CreateExamTermRequest,
   ExamSchedule,
   ExamTerm,
+  MarkSheetResponse,
+  SubmitMarksRequest,
+  ApiResponse,
+  GenerateResultRequest,
+  PublishResultRequest,
+  ReportCardResponse,
 } from '../../models/academic.models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,27 +26,85 @@ export class ExamService {
     return `${this.apiUrl}/academics/exams`;
   }
 
-  getExamTerms(academicYearId?: string) {
+  getExamTerms(academicYearId?: string): Observable<ApiResponse<ExamTerm[]>> {
     const params: any = {};
     if (academicYearId) params.academic_year_id = academicYearId;
-    return this.http.get<ExamTerm[]>(`${this.baseUrl}/terms`, { params });
-  }
-
-  createExamTerm(data: CreateExamTermRequest) {
-    return this.http.post<ExamTerm>(`${this.baseUrl}/terms`, data);
-  }
-
-  getExamSchedules(filters: any = {}) {
-    return this.http.get<ExamSchedule[]>(`${this.baseUrl}/schedules`, {
-      params: filters,
+    return this.http.get<ApiResponse<ExamTerm[]>>(`${this.baseUrl}/terms`, {
+      params,
     });
   }
 
-  createExamSchedule(data: CreateExamScheduleRequest) {
-    return this.http.post<ExamSchedule>(`${this.baseUrl}/schedules`, data);
+  createExamTerm(
+    data: CreateExamTermRequest,
+  ): Observable<ApiResponse<ExamTerm>> {
+    return this.http.post<ApiResponse<ExamTerm>>(`${this.baseUrl}/terms`, data);
   }
 
-  deleteExamSchedule(id: string) {
-    return this.http.delete(`${this.baseUrl}/schedules/${id}`);
+  getExamSchedules(filters: any = {}): Observable<ApiResponse<ExamSchedule[]>> {
+    return this.http.get<ApiResponse<ExamSchedule[]>>(
+      `${this.baseUrl}/schedules`,
+      {
+        params: filters,
+      },
+    );
+  }
+
+  getExamSchedule(id: string): Observable<ApiResponse<ExamSchedule>> {
+    return this.http.get<ApiResponse<ExamSchedule>>(
+      `${this.baseUrl}/schedules/${id}`,
+    );
+  }
+
+  createExamSchedule(
+    data: CreateExamScheduleRequest,
+  ): Observable<ApiResponse<ExamSchedule>> {
+    return this.http.post<ApiResponse<ExamSchedule>>(
+      `${this.baseUrl}/schedules`,
+      data,
+    );
+  }
+
+  deleteExamSchedule(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(
+      `${this.baseUrl}/schedules/${id}`,
+    );
+  }
+
+  getMarksSheet(
+    scheduleId: string,
+  ): Observable<ApiResponse<MarkSheetResponse>> {
+    return this.http.get<ApiResponse<MarkSheetResponse>>(
+      `${this.baseUrl}/schedules/${scheduleId}/marks`,
+    );
+  }
+
+  submitMarks(data: SubmitMarksRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.baseUrl}/marks`, data);
+  }
+
+  generateResults(data: GenerateResultRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(
+      `${this.apiUrl}/academics/results/generate`,
+      data,
+    );
+  }
+
+  publishResults(data: PublishResultRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(
+      `${this.apiUrl}/academics/results/publish`,
+      data,
+    );
+  }
+
+  getReportCard(
+    studentId: string,
+    termId: string,
+  ): Observable<ApiResponse<ReportCardResponse>> {
+    return this.http.get<ApiResponse<ReportCardResponse>>(
+      `${this.apiUrl}/academics/results/students/${studentId}`,
+      {
+        params: { term_id: termId },
+      },
+    );
   }
 }

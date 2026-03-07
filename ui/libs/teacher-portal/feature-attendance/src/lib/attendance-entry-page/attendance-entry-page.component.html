@@ -11,18 +11,15 @@
     <div class="badge">Academic Year 2023-24</div>
   </header>
 
-  <shikshakul-attendance-filters></shikshakul-attendance-filters>
+  <shikshakul-attendance-filters [classes]="classes()" [availableSections]="availableSections()"
+    [selectedClassId]="selectedClassId()" [selectedSectionId]="selectedSectionId()" [selectedDate]="selectedDate()"
+    (filterChange)="onFilterChange($event)"></shikshakul-attendance-filters>
 
-  <shikshakul-student-list [students]="students" (statusChange)="updateStats()">
+  <shikshakul-student-list [students]="students()" (statusChange)="updateStats()">
   </shikshakul-student-list>
 
-  <shikshakul-attendance-footer
-    [total]="total"
-    [present]="present"
-    [absent]="absent"
-    [late]="late"
-    (save)="onSave()"
-  >
+  <shikshakul-attendance-footer [total]="total()" [present]="present()" [absent]="absent()" [late]="late()"
+    (save)="onSave()">
   </shikshakul-attendance-footer>
 
   <div style="height: 80px"></div>

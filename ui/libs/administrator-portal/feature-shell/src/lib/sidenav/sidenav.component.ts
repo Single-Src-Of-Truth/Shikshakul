@@ -22,11 +22,20 @@ interface MenuGroup {
 })
 export class SidenavComponent {
   @Input() collapsed = false;
+  @Input() mobileActive = false;
   @Output() toggleCollapse = new EventEmitter<void>();
 
   menuGroups: MenuGroup[] = [
     {
       items: [{ label: 'Dashboard', icon: 'dashboard', route: '/dashboard' }],
+    },
+    {
+      header: 'SETUP',
+      items: [
+        { label: 'Academic Years', icon: 'calendar_today', route: '/settings/academic-years' },
+        { label: 'Class Setup', icon: 'class', route: '/academics/classes' },
+        { label: 'Subjects', icon: 'library_books', route: '/academics/subjects' },
+      ],
     },
     {
       header: 'PEOPLE',
@@ -38,44 +47,22 @@ export class SidenavComponent {
     {
       header: 'ACADEMICS',
       items: [
-        { label: 'Class Setup', icon: 'class', route: '/academics/classes' },
-        {
-          label: 'Subjects',
-          icon: 'library_books',
-          route: '/academics/subjects',
-        },
-        {
-          label: 'Timetable',
-          icon: 'calendar_view_week',
-          route: '/academics/timetable',
-        },
-        { label: 'Exams', icon: 'assignment', route: '/exams/setup' },
+        { label: 'Attendance', icon: 'fact_check', route: '/academics/attendance' },
+        { label: 'Timetable', icon: 'calendar_view_week', route: '/academics/timetable' },
+      ],
+    },
+    {
+      header: 'EXAMS',
+      items: [
+        { label: 'Exam Setup', icon: 'assignment', route: '/exams/setup' },
+        { label: 'Results', icon: 'auto_stories', route: '/exams/results' },
       ],
     },
     {
       header: 'ADMINISTRATION',
       items: [
-        {
-          label: 'Fee Management',
-          icon: 'payments',
-          route: '/fees',
-        },
-        // { label: 'Transport', icon: 'directions_bus', route: '/transport' }, // Future
-      ],
-    },
-    {
-      header: 'CONFIGURATION',
-      items: [
-        {
-          label: 'Roles & Permissions',
-          icon: 'admin_panel_settings',
-          route: '/settings/roles',
-        },
-        {
-          label: 'Academic Years',
-          icon: 'calendar_today',
-          route: '/settings/academic-years',
-        },
+        { label: 'Fee Management', icon: 'payments', route: '/fees' },
+        { label: 'School Calendar', icon: 'event', route: '/academics/calendar' },
       ],
     },
   ];

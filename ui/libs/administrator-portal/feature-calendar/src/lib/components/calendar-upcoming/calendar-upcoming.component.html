@@ -1,0 +1,66 @@
+<div class="skl-upcoming-drawer-content" [class.loading]="loading">
+  <!-- Filter Header -->
+  <div class="skl-filter-wrapper">
+    <div class="skl-category-select">
+      <shikshakul-select
+        [options]="categoryOptions"
+        [(ngModel)]="selectedCategory"
+        placeholder="Filter by Category"
+      ></shikshakul-select>
+    </div>
+  </div>
+
+  <div
+    *ngIf="groupedUpcomingEvents().length === 0 && !loading"
+    class="skl-empty-state"
+  >
+    <span class="material-icons">event_busy</span>
+    <p>No upcoming events or activities found.</p>
+  </div>
+
+  <div class="skl-month-groups">
+    <div
+      *ngFor="let group of groupedUpcomingEvents()"
+      class="skl-month-section"
+    >
+      <div class="skl-month-header">
+        <span class="skl-month-name">{{ group.month }}</span>
+        <div class="skl-month-line"></div>
+      </div>
+
+      <div class="skl-event-list">
+        <div
+          *ngFor="let ev of group.events"
+          class="skl-event-row"
+          [ngClass]="getEventClassBg(ev.event_type)"
+        >
+          <div class="skl-date-box">
+            <span class="skl-day-num">{{ formatDateDay(ev.start_date) }}</span>
+            <span class="skl-day-name">{{
+              formatDateDayName(ev.start_date)
+            }}</span>
+          </div>
+
+          <div class="skl-event-details">
+            <div class="skl-event-top">
+              <h4 class="skl-event-title">{{ ev.title }}</h4>
+              <span
+                class="skl-status-badge"
+                [ngClass]="getEventClassBadge(ev.event_type)"
+              >
+                {{ ev.event_type }}
+              </span>
+            </div>
+
+            <div class="skl-event-bottom">
+              <div class="skl-event-meta">
+                <span class="material-icons">schedule</span>
+                <span>{{ formatTimeRange(ev.start_date, ev.end_date) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,7 +32,18 @@ export class ExamFormComponent implements OnInit {
   private snackbar = inject(SnackbarService);
   private cdr = inject(ChangeDetectorRef);
 
-  @Input() terms: ExamTerm[] = [];
+  private _terms: ExamTerm[] = [];
+  @Input() set terms(value: any[]) {
+    this._terms = (value || []).map(term => ({
+      ...term,
+      id: term.id || term.exam_term_id || term._id,
+      name: term.name || term.term_name
+    }));
+  }
+  get terms(): ExamTerm[] {
+    return this._terms;
+  }
+
   @Output() saved = new EventEmitter<void>();
 
   examForm: FormGroup;
@@ -54,12 +65,24 @@ export class ExamFormComponent implements OnInit {
 
   loadInitialData() {
     this.classService.getClasses().subscribe((res: any) => {
-      this.classes.set(Array.isArray(res) ? res : res?.data || []);
+      const data = res?.data || res;
+      const parsedClasses = Array.isArray(data) ? data.map((c: any) => ({
+        ...c,
+        id: c.id || c.class_id || c._id,
+        name: c.name || c.class_name
+      })) : [];
+      this.classes.set(parsedClasses);
       this.cdr.detectChanges();
     });
 
     this.classService.getAllSubjects().subscribe((res: any) => {
-      this.subjects.set(Array.isArray(res) ? res : res?.data || []);
+      const data = res?.data || res;
+      const parsedSubjects = Array.isArray(data) ? data.map((s: any) => ({
+        ...s,
+        subject_id: s.subject_id || s.id || s._id,
+        name: s.name || s.subject_name
+      })) : [];
+      this.subjects.set(parsedSubjects);
       this.cdr.detectChanges();
     });
   }
@@ -107,11 +130,30 @@ export class ExamFormComponent implements OnInit {
     this.submitting.set(true);
     const { exam_term_id, class_id, schedules } = this.examForm.value;
 
-    const requests = schedules.map((s: any) => ({
-      ...s,
-      exam_term_id,
-      class_id
-    }));
+    const requests = schedules.map((s: any) => {
+      // Calculate duration in minutes from start and end time (Format HH:mm)
+      let duration_min = 0;
+      if (s.start_time && s.end_time) {
+        const [startH, startM] = s.start_time.split(':').map(Number);
+        const [endH, endM] = s.end_time.split(':').map(Number);
+        duration_min = (endH * 60 + endM) - (startH * 60 + startM);
+        if (duration_min < 0) duration_min += 24 * 60; // handle crossing midnight if ever needed
+      }
+
+      let formattedDate = s.exam_date;
+      if (s.exam_date && !s.exam_date.includes('T')) {
+        // Use native Date object to reliably format to ISO8601 UTC
+        formattedDate = new Date(s.exam_date).toISOString();
+      }
+
+      return {
+        ...s,
+        exam_date: formattedDate,
+        duration_min,
+        exam_term_id,
+        class_id
+      };
+    });
 
     // For simplicity, we'll create them sequentially or use forkJoin if available
     // Here we'll just demonstrate the first one or a loop for MVP

@@ -1,17 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ExamFormComponent } from '../components/exam-form/exam-form.component';
 import { RecentExamsWidgetComponent } from '../components/recent-exams-widget/recent-exams-widget.component';
 import { ExamGuidelinesWidgetComponent } from '../components/exam-guidelines-widget/exam-guidelines-widget.component';
-import { 
-  ExamService, 
-  ExamTerm, 
-  ExamSchedule, 
-  AcademicYearService, 
+import {
+  ExamService,
+  ExamTerm,
+  ExamSchedule,
+  AcademicYearService,
   AcademicYear,
   ClassManagementService,
-  ClassGrade
+  ClassGrade,
 } from '@shikshakul/data-access/academic';
 import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
 
@@ -51,7 +57,15 @@ export class ExamSetupPageComponent implements OnInit {
 
   loadClasses() {
     this.classService.getClasses().subscribe((res: any) => {
-      this.classes.set(Array.isArray(res) ? res : res?.data || []);
+      const data = res?.data || res;
+      const parsedClasses = Array.isArray(data)
+        ? data.map((c: any) => ({
+            ...c,
+            id: c.id || c.class_id || c._id,
+            name: c.name || c.class_name,
+          }))
+        : [];
+      this.classes.set(parsedClasses);
       this.cdr.detectChanges();
     });
   }
@@ -61,7 +75,7 @@ export class ExamSetupPageComponent implements OnInit {
       // Ensure we handle both {data: year} and year formats
       const year = res?.data || res;
       this.currentYear.set(year);
-      
+
       const yearId = year?.id || year?.academic_year_id;
       if (yearId) {
         this.loadExamTerms(yearId);
@@ -76,7 +90,15 @@ export class ExamSetupPageComponent implements OnInit {
     this.loading.set(true);
     this.examService.getExamTerms(yearId).subscribe({
       next: (res: any) => {
-        this.examTerms.set(Array.isArray(res) ? res : res?.data || []);
+        const data = res?.data || res;
+        const parsedTerms = Array.isArray(data)
+          ? data.map((t: any) => ({
+              ...t,
+              id: t.id || t.exam_term_id || t._id,
+              name: t.name || t.term_name,
+            }))
+          : [];
+        this.examTerms.set(parsedTerms);
         this.loading.set(false);
         this.cdr.detectChanges();
       },
@@ -84,7 +106,7 @@ export class ExamSetupPageComponent implements OnInit {
         this.loading.set(false);
         this.snackbar.error('Error', 'Failed to load exam terms.');
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
@@ -96,25 +118,32 @@ export class ExamSetupPageComponent implements OnInit {
     const termId = this.selectedTermId();
     const classId = this.selectedClassId();
 
-    if (!termId || !classId || termId === 'undefined' || classId === 'undefined') {
+    if (
+      !termId ||
+      !classId ||
+      termId === 'undefined' ||
+      classId === 'undefined'
+    ) {
       this.examSchedules.set([]);
       this.cdr.detectChanges();
       return;
     }
 
     this.loading.set(true);
-    this.examService.getExamSchedules({ term_id: termId, class_id: classId }).subscribe({
-      next: (res: any) => {
-        this.examSchedules.set(Array.isArray(res) ? res : res?.data || []);
-        this.loading.set(false);
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.loading.set(false);
-        this.snackbar.error('Error', 'Failed to load exam schedules.');
-        this.cdr.detectChanges();
-      }
-    });
+    this.examService
+      .getExamSchedules({ term_id: termId, class_id: classId })
+      .subscribe({
+        next: (res: any) => {
+          this.examSchedules.set(Array.isArray(res) ? res : res?.data || []);
+          this.loading.set(false);
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.loading.set(false);
+          this.snackbar.error('Error', 'Failed to load exam schedules.');
+          this.cdr.detectChanges();
+        },
+      });
   }
 
   onTermSaved() {

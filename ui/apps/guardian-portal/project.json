@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/guardian-portal",
         "browser": "apps/guardian-portal/src/main.ts",
@@ -20,7 +22,14 @@
             "input": "apps/guardian-portal/public"
           }
         ],
-        "styles": ["apps/guardian-portal/src/styles.scss"]
+        "styles": [
+          "apps/guardian-portal/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/shared/styles/src/lib"
+          ]
+        }
       },
       "configurations": {
         "production": {

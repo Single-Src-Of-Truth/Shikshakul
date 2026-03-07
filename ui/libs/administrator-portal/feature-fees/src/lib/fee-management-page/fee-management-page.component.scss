@@ -1,21 +1,123 @@
-@use 'styles/shared' as *;
+@use 'shared' as *;
 
-.page-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  height: 100%;
-}
+.skl-page-container {
+  padding: 24px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
 
-/* Reusable Tabs usage */
-.tabs {
-  @include tabs-header-base;
-  button {
-    @include tab-btn-base;
+  @media (max-width: 1024px) {
+    padding: 24px;
   }
 }
 
-.tab-content {
-  flex: 1;
-  overflow-y: auto;
+.skl-page-header {
+  margin-bottom: 32px;
+
+  .skl-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+  }
+
+  .skl-page-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--skl-text-main);
+    letter-spacing: -0.03em;
+  }
+
+  .skl-page-subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--skl-text-light);
+    line-height: 1.5;
+    max-width: 700px;
+  }
+}
+
+/* Premium Segmented Control */
+.skl-segmented-control {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--skl-border);
+
+  .skl-segment-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--skl-text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .material-icons {
+      font-size: 16px;
+    }
+
+    &:hover:not(.active) {
+      color: var(--skl-text-main);
+    }
+
+    &.active {
+      background: white;
+      color: var(--royal-blue);
+      box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/* Linear Loader */
+.skl-page-content {
+  position: relative;
+}
+
+.skl-linear-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--skl-border);
+  overflow: hidden;
+  z-index: 10;
+
+  .skl-loader-progress {
+    width: 30%;
+    height: 100%;
+    background: var(--royal-blue);
+    position: absolute;
+    left: -30%;
+    animation: skl-linear-loading 1.2s infinite ease-in-out;
+  }
+}
+
+@keyframes skl-linear-loading {
+  0% {
+    left: -30%;
+  }
+
+  50% {
+    width: 60%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }

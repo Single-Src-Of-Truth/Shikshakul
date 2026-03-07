@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FeeSetupComponent } from '../components/fee-setup/fee-setup.component';
 import { FeeCollectionComponent } from '../components/fee-collection/fee-collection.component';
 
@@ -12,4 +12,9 @@ import { FeeCollectionComponent } from '../components/fee-collection/fee-collect
 })
 export class FeeManagementPageComponent {
   activeTab: 'COLLECTION' | 'SETUP' = 'COLLECTION';
+  loading = signal(false);
+
+  setLoading(state: boolean) {
+    this.loading.set(state);
+  }
 }

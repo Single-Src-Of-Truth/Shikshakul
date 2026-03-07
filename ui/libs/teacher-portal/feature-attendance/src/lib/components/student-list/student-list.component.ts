@@ -12,7 +12,7 @@ export class StudentListComponent {
   @Input() students: any[] = [];
   @Output() statusChange = new EventEmitter<void>();
 
-  setStatus(student: any, status: 'P' | 'A' | 'L') {
+  setStatus(student: any, status: 'PRESENT' | 'ABSENT' | 'LATE') {
     student.status = status;
     this.statusChange.emit();
   }
@@ -20,7 +20,7 @@ export class StudentListComponent {
   markAllPresent(event: any) {
     const isChecked = event.target.checked;
     if (isChecked) {
-      this.students.forEach((s) => (s.status = 'P'));
+      this.students.forEach((s) => (s.status = 'PRESENT'));
     }
     this.statusChange.emit();
   }

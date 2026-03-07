@@ -2,23 +2,31 @@
   <div class="field-group">
     <label>Select Class</label>
     <div class="custom-select">
-      <span>Class 10 - Section A</span>
-      <span class="material-icons">expand_more</span>
+      <select [ngModel]="selectedClassId" (ngModelChange)="onClassChange($event)">
+        <option value="" disabled>Select Class</option>
+        @for (cls of classes; track cls.id) {
+        <option [value]="cls.id">{{ cls.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>Select Section</label>
+    <div class="custom-select">
+      <select [ngModel]="selectedSectionId" (ngModelChange)="onSectionChange($event)" [disabled]="!selectedClassId">
+        <option value="" disabled>Select Section</option>
+        @for (sec of availableSections; track sec.id) {
+        <option [value]="sec.id">{{ sec.name }}</option>
+        }
+      </select>
     </div>
   </div>
 
   <div class="field-group">
     <label>Select Date</label>
     <div class="date-input">
-      <input type="date" [value]="selectedDate" />
-    </div>
-  </div>
-
-  <div class="field-group">
-    <label>Session</label>
-    <div class="custom-select">
-      <span>Morning Session</span>
-      <span class="material-icons">expand_more</span>
+      <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
     </div>
   </div>
 </div>

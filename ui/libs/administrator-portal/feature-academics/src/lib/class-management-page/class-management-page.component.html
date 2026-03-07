@@ -1,92 +1,129 @@
-<div class="page-container">
-  <header class="page-header">
-    <div class="text-group">
-      <div class="breadcrumbs">
-        Home <span class="sep">/</span> Academics
-        <span class="sep">/</span> Class Setup
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-content">
+      <div class="skl-page-title-group">
+        <h1 class="skl-page-title">Class Management</h1>
+        <p class="skl-page-subtitle">
+          Configure academic hierarchy, class levels, and sort order for the
+          institution.
+        </p>
       </div>
-      <h1>Class & Section Management</h1>
-      <p class="subtitle">
-        Configure academic hierarchy for the current session (2023-2024)
-      </p>
+      <div class="skl-header-actions">
+        <button class="skl-btn-primary" (click)="openDrawer()">
+          <span class="material-icons">add</span>
+          <span>New Class</span>
+        </button>
+      </div>
     </div>
-
-    <button class="btn-primary" (click)="openCreateClassDialog()">
-      <span class="material-icons">add</span>
-      Add New Class
-    </button>
   </header>
 
-  <shikshakul-class-stats
-    [totalClasses]="classes.length"
-  ></shikshakul-class-stats>
+  <div class="skl-page-content">
+    <!-- Total Stats Bar -->
+    <shikshakul-class-stats
+      [totalClasses]="classes.length"
+      [totalSections]="totalSections"
+      [totalStudents]="totalStudents"
+    >
+    </shikshakul-class-stats>
 
-  <div class="list-controls">
-    <h3>All Classes</h3>
-    <div class="actions">
-      <button class="btn-outline">
-        <span class="material-icons">filter_list</span> Filter
-      </button>
-      <button class="btn-outline">
-        <span class="material-icons">sort</span> Sort
-      </button>
+    <div class="skl-card skl-mt-24">
+      <div class="skl-card-header">
+        <div class="skl-card-title-group">
+          <h3 class="skl-card-title">All Classes</h3>
+        </div>
+        <div class="skl-card-actions">
+          <button
+            class="skl-btn-ghost"
+            (click)="loadClasses()"
+            [disabled]="loading"
+          >
+            <span class="material-icons" [class.skl-spin]="loading"
+              >refresh</span
+            >
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="skl-table-wrapper">
+        <div class="skl-linear-loader" *ngIf="loading">
+          <div class="skl-loader-progress"></div>
+        </div>
+
+        <div
+          class="skl-list-header"
+          style="
+            display: flex;
+            padding: 12px 24px;
+            border-bottom: 2px solid var(--skl-border-light, #f1f1f1);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--skl-text-lighter, #94a3b8);
+            text-transform: uppercase;
+          "
+        >
+          <div style="width: 35%">CLASS NAME</div>
+          <div style="width: 10%">ORDER</div>
+          <div style="width: 35%">STATS</div>
+          <div style="width: 20%; text-align: right">ACTIONS</div>
+        </div>
+        <div class="skl-list-body">
+          <shikshakul-class-list-item
+            *ngFor="let cls of classes"
+            [classData]="cls"
+            (manageSubjects)="openSubjectDialog(cls)"
+            (addSectionClick)="openSectionDialog(cls)"
+            (edit)="editClass(cls)"
+            (delete)="deleteClass(cls.id)"
+            (removeSection)="removeSection(cls.id, $event)"
+          >
+          </shikshakul-class-list-item>
+
+          <div
+            *ngIf="classes.length === 0 && !loading"
+            class="skl-empty-state"
+            style="padding: 48px; text-align: center"
+          >
+            <span
+              class="material-icons"
+              style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px"
+              >dashboard_customize</span
+            >
+            <p style="color: #64748b">
+              No classes found. Add your first class to set up the academic
+              hierarchy.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div *ngIf="loading" class="state-message">
-    <span class="material-icons spin">sync</span> Loading classes...
-  </div>
-
-  <div *ngIf="!loading && classes.length === 0" class="state-message">
-    No classes found. Click "Add New Class" to get started.
-  </div>
-
-  <div class="class-list" *ngIf="!loading && classes.length > 0">
-    <shikshakul-class-list-item
-      *ngFor="let cls of classes"
-      [classData]="cls"
-      (addSectionClick)="openSectionDialog(cls)"
-      (manageSubjects)="openSubjectDialog(cls)"
-      (removeSection)="onRemoveSection(cls, $event)"
-      (edit)="onEditClass(cls)"
-      (delete)="onDeleteClass(cls)"
-    >
-    </shikshakul-class-list-item>
-  </div>
-
-  <div class="pagination" *ngIf="!loading && classes.length > 0">
-    <button class="page-btn">
-      <span class="material-icons">chevron_left</span>
-    </button>
-    <button class="page-btn active">1</button>
-    <button class="page-btn">2</button>
-    <button class="page-btn">3</button>
-    <button class="page-btn">
-      <span class="material-icons">chevron_right</span>
-    </button>
-  </div>
-
-  <shikshakul-class-dialog
-    *ngIf="showClassDialog"
-    [classData]="selectedClassData"
-    [isEditMode]="isEditMode"
-    (close)="closeClassDialog()"
-    (save)="saveClass($event)"
-  ></shikshakul-class-dialog>
-
-  <shikshakul-section-dialog
-    *ngIf="showSectionDialog && selectedClassForSection"
-    [classId]="selectedClassForSection.id"
-    [className]="selectedClassForSection.name"
-    (close)="closeSectionDialog()"
-    (save)="onSectionSaved()"
-  ></shikshakul-section-dialog>
-
-  <shikshakul-subject-allocation-dialog
-    *ngIf="showSubjectDialog && selectedClassForSubjects"
-    [classId]="selectedClassForSubjects.id"
-    [className]="selectedClassForSubjects.name"
-    (close)="closeSubjectDialog()"
-    (save)="loadClasses()"
-  ></shikshakul-subject-allocation-dialog>
 </div>
+
+<!-- Forms (Floating Drawers) -->
+<shikshakul-class-form
+  [isOpen]="showDrawer"
+  [isEditMode]="isEditMode"
+  [classData]="selectedClassData"
+  (closeDrawer)="closeClassDialog()"
+  (classCreated)="loadClasses()"
+>
+</shikshakul-class-form>
+
+<shikshakul-section-form
+  [isOpen]="showSectionDialog"
+  [classId]="selectedClassForSection?.id || ''"
+  [className]="selectedClassForSection?.name || ''"
+  (closeDrawer)="closeSectionDialog()"
+  (sectionSaved)="onSectionSaved()"
+>
+</shikshakul-section-form>
+
+<shikshakul-subject-allocation-dialog
+  [isOpen]="showSubjectDialog"
+  [classId]="selectedClassForSubjects?.id || ''"
+  [className]="selectedClassForSubjects?.name || ''"
+  (close)="closeSubjectDialog()"
+  (save)="loadClasses()"
+>
+</shikshakul-subject-allocation-dialog>

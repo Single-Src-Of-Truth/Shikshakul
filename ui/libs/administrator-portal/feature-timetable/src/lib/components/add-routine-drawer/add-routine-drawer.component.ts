@@ -5,6 +5,8 @@ import {
   inject,
   Input,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   Output,
   signal,
   ChangeDetectorRef,
@@ -26,15 +28,23 @@ import {
   TimetableService,
 } from '@shikshakul/data-access/academic';
 import { SnackbarService } from '@shikshakul/shared/ui/snackbar';
+import { SelectComponent } from '@shikshakul/shared/ui/select';
+import { TimePickerComponent } from '@shikshakul/shared/ui/time-picker';
 
 @Component({
   selector: 'shikshakul-add-routine-drawer',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SelectComponent,
+    TimePickerComponent,
+  ],
   templateUrl: './add-routine-drawer.component.html',
   styleUrl: './add-routine-drawer.component.scss',
 })
-export class AddRoutineDrawerComponent implements OnInit {
+export class AddRoutineDrawerComponent implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
   private classService = inject(ClassManagementService);
   private teacherService = inject(TeacherService);
@@ -43,6 +53,8 @@ export class AddRoutineDrawerComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   @Input() currentYear?: AcademicYear;
+  @Input() isOpen = false;
+  @Input() editData: any = null;
   @Output() close = new EventEmitter<void>();
   @Output() saved = new EventEmitter<void>();
 
@@ -52,6 +64,14 @@ export class AddRoutineDrawerComponent implements OnInit {
   subjects = signal<Subject[]>([]);
   teachers = signal<any[]>([]);
   submitting = false;
+  isFormSubmitted = false;
+
+  classOptions = signal<{ label: string; value: string }[]>([]);
+  sectionOptions = signal<{ label: string; value: string }[]>([]);
+  subjectOptions = signal<{ label: string; value: string }[]>([]);
+  teacherOptions = signal<{ label: string; value: string }[]>([]);
+
+  dayOptions = signal<{ label: string; value: string }[]>([]);
 
   days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
@@ -72,25 +92,87 @@ export class AddRoutineDrawerComponent implements OnInit {
     this.loadClasses();
     this.loadTeachers();
     this.loadSubjects();
+    this.dayOptions.set(
+      this.days.map((d) => ({
+        label: d.charAt(0) + d.slice(1).toLowerCase(),
+        value: d,
+      })),
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['editData'] && this.editData) {
+      this.populateForm(this.editData);
+    }
+  }
+
+  populateForm(data: any) {
+    this.routineForm.patchValue({
+      class_id: data.class_id,
+      subject_id: data.subject_id,
+      teacher_id: data.teacher_id,
+      day_of_week: data.day_of_week,
+      start_time: data.start_time,
+      end_time: data.end_time,
+      room_number: data.room_number || '',
+    });
+
+    if (data.class_id) {
+      this.classService
+        .getSectionsByClass(data.class_id)
+        .subscribe((res: any) => {
+          const sectionsData = Array.isArray(res) ? res : res?.data || [];
+          this.sections.set(sectionsData);
+          this.sectionOptions.set(
+            sectionsData.map((s: any) => ({
+              label: s.name,
+              value: s.id || s._id || s.section_id,
+            })),
+          );
+          this.routineForm.patchValue({ section_id: data.section_id });
+          this.cdr.detectChanges();
+        });
+    }
   }
 
   loadClasses() {
     this.classService.getClasses().subscribe((res: any) => {
-      this.classes.set(Array.isArray(res) ? res : res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
+      this.classes.set(data);
+      this.classOptions.set(
+        data.map((c: any) => ({
+          label: c.name,
+          value: c.id || c._id || c.class_id,
+        })),
+      );
       this.cdr.detectChanges();
     });
   }
 
   loadTeachers() {
     this.teacherService.getTeachers().subscribe((res: any) => {
-      this.teachers.set(Array.isArray(res) ? res : res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
+      this.teachers.set(data);
+      this.teacherOptions.set(
+        data.map((t: any) => ({
+          label: `${t.first_name} ${t.last_name}`,
+          value: t.id || t._id || t.teacher_id,
+        })),
+      );
       this.cdr.detectChanges();
     });
   }
 
   loadSubjects() {
     this.classService.getAllSubjects().subscribe((res: any) => {
-      this.subjects.set(Array.isArray(res) ? res : res?.data || []);
+      const data = Array.isArray(res) ? res : res?.data || [];
+      this.subjects.set(data);
+      this.subjectOptions.set(
+        data.map((s: any) => ({
+          label: s.name,
+          value: s.id || s._id || s.subject_id,
+        })),
+      );
       this.cdr.detectChanges();
     });
   }
@@ -98,23 +180,30 @@ export class AddRoutineDrawerComponent implements OnInit {
   onClassChange() {
     const classId = this.routineForm.get('class_id')?.value;
     this.sections.set([]);
+    this.sectionOptions.set([]);
     this.routineForm.patchValue({ section_id: '' });
     if (classId) {
       this.classService.getSectionsByClass(classId).subscribe((res: any) => {
-        this.sections.set(Array.isArray(res) ? res : res?.data || []);
+        const data = Array.isArray(res) ? res : res?.data || [];
+        this.sections.set(data);
+        this.sectionOptions.set(
+          data.map((s: any) => ({
+            label: s.name,
+            value: s.id || s._id || s.section_id,
+          })),
+        );
         this.cdr.detectChanges();
       });
     }
   }
 
   onSubmit() {
+    this.isFormSubmitted = true;
     if (this.routineForm.invalid || !this.currentYear) {
-      // Mark all as touched to show validation errors
-      this.routineForm.markAllAsTouched();
-      this.snackbar.info(
-        'Validation Error',
-        'Please complete all required fields highlight in red.',
-      );
+      Object.keys(this.routineForm.controls).forEach((key) => {
+        this.routineForm.get(key)?.markAsTouched();
+      });
+      this.cdr.detectChanges();
       return;
     }
 
@@ -125,22 +214,48 @@ export class AddRoutineDrawerComponent implements OnInit {
       academic_year_id: this.currentYear.id,
     };
 
-    this.timetableService.createRoutine(payload).subscribe({
+    const request = this.editData
+      ? this.timetableService.updateRoutine(this.editData.id, payload)
+      : this.timetableService.createRoutine(payload);
+
+    request.subscribe({
       next: () => {
-        this.snackbar.success('Success', 'Routine created successfully.');
+        this.snackbar.success(
+          'Success',
+          `Routine ${this.editData ? 'updated' : 'created'} successfully.`,
+        );
         this.submitting = false;
         this.saved.emit();
         this.close.emit();
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.submitting = false;
         this.snackbar.error(
           'Error',
-          err.error?.message || 'Failed to create routine.',
+          err.error?.message ||
+            `Failed to ${this.editData ? 'update' : 'create'} routine.`,
         );
         this.cdr.detectChanges();
       },
     });
+  }
+
+  onReset() {
+    if (confirm('Are you sure you want to clear the form?')) {
+      this.routineForm.reset({
+        class_id: '',
+        section_id: '',
+        subject_id: '',
+        teacher_id: '',
+        day_of_week: '',
+        start_time: '',
+        end_time: '',
+        room_number: '',
+      });
+      this.isFormSubmitted = false;
+      this.sections.set([]);
+      this.sectionOptions.set([]);
+    }
   }
 }

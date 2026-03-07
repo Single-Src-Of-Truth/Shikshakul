@@ -10,14 +10,23 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shikshakul/auth": ["libs/auth/src/index.ts"],
-      "@shikshakul/ui-kit": ["libs/ui-kit/src/index.ts"],
-      "@shikshakul/data-access": ["libs/data-access/src/index.ts"],
+      "@shikshakul/auth": [
+        "libs/auth/src/index.ts"
+      ],
+      "@shikshakul/ui-kit": [
+        "libs/ui-kit/src/index.ts"
+      ],
+      "@shikshakul/data-access": [
+        "libs/data-access/src/index.ts"
+      ],
       "@shikshakul/admin/feature-shell": [
         "libs/administrator-portal/feature-shell/src/index.ts"
       ],
@@ -99,13 +108,34 @@
       "@shikshakul/administrator-portal/feature-student-management": [
         "libs/administrator-portal/feature-student-management/src/index.ts"
       ],
+      "@shikshakul/shared/ui/datepicker": [
+        "libs/shared/ui/datepicker/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/select": [
+        "libs/shared/ui/select/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/time-picker": [
+        "libs/shared/ui/time-picker/src/index.ts"
+      ],
       "@shikshakul/administrator-portal/feature-fees": [
         "libs/administrator-portal/feature-fees/src/index.ts"
       ],
       "@shikshakul/admin/feature-timetable": [
         "libs/administrator-portal/feature-timetable/src/index.ts"
+      ],
+      "@shikshakul/shared/environments": [
+        "libs/shared/environments/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-certificates": [
+        "libs/administrator-portal/feature-certificates/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-calendar": [
+        "libs/administrator-portal/feature-calendar/src/index.ts"
       ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
