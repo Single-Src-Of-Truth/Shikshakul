@@ -79,3 +79,7 @@ type BulkCreatePermissionsRequest struct {
 type UpdateUserStatusRequest struct {
 	Status string `json:"status" binding:"required,oneof=ACTIVE SUSPENDED"`
 }
+
+type ChangeUserRoleRequest struct {
+	RoleID string `json:"role_id" binding:"required,uuid"`
+}

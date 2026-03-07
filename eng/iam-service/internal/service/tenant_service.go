@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/config"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/domain"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/cache"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/repository"
@@ -18,23 +19,36 @@ type TenantService interface {
 	UpdateTenant(ctx context.Context, id string, req dto.UpdateTenantRequest) error
 	UpdateUserStatus(ctx context.Context, userID string, status string) error
 	DeleteUser(ctx context.Context, userID string) error
+	ChangeUserRole(ctx context.Context, userID string, roleID string) error
 }
 
 type tenantService struct {
-	repo        repository.TenantRepository
-	userRepo    repository.UserRepository
-	sessionRepo repository.SessionRepository
-	redisStore  *cache.SessionStore
-	logger      *zap.Logger
+	repo           repository.TenantRepository
+	userRepo       repository.UserRepository
+	sessionRepo    repository.SessionRepository
+	rbacRepo       repository.RBACRepository
+	onboardingRepo repository.OnboardingRepository
+	redisStore     *cache.SessionStore
+	logger         *zap.Logger
 }
 
-func NewTenantService(repo repository.TenantRepository, userRepo repository.UserRepository, sessionRepo repository.SessionRepository, redisStore *cache.SessionStore, logger *zap.Logger) TenantService {
+func NewTenantService(
+	repo repository.TenantRepository,
+	userRepo repository.UserRepository,
+	sessionRepo repository.SessionRepository,
+	rbacRepo repository.RBACRepository,
+	onboardingRepo repository.OnboardingRepository,
+	redisStore *cache.SessionStore,
+	logger *zap.Logger,
+) TenantService {
 	return &tenantService{
-		repo:        repo,
-		userRepo:    userRepo,
-		sessionRepo: sessionRepo,
-		redisStore:  redisStore,
-		logger:      logger,
+		repo:           repo,
+		userRepo:       userRepo,
+		sessionRepo:    sessionRepo,
+		rbacRepo:       rbacRepo,
+		onboardingRepo: onboardingRepo,
+		redisStore:     redisStore,
+		logger:         logger,
 	}
 }
 
@@ -149,5 +163,48 @@ func (s *tenantService) DeleteUser(ctx context.Context, userID string) error {
 	}
 
 	s.logger.Info("User account deleted", zap.String("user_id", userID))
+	return nil
+}
+
+func (s *tenantService) ChangeUserRole(ctx context.Context, userID string, roleID string) error {
+	role, err := s.rbacRepo.GetRoleByID(ctx, roleID)
+	if err != nil {
+		return errors.New("invalid role specified")
+	}
+
+	if role.IsSystem {
+		userCount, err1 := s.rbacRepo.CountUsersByRole(ctx, roleID)
+		inviteCount, err2 := s.onboardingRepo.CountPendingInvitesByRole(ctx, roleID)
+
+		if err1 != nil || err2 != nil {
+			return errors.New("failed to verify system role constraints")
+		}
+
+		totalAssigned := int(userCount + inviteCount)
+		limit := config.AppConfig.MaxUsersPerSystemRole
+
+		if totalAssigned >= limit {
+			s.logger.Warn("System role assignment limit reached during role swap attempt", zap.String("role", role.Name), zap.Int("limit", limit))
+			return errors.New("security constraint: maximum number of users for this system role has been reached")
+		}
+	}
+
+	if err := s.userRepo.UpdateUserRole(ctx, userID, roleID); err != nil {
+		s.logger.Error("Failed to update user role", zap.Error(err))
+		return errors.New("failed to assign new role to user")
+	}
+
+	activeSessions, err := s.sessionRepo.GetActiveSessions(ctx, userID)
+	if err == nil {
+		for _, session := range activeSessions {
+			_ = s.redisStore.RevokeSession(ctx, session.OpaqueTokenHash)
+		}
+	}
+
+	if err := s.sessionRepo.RevokeAllUserSessions(ctx, userID); err != nil {
+		s.logger.Error("Failed to revoke Postgres sessions after role change", zap.Error(err))
+	}
+
+	s.logger.Info("User role successfully swapped and active sessions terminated", zap.String("user_id", userID), zap.String("new_role_id", roleID))
 	return nil
 }

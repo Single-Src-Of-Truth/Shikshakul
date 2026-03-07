@@ -14,12 +14,27 @@ func SeedDatabase(db *gorm.DB, logger *zap.Logger) {
 	logger.Info("Checking database seeds...")
 
 	permissions := []domain.Permission{
-		{ID: "iam:tenants:write", Description: "Can onboard new schools"},
-		{ID: "iam:roles:write", Description: "Can create custom roles"},
+		{ID: "iam:tenants:create", Description: "Can onboard new schools"},
+		{ID: "iam:tenants:read", Description: "Can view school details"},
+		{ID: "iam:tenants:update", Description: "Can modify school details"},
+
+		{ID: "iam:users:execute", Description: "Can change staff status (suspend/activate)"},
+		{ID: "iam:users:delete", Description: "Can remove staff accounts"},
+
+		{ID: "iam:roles:read", Description: "Can view custom roles"},
+		{ID: "iam:roles:create", Description: "Can create custom roles"},
+		{ID: "iam:roles:update", Description: "Can modify custom roles"},
+		{ID: "iam:roles:delete", Description: "Can delete custom roles"},
+
+		{ID: "iam:permissions:read", Description: "Can view available permissions"},
+		{ID: "iam:permissions:create", Description: "Can bulk seed new permissions"},
+
+		{ID: "iam:invites:execute", Description: "Can generate and extend invitations"},
+		{ID: "iam:invites:delete", Description: "Can cancel invitations"},
+
 		{ID: "acad:students:read", Description: "Can view student records"},
-		{ID: "acad:students:write", Description: "Can manage student admissions"},
-		{ID: "acad:fees:write", Description: "Can configure fee heads"},
-		{ID: "utility:docs:upload", Description: "Can upload documents to S3"},
+		{ID: "acad:students:create", Description: "Can manage student admissions"},
+		{ID: "utility:files:create", Description: "Can upload documents"},
 	}
 
 	for _, p := range permissions {
@@ -47,8 +62,8 @@ func SeedDatabase(db *gorm.DB, logger *zap.Logger) {
 			IdentifierType:    domain.IdentifierEmail,
 			PrimaryIdentifier: rootEmail,
 			PasswordHash:      hashedPassword,
-			FirstName:         "System",
-			LastName:          "Administrator",
+			FirstName:         "Golu",
+			LastName:          "Billauta",
 			Status:            domain.StatusActive,
 		}
 

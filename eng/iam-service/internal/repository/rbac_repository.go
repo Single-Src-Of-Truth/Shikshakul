@@ -17,6 +17,8 @@ type RBACRepository interface {
 	UpdateRole(ctx context.Context, roleID string, updates map[string]interface{}, permissionIDs []string) error
 	DeleteRoleSafely(ctx context.Context, roleID string) error
 	GetRolesByTenant(ctx context.Context, tenantID *string) ([]domain.Role, error)
+	GetRoleByID(ctx context.Context, roleID string) (*domain.Role, error)
+	CountUsersByRole(ctx context.Context, roleID string) (int64, error)
 }
 
 type rbacRepo struct {
@@ -140,4 +142,19 @@ func (r *rbacRepo) GetRolesByTenant(ctx context.Context, tenantID *string) ([]do
 
 	err := query.Find(&roles).Error
 	return roles, err
+}
+
+func (r *rbacRepo) GetRoleByID(ctx context.Context, roleID string) (*domain.Role, error) {
+	var role domain.Role
+	err := r.db.WithContext(ctx).First(&role, "id = ?", roleID).Error
+	return &role, err
+}
+
+func (r *rbacRepo) CountUsersByRole(ctx context.Context, roleID string) (int64, error) {
+	var count int64
+	err := r.db.WithContext(ctx).Table("user_roles").
+		Joins("JOIN users ON users.id = user_roles.user_id").
+		Where("user_roles.role_id = ? AND users.deleted_at IS NULL", roleID).
+		Count(&count).Error
+	return count, err
 }

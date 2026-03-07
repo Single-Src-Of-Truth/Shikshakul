@@ -28,7 +28,7 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 
 	deviceInfo := fingerprint.Extract(c.Request)
 
-	rawToken, user, err := ctrl.authService.Login(c.Request.Context(), req.TenantID, req.Identifier, req.Password, deviceInfo)
+	rawToken, user, redirectCommand, err := ctrl.authService.Login(c.Request.Context(), req.TenantID, req.Identifier, req.Password, deviceInfo)
 	if err != nil {
 
 		if err.Error() == "TENANT_SUSPENDED" {
@@ -47,9 +47,10 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 		"success": true,
 		"message": "login successful",
 		"data": gin.H{
-			"user_id":    user.ID,
-			"first_name": user.FirstName,
-			"status":     user.Status,
+			"user_id":          user.ID,
+			"first_name":       user.FirstName,
+			"status":           user.Status,
+			"redirect_command": redirectCommand,
 		},
 	})
 }

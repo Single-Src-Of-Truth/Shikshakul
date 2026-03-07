@@ -5,17 +5,17 @@ import (
 	"time"
 
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/cache"
-	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/db"
 	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/versioning"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type HealthController struct {
-	db    *db.Database
+	db    *gorm.DB
 	redis *cache.SessionStore
 }
 
-func NewHealthController(database *db.Database, redisStore *cache.SessionStore) *HealthController {
+func NewHealthController(database *gorm.DB, redisStore *cache.SessionStore) *HealthController {
 	return &HealthController{db: database, redis: redisStore}
 }
 
@@ -24,10 +24,12 @@ func (ctrl *HealthController) Ping(c *gin.Context) {
 	status := gin.H{"postgres": "UP", "redis": "UP"}
 	isHealthy := true
 
-	if err := ctrl.db.Ping(ctx); err != nil {
+	sqlDB, err := ctrl.db.DB()
+	if err != nil || sqlDB.PingContext(ctx) != nil {
 		status["postgres"] = "DOWN"
 		isHealthy = false
 	}
+
 	if err := ctrl.redis.Ping(ctx); err != nil {
 		status["redis"] = "DOWN"
 		isHealthy = false

@@ -21,18 +21,41 @@ type OnboardingService interface {
 }
 
 type onboardingService struct {
-	repo   repository.OnboardingRepository
-	logger *zap.Logger
+	repo     repository.OnboardingRepository
+	rbacRepo repository.RBACRepository
+	logger   *zap.Logger
 }
 
-func NewOnboardingService(repo repository.OnboardingRepository, logger *zap.Logger) OnboardingService {
-	return &onboardingService{repo: repo, logger: logger}
+func NewOnboardingService(repo repository.OnboardingRepository, rbacRepo repository.RBACRepository, logger *zap.Logger) OnboardingService {
+	return &onboardingService{repo: repo, rbacRepo: rbacRepo, logger: logger}
 }
 
 func (s *onboardingService) GenerateInvite(ctx context.Context, inviterID, tenantID, roleID string, identifier string) (string, string, error) {
 	iID, _ := uuid.Parse(inviterID)
 	tID, _ := uuid.Parse(tenantID)
 	rID, _ := uuid.Parse(roleID)
+
+	role, err := s.rbacRepo.GetRoleByID(ctx, roleID)
+	if err != nil {
+		return "", "", errors.New("invalid role specified")
+	}
+
+	if role.IsSystem {
+		userCount, err1 := s.rbacRepo.CountUsersByRole(ctx, roleID)
+		inviteCount, err2 := s.repo.CountPendingInvitesByRole(ctx, roleID)
+
+		if err1 != nil || err2 != nil {
+			return "", "", errors.New("failed to verify system role constraints")
+		}
+
+		totalAssigned := int(userCount + inviteCount)
+		limit := config.AppConfig.MaxUsersPerSystemRole
+
+		if totalAssigned >= limit {
+			s.logger.Warn("System role assignment limit reached", zap.String("role", role.Name), zap.Int("limit", limit))
+			return "", "", errors.New("security constraint: maximum number of users for this system role has been reached")
+		}
+	}
 
 	rawToken, err := crypto.GenerateOpaqueToken(crypto.PrefixInvite)
 	if err != nil {

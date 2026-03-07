@@ -92,3 +92,20 @@ func (ctrl *TenantController) DeleteUser(c *gin.Context) {
 
 	response.SuccessWithMsg(c, "User account successfully deleted", nil)
 }
+
+func (ctrl *TenantController) ChangeUserRole(c *gin.Context) {
+	targetUserID := c.Param("userId")
+
+	var req dto.ChangeUserRoleRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		response.Error(c, http.StatusBadRequest, "Invalid payload. 'role_id' is required and must be a valid UUID")
+		return
+	}
+
+	if err := ctrl.tenantService.ChangeUserRole(c.Request.Context(), targetUserID, req.RoleID); err != nil {
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.SuccessWithMsg(c, "User role successfully updated. The user has been logged out of all active sessions to apply the new permissions.", nil)
+}

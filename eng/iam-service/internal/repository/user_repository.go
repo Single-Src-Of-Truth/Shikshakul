@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/domain"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,7 @@ type UserRepository interface {
 	UpdateProfile(ctx context.Context, id, firstName, lastName string) error
 	SoftDelete(ctx context.Context, id string) error
 	UpdateStatus(ctx context.Context, id string, status domain.UserStatus) error
+	UpdateUserRole(ctx context.Context, userID string, roleID string) error
 }
 
 type userRepo struct {
@@ -76,4 +78,15 @@ func (r *userRepo) SoftDelete(ctx context.Context, id string) error {
 
 func (r *userRepo) UpdateStatus(ctx context.Context, id string, status domain.UserStatus) error {
 	return r.db.WithContext(ctx).Model(&domain.User{}).Where("id = ?", id).Update("status", status).Error
+}
+
+func (r *userRepo) UpdateUserRole(ctx context.Context, userID string, roleID string) error {
+	var role domain.Role
+	if err := r.db.WithContext(ctx).First(&role, "id = ?", roleID).Error; err != nil {
+		return err
+	}
+
+	user := domain.User{Base: domain.Base{ID: uuid.MustParse(userID)}}
+
+	return r.db.WithContext(ctx).Model(&user).Association("Roles").Replace(&role)
 }

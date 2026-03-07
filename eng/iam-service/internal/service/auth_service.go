@@ -18,7 +18,7 @@ import (
 )
 
 type AuthService interface {
-	Login(ctx context.Context, tenantID *string, identifier, password string, deviceInfo fingerprint.DeviceInfo) (string, *domain.User, error)
+	Login(ctx context.Context, tenantID *string, identifier, password string, deviceInfo fingerprint.DeviceInfo) (string, *domain.User, string, error)
 	Logout(ctx context.Context, rawToken string) error
 	LogoutAll(ctx context.Context, userID string) error
 	ChangePassword(ctx context.Context, userID, oldPass, newPass string) error
@@ -44,24 +44,24 @@ func NewAuthService(ur repository.UserRepository, sr repository.SessionRepositor
 	}
 }
 
-func (s *authService) Login(ctx context.Context, tenantID *string, identifier, password string, deviceInfo fingerprint.DeviceInfo) (string, *domain.User, error) {
+func (s *authService) Login(ctx context.Context, tenantID *string, identifier, password string, deviceInfo fingerprint.DeviceInfo) (string, *domain.User, string, error) {
 	user, err := s.userRepo.FindByTenantAndIdentifier(ctx, tenantID, identifier)
 	if err != nil {
-		return "", nil, errors.New("invalid credentials")
+		return "", nil, "", errors.New("invalid credentials")
 	}
 
 	if user.Status == domain.StatusSuspended {
 		s.logger.Warn("Login blocked: User account is suspended", zap.String("user_id", user.ID.String()))
-		return "", nil, errors.New("your account has been suspended by your administrator")
+		return "", nil, "", errors.New("your account has been suspended by your administrator")
 	}
 
 	if user.Tenant != nil && !user.Tenant.IsActive {
 		s.logger.Warn("Login blocked: Tenant is suspended", zap.String("tenant_id", user.TenantID.String()))
-		return "", nil, errors.New("TENANT_SUSPENDED")
+		return "", nil, "", errors.New("TENANT_SUSPENDED")
 	}
 
 	if !crypto.CheckPasswordHash(password, user.PasswordHash) {
-		return "", nil, errors.New("invalid credentials")
+		return "", nil, "", errors.New("invalid credentials")
 	}
 
 	maxSessions := config.AppConfig.MaxConcurrentSessions
@@ -85,7 +85,7 @@ func (s *authService) Login(ctx context.Context, tenantID *string, identifier, p
 
 	rawToken, err := crypto.GenerateOpaqueToken(crypto.PrefixSession)
 	if err != nil {
-		return "", nil, errors.New("failed to generate secure session")
+		return "", nil, "", errors.New("failed to generate secure session")
 	}
 	tokenHash := crypto.HashToken(rawToken)
 
@@ -104,7 +104,7 @@ func (s *authService) Login(ctx context.Context, tenantID *string, identifier, p
 
 	if err := s.sessionRepo.CreateSession(ctx, session); err != nil {
 		s.logger.Error("Failed to save session to DB", zap.Error(err))
-		return "", nil, errors.New("internal server error during login")
+		return "", nil, "", errors.New("internal server error during login")
 	}
 
 	var perms []string
@@ -130,12 +130,25 @@ func (s *authService) Login(ctx context.Context, tenantID *string, identifier, p
 	// TODO: If Redis fails, we should technically rollback Postgres, but for now, we just fail the login
 	if err := s.redisStore.SaveSession(ctx, tokenHash, payload); err != nil {
 		s.logger.Error("Failed to cache session", zap.Error(err))
-		return "", nil, errors.New("internal server error during login")
+		return "", nil, "", errors.New("internal server error during login")
+	}
+
+	redirectCommand := config.AppConfig.RedirectCommandAdmin
+
+	if len(user.Roles) > 0 {
+		primaryRole := user.Roles[0].Name
+
+		switch primaryRole {
+		case "Student":
+			redirectCommand = config.AppConfig.RedirectCommandParent
+		case "Teacher":
+			redirectCommand = config.AppConfig.RedirectCommandTeacher
+		}
 	}
 
 	s.logger.Info("User logged in successfully", zap.String("user_id", user.ID.String()))
 
-	return rawToken, user, nil
+	return rawToken, user, redirectCommand, nil
 }
 
 func (s *authService) Logout(ctx context.Context, rawToken string) error {
