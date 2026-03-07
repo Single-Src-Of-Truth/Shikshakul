@@ -1,0 +1,108 @@
+name: IAM Service Deployment (eng)
+
+on:
+    push:
+        branches: ["beta"]
+        paths:
+            - "eng/iam-service/**"
+            - "lib/core-go/**"
+            - ".github/workflows/eng-iam-cd.yml"
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        outputs:
+            image_tag: ${{ steps.generate_tag.outputs.TAG }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Generate Image Tag
+              id: generate_tag
+              run: |
+                  TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
+                  SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-5)
+                  TAG="${TIMESTAMP}-${SHORT_SHA}-staging"
+
+                  echo "TAG=$TAG" >> $GITHUB_OUTPUT
+                  echo "Generated Tag: $TAG"
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./eng/iam-service/Dockerfile
+                  push: true
+                  tags: |
+                      ${{ secrets.DOCKER_USERNAME }}/iam-service:${{ steps.generate_tag.outputs.TAG }}
+                      ${{ secrets.DOCKER_USERNAME }}/iam-service:beta
+
+    deploy-to-ec2:
+        needs: build-and-push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy via SSH
+              uses: appleboy/ssh-action@v1.0.3
+              env:
+                  IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USER }}
+                  key: ${{ secrets.EC2_SSH_KEY }}
+                  envs: IMAGE_TAG
+                  script: |
+                      IMAGE_URI="docker.io/${{ secrets.DOCKER_USERNAME }}/iam-service:$IMAGE_TAG"
+
+                      # 1. Pre-deployment Cleanup
+                      podman image prune -f
+
+                      # 2. Pull the specific new image
+                      echo "Pulling $IMAGE_URI..."
+                      podman pull $IMAGE_URI
+
+                      # 3. Graceful Shutdown
+                      echo "Gracefully stopping current IAM service..."
+                      podman stop --time 15 iam-service || true
+                      podman rm iam-service || true
+
+                      # 4. Start the new container
+                      echo "Starting new IAM container..."
+                      podman run -d \
+                        --name iam-service \
+                        --restart on-failure \
+                        -p 9000:9000 \
+                        -e PORT=9000 \
+                        -e ENVIRONMENT=staging \
+                        -e AUTO_MIGRATE=false \
+                        -e DATABASE_URL='${{ secrets.IAM_DB_URL }}' \
+                        -e REDIS_URL='${{ secrets.IAM_REDIS_URL }}' \
+                        -e REDIRECT_COMMAND_ADMIN=NAV_PORTAL_ADMIN \
+                        -e REDIRECT_COMMAND_TEACHER=NAV_PORTAL_TEACHER \
+                        -e REDIRECT_COMMAND_PARENT=NAV_PORTAL_PARENT \
+                        $IMAGE_URI
+
+                      # 5. Readiness Probe
+                      echo "Waiting 5 seconds for initialization..."
+                      sleep 5
+
+                      # Health check on port 9000 using our /ping route
+                      if curl -f http://localhost:9000/ping; then
+                          echo "Deployment Successful: IAM Health check passed!"
+
+                          # 6. Deep Cleanup
+                          echo "Running disk cleanup to remove the old image..."
+                          podman image prune -a -f
+                      else
+                          echo "Deployment Failed: IAM Health check failed!"
+                          podman logs iam-service
+                          exit 1
+                      fi
