@@ -11,6 +11,7 @@ import (
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/config"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/controller"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/infrastructure/storage"
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/routes"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/utility-service/internal/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -40,12 +41,13 @@ func main() {
 	docService := service.NewDocumentService(s3Provider, logger)
 	docController := controller.NewDocumentController(docService)
 
-	router := gin.Default()
-	docController.RegisterRoutes(router)
+	engine := gin.Default()
+
+	routes.Setup(engine, docController)
 
 	srv := &http.Server{
 		Addr:    ":" + config.AppConfig.Port,
-		Handler: router,
+		Handler: engine,
 	}
 
 	go func() {

@@ -1,12 +1,15 @@
 FROM golang:1.24-alpine AS builder
 
-WORKDIR /app
+WORKDIR /workspace
 
-COPY go.mod go.sum ./
-RUN go mod download
+COPY lib/core-go ./lib/core-go
+COPY eng/academics-service ./eng/academics-service
 
-COPY . .
+RUN go work init && \
+    go work use ./lib/core-go && \
+    go work use ./eng/academics-service
 
+WORKDIR /workspace/eng/academics-service
 RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/api/main.go
 
 FROM alpine:latest
@@ -15,7 +18,7 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates
 
-COPY --from=builder /app/main .
+COPY --from=builder /workspace/eng/academics-service/main .
 
 EXPOSE 9001
 
