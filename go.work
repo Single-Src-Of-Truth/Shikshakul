@@ -1,0 +1,8 @@
+go 1.24.5
+
+use (
+	./eng/academics-service
+	./eng/iam-service
+	./eng/utility-service
+	./lib/core-go
+)
