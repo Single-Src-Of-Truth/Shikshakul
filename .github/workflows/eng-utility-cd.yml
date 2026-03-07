@@ -5,6 +5,7 @@ on:
         branches: ["beta"]
         paths:
             - "eng/utility-service/**"
+            - "lib/core-go/**"
             - ".github/workflows/eng-utility-cd.yml"
 
 jobs:
@@ -19,14 +20,10 @@ jobs:
             - name: Generate Image Tag
               id: generate_tag
               run: |
-                  # Format: YYYY-MM-DD-HH-MM-SS
                   TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
-                  # Extract first 5 characters of the Git Commit SHA for collision avoidance
                   SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-5)
-                  # Combine into final tag
                   TAG="${TIMESTAMP}-${SHORT_SHA}-staging"
 
-                  # Set the output for subsequent steps and jobs
                   echo "TAG=$TAG" >> $GITHUB_OUTPUT
                   echo "Generated Tag: $TAG"
 
@@ -42,7 +39,7 @@ jobs:
             - name: Build and Push
               uses: docker/build-push-action@v5
               with:
-                  context: ./eng/utility-service
+                  context: .
                   file: ./eng/utility-service/Dockerfile
                   push: true
                   tags: |
@@ -65,19 +62,15 @@ jobs:
                   script: |
                       IMAGE_URI="docker.io/${{ secrets.DOCKER_USERNAME }}/utility-service:$IMAGE_TAG"
 
-                      # 1. Pre-cleanup (clear dangling partial downloads just in case)
                       podman image prune -f
 
-                      # 2. Pull the newly built specific image
                       echo "Pulling $IMAGE_URI..."
                       podman pull $IMAGE_URI
 
-                      # 3. Graceful Shutdown of existing container (Wait up to 15s for active requests)
                       echo "Gracefully stopping current service..."
                       podman stop --time 15 utility-service || true
                       podman rm utility-service || true
 
-                      # 4. Start the new container
                       echo "Starting new container..."
                       podman run -d \
                         --name utility-service \
@@ -91,15 +84,11 @@ jobs:
                         -e AWS_SECRET_ACCESS_KEY='${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
                         $IMAGE_URI
 
-                      # 5. Readiness Probe
                       echo "Waiting 5 seconds for initialization..."
                       sleep 5
 
                       if curl -f http://localhost:9004/ping; then
                           echo "Deployment Successful: Health check passed!"
-
-                          # 6. Deep Cleanup (Only runs if successful)
-                          # Removes the old image that was just orphaned by the container swap
                           echo "Running disk cleanup..."
                           podman image prune -a -f
                       else

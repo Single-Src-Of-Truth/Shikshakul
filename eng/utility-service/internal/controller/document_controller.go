@@ -117,15 +117,3 @@ func (c *DocumentController) Ping(ctx *gin.Context) {
 		ctx.JSON(http.StatusServiceUnavailable, responsePayload)
 	}
 }
-
-func (c *DocumentController) RegisterRoutes(router *gin.Engine) {
-	router.GET("/ping", c.Ping)
-	router.GET("/", c.Ping)
-	docGroup := router.Group("/api/v1/utility/docs")
-	{
-		docGroup.POST("/sign-upload", c.SignUpload)
-		docGroup.POST("/approve", c.MoveDocument)
-		docGroup.GET("/access", c.GetAccessURL)
-		docGroup.POST("/soft-delete", c.SoftDelete)
-	}
-}

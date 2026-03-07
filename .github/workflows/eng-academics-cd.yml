@@ -5,6 +5,7 @@ on:
         branches: ["beta"]
         paths:
             - "eng/academics-service/**"
+            - "lib/core-go/**"
             - ".github/workflows/eng-academics-cd.yml"
 
 jobs:
@@ -19,7 +20,6 @@ jobs:
             - name: Generate Image Tag
               id: generate_tag
               run: |
-                  # Format: YYYY-MM-DD-HH-MM-SS-<5-digit-sha>-staging
                   TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
                   SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-5)
                   TAG="${TIMESTAMP}-${SHORT_SHA}-staging"
@@ -39,7 +39,7 @@ jobs:
             - name: Build and Push
               uses: docker/build-push-action@v5
               with:
-                  context: ./eng/academics-service
+                  context: .
                   file: ./eng/academics-service/Dockerfile
                   push: true
                   tags: |
@@ -62,19 +62,15 @@ jobs:
                   script: |
                       IMAGE_URI="docker.io/${{ secrets.DOCKER_USERNAME }}/academics-service:$IMAGE_TAG"
 
-                      # 1. Pre-deployment Cleanup (Removes any dangling partial downloads)
                       podman image prune -f
 
-                      # 2. Pull the specific new image before stopping the old one
                       echo "Pulling $IMAGE_URI..."
                       podman pull $IMAGE_URI
 
-                      # 3. Graceful Shutdown (Wait up to 15s for active DB transactions/requests to finish)
                       echo "Gracefully stopping current service..."
                       podman stop --time 15 academics-service || true
                       podman rm academics-service || true
 
-                      # 4. Start the new container
                       echo "Starting new container..."
                       podman run -d \
                         --name academics-service \
@@ -88,15 +84,11 @@ jobs:
                         -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
                         $IMAGE_URI
 
-                      # 5. Readiness Probe
                       echo "Waiting 5 seconds for initialization..."
                       sleep 5
 
-                      # Health check on port 9001
                       if curl -f http://localhost:9001/health; then
                           echo "Deployment Successful: Health check passed!"
-
-                          # 6. Deep Cleanup (Only runs if successful to free up disk space)
                           echo "Running disk cleanup to remove the old image..."
                           podman image prune -a -f
                       else
