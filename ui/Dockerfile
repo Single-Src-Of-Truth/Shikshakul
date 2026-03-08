@@ -25,7 +25,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /app/dist/apps/administrator-portal/browser /usr/share/nginx/html/admin
 COPY --from=builder /app/dist/apps/teacher-portal/browser       /usr/share/nginx/html/teacher
-COPY --from=builder /app/dist/apps/guardian-portal/browser      /usr/share/nginx/html/guardian
+COPY --from=builder /app/dist/apps/guardian-portal/browser      /usr/share/nginx/html/parent
 
 EXPOSE 80
 
