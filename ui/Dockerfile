@@ -1,20 +1,20 @@
-FROM node:22-alpine AS builder
+FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 COPY . .
 
-# 1. Admin -> /admin/
-RUN npx nx run administrator-portal:build:production --base-href /admin/
+# Admin -> /admin/
+RUN bunx nx run administrator-portal:build:production --base-href /admin/
 
-# 2. Teacher -> /teacher/
-RUN npx nx run teacher-portal:build:production --base-href /teacher/
+# Teacher -> /teacher/
+RUN bunx nx run teacher-portal:build:production --base-href /teacher/
 
-# 3. Guardian -> /parent/ (URL is parent, app name is guardian-portal)
-RUN npx nx run guardian-portal:build:production --base-href /parent/
+# Guardian -> /parent/
+RUN bunx nx run guardian-portal:build:production --base-href /parent/
 
 
 FROM nginx:alpine
