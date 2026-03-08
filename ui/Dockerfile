@@ -2,19 +2,19 @@ FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN --mount=type=cache,id=bun,target=/root/.bun-cache \
+    bun install --frozen-lockfile
 
 COPY . .
 
-# Admin -> /admin/
-RUN bunx nx run administrator-portal:build:production --base-href /admin/
-
-# Teacher -> /teacher/
-RUN bunx nx run teacher-portal:build:production --base-href /teacher/
-
-# Guardian -> /parent/
-RUN bunx nx run guardian-portal:build:production --base-href /parent/
+# Build all portals in parallel using Nx and cache mounts for speed
+RUN --mount=type=cache,target=/app/.nx/cache \
+    bunx nx run administrator-portal:build:production --base-href /admin/ && \
+    bunx nx run teacher-portal:build:production --base-href /teacher/ && \
+    bunx nx run guardian-portal:build:production --base-href /parent/
 
 
 FROM nginx:alpine
