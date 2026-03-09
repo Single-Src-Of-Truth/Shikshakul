@@ -25,6 +25,7 @@ func Setup(engine *gin.Engine, deps RouterDependencies) {
 	engine.GET("/ping", deps.HealthCtrl.Ping)
 	engine.GET("/", deps.HealthCtrl.Ping)
 	engine.GET("/versions", deps.HealthCtrl.GetVersions)
+	engine.GET("/public/tenants", deps.TenantCtrl.GetPublicTenants)
 
 	// Auth Public
 	engine.POST("/login", deps.AuthCtrl.Login)

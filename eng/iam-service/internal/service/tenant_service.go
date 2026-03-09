@@ -20,6 +20,7 @@ type TenantService interface {
 	UpdateUserStatus(ctx context.Context, userID string, status string) error
 	DeleteUser(ctx context.Context, userID string) error
 	ChangeUserRole(ctx context.Context, userID string, roleID string) error
+	GetPublicTenants(ctx context.Context) ([]dto.PublicTenantResponse, error)
 }
 
 type tenantService struct {
@@ -207,4 +208,24 @@ func (s *tenantService) ChangeUserRole(ctx context.Context, userID string, roleI
 
 	s.logger.Info("User role successfully swapped and active sessions terminated", zap.String("user_id", userID), zap.String("new_role_id", roleID))
 	return nil
+}
+
+func (s *tenantService) GetPublicTenants(ctx context.Context) ([]dto.PublicTenantResponse, error) {
+	tenants, err := s.repo.GetAllTenants(ctx)
+	if err != nil {
+		s.logger.Error("Failed to list tenants for public API", zap.Error(err))
+		return nil, errors.New("failed to retrieve tenants")
+	}
+
+	var publicTenants []dto.PublicTenantResponse
+	for _, t := range tenants {
+		if t.IsActive {
+			publicTenants = append(publicTenants, dto.PublicTenantResponse{
+				ID:   t.ID.String(),
+				Name: t.Name,
+			})
+		}
+	}
+
+	return publicTenants, nil
 }

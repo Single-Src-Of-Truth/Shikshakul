@@ -83,3 +83,8 @@ type UpdateUserStatusRequest struct {
 type ChangeUserRoleRequest struct {
 	RoleID string `json:"role_id" binding:"required,uuid"`
 }
+
+type PublicTenantResponse struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}

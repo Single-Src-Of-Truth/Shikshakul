@@ -35,11 +35,16 @@ func (ctrl *InviteController) GenerateInvite(c *gin.Context) {
 
 	inviteID, rawToken, err := ctrl.onboardingService.GenerateInvite(c.Request.Context(), inviterID, requestTenantID, req.RoleID, req.Identifier)
 	if err != nil {
+		if err.Error() == "user already exists in this workspace" || err.Error() == "a pending invite already exists for this email" {
+			response.Error(c, http.StatusConflict, err.Error())
+			return
+		}
+
 		response.Error(c, http.StatusInternalServerError, "Failed to generate invite link")
 		return
 	}
 
-	// TODO: Move it to email after it's done
+	// TODO: Remove the `invite_token` when AWS SES Prod Verification is done
 	response.Created(c, "Invite generated successfully", gin.H{
 		"invite_id":    inviteID,
 		"invite_token": rawToken,

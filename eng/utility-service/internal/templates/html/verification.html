@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Join Your Shikshakul Workspace</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f4f2ed;
+                font-family: "Manrope", Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            @media screen and (max-width: 600px) {
+                .email-container {
+                    width: 100% !important;
+                    padding: 20px 10px !important;
+                }
+                .card {
+                    padding: 30px 20px !important;
+                }
+                .headline {
+                    font-size: 24px !important;
+                }
+                .btn-table {
+                    width: 100% !important;
+                }
+                .btn-link {
+                    display: block !important;
+                    text-align: center !important;
+                }
+            }
+        </style>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f2ed">
+        <table
+            role="presentation"
+            width="100%"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            style="background-color: #f4f2ed"
+        >
+            <tr>
+                <td
+                    align="center"
+                    class="email-container"
+                    style="padding: 60px 20px"
+                >
+                    <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="
+                            max-width: 550px;
+                            background-color: #ffffff;
+                            border: 1px solid #e0ddd5;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                        "
+                    >
+                        <tr>
+                            <td class="card" style="padding: 40px 50px">
+                                <div
+                                    style="
+                                        text-align: left;
+                                        margin-bottom: 30px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 14px;
+                                            font-weight: 700;
+                                            color: #0a0a0a;
+                                            letter-spacing: 1px;
+                                        "
+                                        >SHIKSHAKUL</span
+                                    >
+                                </div>
+
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        font-size: 10px;
+                                        text-transform: uppercase;
+                                        letter-spacing: 2px;
+                                        color: #888888;
+                                        font-weight: 700;
+                                    "
+                                >
+                                    Action Required
+                                </p>
+                                <h2
+                                    class="headline"
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        font-size: 26px;
+                                        color: #0a0a0a;
+                                        font-weight: 700;
+                                        line-height: 1.2;
+                                    "
+                                >
+                                    Welcome to your new workspace
+                                </h2>
+
+                                <p
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        font-size: 16px;
+                                        color: #555555;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Hello,
+                                </p>
+                                <p
+                                    style="
+                                        margin: 0 0 30px 0;
+                                        font-size: 16px;
+                                        color: #555555;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    Your institutional administrator has invited
+                                    you to join the Shikshakul ERP platform. By
+                                    accepting this invitation, you will gain
+                                    secure access to your role-specific
+                                    dashboard, communication channels, and
+                                    administrative tools.
+                                </p>
+
+                                <table
+                                    role="presentation"
+                                    width="100%"
+                                    border="0"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    style="
+                                        margin-bottom: 35px;
+                                        background-color: #f9f8f6;
+                                        padding: 20px;
+                                        border-radius: 6px;
+                                    "
+                                >
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="
+                                                    margin: 0 0 10px 0;
+                                                    font-size: 12px;
+                                                    text-transform: uppercase;
+                                                    letter-spacing: 1px;
+                                                    color: #0a0a0a;
+                                                    font-weight: 700;
+                                                "
+                                            >
+                                                Next Steps:
+                                            </p>
+                                            <ol
+                                                style="
+                                                    margin: 0;
+                                                    padding-left: 15px;
+                                                    font-size: 14px;
+                                                    color: #666666;
+                                                    line-height: 1.6;
+                                                "
+                                            >
+                                                <li style="margin-bottom: 8px">
+                                                    Click the acceptance button
+                                                    below.
+                                                </li>
+                                                <li style="margin-bottom: 8px">
+                                                    Create a secure password for
+                                                    your account.
+                                                </li>
+                                                <li>
+                                                    Access your institutional
+                                                    dashboard.
+                                                </li>
+                                            </ol>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table
+                                    class="btn-table"
+                                    role="presentation"
+                                    border="0"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    style="margin-bottom: 30px"
+                                >
+                                    <tr>
+                                        <td
+                                            align="center"
+                                            bgcolor="#0a0a0a"
+                                            style="border-radius: 30px"
+                                        >
+                                            <a
+                                                href="{{ .InviteLink }}"
+                                                target="_blank"
+                                                class="btn-link"
+                                                style="
+                                                    font-size: 13px;
+                                                    font-weight: 700;
+                                                    color: #ffffff;
+                                                    text-decoration: none;
+                                                    padding: 16px 35px;
+                                                    border: 1px solid #0a0a0a;
+                                                    border-radius: 30px;
+                                                    display: inline-block;
+                                                    text-transform: uppercase;
+                                                    letter-spacing: 1px;
+                                                "
+                                                >Accept Invitation</a
+                                            >
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        font-size: 12px;
+                                        color: #888888;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    <strong>Security Note:</strong> This
+                                    invitation link is unique to your email
+                                    address and will expire in 48 hours for
+                                    security purposes. If the button doesn't
+                                    work, copy and paste this link into your
+                                    browser:
+                                </p>
+                                <p
+                                    style="
+                                        margin: 0;
+                                        font-size: 12px;
+                                        color: #0a0a0a;
+                                        word-break: break-all;
+                                    "
+                                >
+                                    <a
+                                        href="{{ .InviteLink }}"
+                                        style="
+                                            color: #0a0a0a;
+                                            text-decoration: underline;
+                                        "
+                                        >{{ .InviteLink }}</a
+                                    >
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="max-width: 550px"
+                    >
+                        <tr>
+                            <td style="padding: 25px 0; text-align: center">
+                                <p
+                                    style="
+                                        margin: 0;
+                                        font-size: 12px;
+                                        color: #aaaaaa;
+                                        font-weight: 600;
+                                    "
+                                >
+                                    Secure Infrastructure &bull; Shikshakul ERP
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

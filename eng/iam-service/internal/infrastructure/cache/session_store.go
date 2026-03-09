@@ -36,6 +36,10 @@ func NewSessionStore(redisURL string) (*SessionStore, error) {
 	return &SessionStore{client: client}, nil
 }
 
+func (s *SessionStore) GetClient() *redis.Client {
+	return s.client
+}
+
 func (s *SessionStore) SaveSession(ctx context.Context, tokenHash string, payload SessionPayload) error {
 	data, err := json.Marshal(payload)
 	if err != nil {

@@ -109,3 +109,13 @@ func (ctrl *TenantController) ChangeUserRole(c *gin.Context) {
 
 	response.SuccessWithMsg(c, "User role successfully updated. The user has been logged out of all active sessions to apply the new permissions.", nil)
 }
+
+func (ctrl *TenantController) GetPublicTenants(c *gin.Context) {
+	tenants, err := ctrl.tenantService.GetPublicTenants(c.Request.Context())
+	if err != nil {
+		response.Error(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.Success(c, tenants)
+}
