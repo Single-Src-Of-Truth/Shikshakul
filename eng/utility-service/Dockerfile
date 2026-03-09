@@ -18,6 +18,7 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates
 
+COPY --from=builder /workspace/eng/utility-service/internal/templates ./internal/templates
 COPY --from=builder /workspace/eng/utility-service/main .
 
 EXPOSE 9004
