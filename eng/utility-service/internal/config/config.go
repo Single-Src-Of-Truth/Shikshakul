@@ -8,10 +8,12 @@ import (
 )
 
 type Config struct {
-	Port          string `mapstructure:"PORT"`
-	Environment   string `mapstructure:"ENVIRONMENT"`
-	AWSRegion     string `mapstructure:"AWS_REGION"`
-	DocBucketName string `mapstructure:"DOC_BUCKET_NAME"`
+	Port           string `mapstructure:"PORT"`
+	Environment    string `mapstructure:"ENVIRONMENT"`
+	AWSRegion      string `mapstructure:"AWS_REGION"`
+	DocBucketName  string `mapstructure:"DOC_BUCKET_NAME"`
+	SESSenderEmail string `mapstructure:"SES_SENDER_EMAIL"`
+	RedisUrl       string `mapstructure:"REDIS_URL"`
 }
 
 var AppConfig *Config
@@ -31,6 +33,8 @@ func LoadConfig() {
 	viper.BindEnv("DOC_BUCKET_NAME")
 	viper.BindEnv("AWS_ACCESS_KEY_ID")
 	viper.BindEnv("AWS_SECRET_ACCESS_KEY")
+	viper.BindEnv("SES_SENDER_EMAIL")
+	viper.BindEnv("REDIS_URL")
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Println("Config file not found, relying on System Env Variables")
@@ -55,5 +59,8 @@ func LoadConfig() {
 	}
 	if AppConfig.DocBucketName == "" {
 		AppConfig.DocBucketName = "shikshakul-docs-dev"
+	}
+	if AppConfig.SESSenderEmail == "" {
+		AppConfig.SESSenderEmail = "no-reply@shikshakul.com"
 	}
 }

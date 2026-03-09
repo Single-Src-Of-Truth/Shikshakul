@@ -3,12 +3,15 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
+	"net/url"
 	"time"
 
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/config"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/domain"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/repository"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/crypto"
+	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/events"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -21,16 +24,42 @@ type OnboardingService interface {
 }
 
 type onboardingService struct {
-	repo     repository.OnboardingRepository
-	rbacRepo repository.RBACRepository
-	logger   *zap.Logger
+	repo      repository.OnboardingRepository
+	userRepo  repository.UserRepository
+	rbacRepo  repository.RBACRepository
+	publisher events.EventPublisher
+	logger    *zap.Logger
 }
 
-func NewOnboardingService(repo repository.OnboardingRepository, rbacRepo repository.RBACRepository, logger *zap.Logger) OnboardingService {
-	return &onboardingService{repo: repo, rbacRepo: rbacRepo, logger: logger}
+func NewOnboardingService(
+	repo repository.OnboardingRepository,
+	userRepo repository.UserRepository,
+	rbacRepo repository.RBACRepository,
+	publisher events.EventPublisher,
+	logger *zap.Logger,
+) OnboardingService {
+	return &onboardingService{
+		repo:      repo,
+		userRepo:  userRepo,
+		rbacRepo:  rbacRepo,
+		publisher: publisher,
+		logger:    logger,
+	}
 }
 
 func (s *onboardingService) GenerateInvite(ctx context.Context, inviterID, tenantID, roleID string, identifier string) (string, string, error) {
+	existingUser, _ := s.userRepo.FindByTenantAndIdentifier(ctx, &tenantID, identifier)
+	if existingUser != nil {
+		s.logger.Warn("Attempted to invite an existing user", zap.String("identifier", identifier), zap.String("tenant_id", tenantID))
+		return "", "", errors.New("user already exists in this workspace")
+	}
+
+	hasPending, _ := s.repo.HasPendingInvite(ctx, tenantID, identifier)
+	if hasPending {
+		s.logger.Warn("Attempted to duplicate an invite", zap.String("identifier", identifier), zap.String("tenant_id", tenantID))
+		return "", "", errors.New("a pending invite already exists for this email")
+	}
+
 	iID, _ := uuid.Parse(inviterID)
 	tID, _ := uuid.Parse(tenantID)
 	rID, _ := uuid.Parse(roleID)
@@ -79,8 +108,31 @@ func (s *onboardingService) GenerateInvite(ctx context.Context, inviterID, tenan
 		return "", "", errors.New("failed to create invite")
 	}
 
-	// TODO (Future): Send event to Utility Service to dispatch Email/SMS with `rawToken`
-	s.logger.Info("Invite generated successfully", zap.String("identifier", identifier), zap.String("invite_id", invite.ID.String()))
+	safeToken := url.QueryEscape(rawToken)
+	inviteLink := fmt.Sprintf("%s/auth/accept-invite?token=%s", config.AppConfig.FrontendURL, safeToken)
+
+	event := events.EmailEvent{
+		EventID:   uuid.New().String(),
+		Type:      "INVITE",
+		Priority:  events.PriorityHigh,
+		Source:    "iam-service",
+		Recipient: identifier,
+		Data: map[string]interface{}{
+			"invite_link": inviteLink,
+		},
+		CreatedAt: time.Now(),
+	}
+
+	go func() {
+		bgCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		if pubErr := s.publisher.PublishEmailEvent(bgCtx, event); pubErr != nil {
+			s.logger.Error("Failed to publish invite email event", zap.Error(pubErr), zap.String("identifier", identifier))
+		}
+	}()
+
+	s.logger.Info("Invite generated and email event published", zap.String("identifier", identifier), zap.String("invite_id", invite.ID.String()))
 
 	return invite.ID.String(), rawToken, nil
 }

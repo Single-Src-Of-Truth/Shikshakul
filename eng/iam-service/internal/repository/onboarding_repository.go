@@ -16,6 +16,7 @@ type OnboardingRepository interface {
 	UpdateInvitationExpiry(ctx context.Context, id string, newExpiry time.Time) error
 	SoftDeleteInvitation(ctx context.Context, id string) error
 	CountPendingInvitesByRole(ctx context.Context, roleID string) (int64, error)
+	HasPendingInvite(ctx context.Context, tenantID, identifier string) (bool, error)
 }
 
 type onboardingRepo struct {
@@ -90,4 +91,13 @@ func (r *onboardingRepo) CountPendingInvitesByRole(ctx context.Context, roleID s
 		Where("role_id = ? AND status = ? AND expires_at > ?", roleID, domain.InvitePending, time.Now()).
 		Count(&count).Error
 	return count, err
+}
+
+func (r *onboardingRepo) HasPendingInvite(ctx context.Context, tenantID, identifier string) (bool, error) {
+	var count int64
+	err := r.db.WithContext(ctx).
+		Model(&domain.Invitation{}).
+		Where("tenant_id = ? AND identifier = ? AND status = ?", tenantID, identifier, domain.InvitePending).
+		Count(&count).Error
+	return count > 0, err
 }

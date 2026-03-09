@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/config"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/infrastructure/cache"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/crypto"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/fingerprint"
@@ -24,7 +25,8 @@ func RequireAuth(redisStore *cache.SessionStore) gin.HandlerFunc {
 
 		payload, err := redisStore.VerifyAndRefresh(c.Request.Context(), tokenHash, deviceInfo.Hash)
 		if err != nil {
-			c.SetCookie(SessionCookieName, "", -1, "/", "", true, true)
+			c.SetSameSite(http.SameSiteLaxMode)
+			c.SetCookie("skl_session", "", -1, "/", config.AppConfig.CookieDomain, true, true)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error(), "success": false})
 			return
 		}
@@ -33,7 +35,8 @@ func RequireAuth(redisStore *cache.SessionStore) gin.HandlerFunc {
 			if redisStore.IsTenantSuspended(c.Request.Context(), payload.TenantID) {
 				_ = redisStore.RevokeSession(c.Request.Context(), tokenHash)
 
-				c.SetCookie(SessionCookieName, "", -1, "/", "", true, true)
+				c.SetSameSite(http.SameSiteLaxMode)
+				c.SetCookie("skl_session", "", -1, "/", config.AppConfig.CookieDomain, true, true)
 
 				c.AbortWithStatusJSON(http.StatusPaymentRequired, gin.H{
 					"error":   "Service suspended. Please contact administration to resume access.",

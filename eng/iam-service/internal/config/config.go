@@ -19,6 +19,8 @@ type Config struct {
 	RedirectCommandAdmin   string `mapstructure:"REDIRECT_COMMAND_ADMIN"`
 	RedirectCommandTeacher string `mapstructure:"REDIRECT_COMMAND_TEACHER"`
 	RedirectCommandParent  string `mapstructure:"REDIRECT_COMMAND_PARENT"`
+	FrontendURL            string `mapstructure:"FRONTEND_URL"`
+	CookieDomain           string `mapstructure:"COOKIE_DOMAIN"`
 }
 
 var AppConfig *Config
@@ -72,5 +74,15 @@ func LoadConfig() {
 	}
 	if AppConfig.RedirectCommandParent == "" {
 		AppConfig.RedirectCommandParent = "NAV_PORTAL_PARENT"
+	}
+	if AppConfig.FrontendURL == "" {
+		AppConfig.FrontendURL = "https://apps.shikshakul.com"
+	}
+	if AppConfig.CookieDomain == "" {
+		if AppConfig.Environment == "PROD" || AppConfig.Environment == "STAGING" {
+			AppConfig.CookieDomain = ".shikshakul.com"
+		} else {
+			AppConfig.CookieDomain = "localhost"
+		}
 	}
 }

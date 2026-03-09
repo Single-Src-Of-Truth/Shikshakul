@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/config"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/service"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/dto"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/fingerprint"
@@ -40,8 +41,9 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	c.SetSameSite(http.SameSiteStrictMode)
-	c.SetCookie("skl_session", rawToken, int(36*3600), "/", "", true, true)
+	c.SetSameSite(http.SameSiteLaxMode)
+
+	c.SetCookie("skl_session", rawToken, int(36*3600), "/", config.AppConfig.CookieDomain, true, true)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -61,7 +63,9 @@ func (ctrl *AuthController) Logout(c *gin.Context) {
 		_ = ctrl.authService.Logout(c.Request.Context(), token)
 	}
 
-	c.SetCookie("skl_session", "", -1, "/", "", true, true)
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("skl_session", "", -1, "/", config.AppConfig.CookieDomain, true, true)
+
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "logged out successfully"})
 }
 
@@ -87,7 +91,9 @@ func (ctrl *AuthController) LogoutAll(c *gin.Context) {
 	userID := c.GetString("user_id")
 	_ = ctrl.authService.LogoutAll(c.Request.Context(), userID)
 
-	c.SetCookie("skl_session", "", -1, "/", "", true, true)
+	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetCookie("skl_session", "", -1, "/", config.AppConfig.CookieDomain, true, true)
+
 	response.SuccessWithMsg(c, "Logged out from all devices", nil)
 }
 

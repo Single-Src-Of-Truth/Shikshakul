@@ -7,6 +7,7 @@ import (
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/repository"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/routes"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/service"
+	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/events"
 )
 
 func InitializeApp() routes.RouterDependencies {
@@ -16,17 +17,20 @@ func InitializeApp() routes.RouterDependencies {
 	db := database.DB
 	redisStore := database.RedisStore
 
+	rawRedisClient := redisStore.GetClient()
+	eventPublisher := events.NewRedisPublisher(rawRedisClient, logger.Log)
+
 	userRepo := repository.NewUserRepository(db)
 	sessionRepo := repository.NewSessionRepository(db)
 	rbacRepo := repository.NewRBACRepository(db)
 	tenantRepo := repository.NewTenantRepository(db)
 	onboardingRepo := repository.NewOnboardingRepository(db)
 
-	authSvc := service.NewAuthService(userRepo, sessionRepo, rbacRepo, redisStore, logger.Log)
+	authSvc := service.NewAuthService(userRepo, sessionRepo, rbacRepo, redisStore, eventPublisher, logger.Log)
 	profileSvc := service.NewProfileService(userRepo, sessionRepo, redisStore, logger.Log)
 	tenantSvc := service.NewTenantService(tenantRepo, userRepo, sessionRepo, rbacRepo, onboardingRepo, redisStore, logger.Log)
 	rbacSvc := service.NewRBACService(rbacRepo, sessionRepo, redisStore, logger.Log)
-	onboardingSvc := service.NewOnboardingService(onboardingRepo, rbacRepo, logger.Log)
+	onboardingSvc := service.NewOnboardingService(onboardingRepo, userRepo, rbacRepo, eventPublisher, logger.Log)
 
 	healthCtrl := controller.NewHealthController(db, redisStore)
 	authCtrl := controller.NewAuthController(authSvc)

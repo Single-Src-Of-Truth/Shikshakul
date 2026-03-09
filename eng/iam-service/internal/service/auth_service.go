@@ -14,6 +14,8 @@ import (
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/internal/repository"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/crypto"
 	"github.com/Single-Src-Of-Truth/Shikshakul/eng/iam-service/pkg/fingerprint"
+	"github.com/Single-Src-Of-Truth/Shikshakul/lib/core-go/events"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -31,15 +33,17 @@ type authService struct {
 	sessionRepo repository.SessionRepository
 	rbacRepo    repository.RBACRepository
 	redisStore  *cache.SessionStore
+	publisher   events.EventPublisher
 	logger      *zap.Logger
 }
 
-func NewAuthService(ur repository.UserRepository, sr repository.SessionRepository, rr repository.RBACRepository, rs *cache.SessionStore, logger *zap.Logger) AuthService {
+func NewAuthService(ur repository.UserRepository, sr repository.SessionRepository, rr repository.RBACRepository, rs *cache.SessionStore, publisher events.EventPublisher, logger *zap.Logger) AuthService {
 	return &authService{
 		userRepo:    ur,
 		sessionRepo: sr,
 		rbacRepo:    rr,
 		redisStore:  rs,
+		publisher:   publisher,
 		logger:      logger,
 	}
 }
@@ -189,7 +193,7 @@ func (s *authService) ChangePassword(ctx context.Context, userID, oldPass, newPa
 }
 
 func (s *authService) ForgotPassword(ctx context.Context, tenantID *string, identifier string) (string, error) {
-	_, err := s.userRepo.FindByTenantAndIdentifier(ctx, tenantID, identifier)
+	user, err := s.userRepo.FindByTenantAndIdentifier(ctx, tenantID, identifier)
 	if err != nil {
 		return "", nil
 	}
@@ -199,10 +203,33 @@ func (s *authService) ForgotPassword(ctx context.Context, tenantID *string, iden
 
 	err = s.redisStore.SaveOTP(ctx, identifier, otp)
 	if err != nil {
+		s.logger.Error("Failed to save OTP to cache", zap.Error(err))
 		return "", err
 	}
 
-	s.logger.Info("FORGOT PASSWORD OTP GENERATED", zap.String("identifier", identifier), zap.String("otp", otp))
+	event := events.EmailEvent{
+		EventID:   uuid.New().String(),
+		Type:      "OTP_VERIFICATION",
+		Priority:  events.PriorityHigh,
+		Source:    "iam-service",
+		Recipient: identifier,
+		Data: map[string]interface{}{
+			"first_name": user.FirstName,
+			"otp_code":   otp,
+		},
+		CreatedAt: time.Now(),
+	}
+
+	go func() {
+		bgCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		if pubErr := s.publisher.PublishEmailEvent(bgCtx, event); pubErr != nil {
+			s.logger.Error("Failed to publish OTP email event", zap.Error(pubErr), zap.String("identifier", identifier))
+		}
+	}()
+
+	s.logger.Info("OTP generated and email event published", zap.String("identifier", identifier))
 	return otp, nil
 }
 

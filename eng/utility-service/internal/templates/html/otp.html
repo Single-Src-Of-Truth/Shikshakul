@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Shikshakul Security Code</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #f4f2ed;
+                font-family: "Manrope", Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* Responsive utilities */
+            @media screen and (max-width: 600px) {
+                .email-container {
+                    width: 100% !important;
+                    padding: 20px 10px !important;
+                }
+                .card {
+                    padding: 30px 20px !important;
+                }
+                .headline {
+                    font-size: 22px !important;
+                }
+                .otp-code {
+                    font-size: 28px !important;
+                    letter-spacing: 6px !important;
+                }
+                .text-sm {
+                    font-size: 14px !important;
+                }
+            }
+        </style>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f4f2ed">
+        <table
+            role="presentation"
+            width="100%"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            style="background-color: #f4f2ed"
+        >
+            <tr>
+                <td
+                    align="center"
+                    class="email-container"
+                    style="padding: 60px 20px"
+                >
+                    <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="
+                            max-width: 550px;
+                            background-color: #ffffff;
+                            border: 1px solid #e0ddd5;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+                        "
+                    >
+                        <tr>
+                            <td class="card" style="padding: 40px 50px">
+                                <div
+                                    style="
+                                        text-align: left;
+                                        margin-bottom: 30px;
+                                        border-bottom: 1px solid #f4f2ed;
+                                        padding-bottom: 20px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 14px;
+                                            font-weight: 700;
+                                            color: #0a0a0a;
+                                            letter-spacing: 1px;
+                                        "
+                                        >SHIKSHAKUL</span
+                                    >
+                                </div>
+
+                                <p
+                                    style="
+                                        margin: 0 0 10px 0;
+                                        font-size: 10px;
+                                        text-transform: uppercase;
+                                        letter-spacing: 2px;
+                                        color: #888888;
+                                        font-weight: 700;
+                                    "
+                                >
+                                    Security Protocol
+                                </p>
+                                <h2
+                                    class="headline"
+                                    style="
+                                        margin: 0 0 20px 0;
+                                        font-size: 26px;
+                                        color: #0a0a0a;
+                                        font-weight: 700;
+                                        line-height: 1.2;
+                                    "
+                                >
+                                    Your authentication code
+                                </h2>
+
+                                <p
+                                    class="text-sm"
+                                    style="
+                                        margin: 0 0 30px 0;
+                                        font-size: 16px;
+                                        color: #555555;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    A request has been made to access your
+                                    Shikshakul institutional account. Please use
+                                    the 6-digit verification code below to
+                                    complete the secure sign-in process.
+                                </p>
+
+                                <div
+                                    style="
+                                        background-color: #f9f8f6;
+                                        border: 1px dashed #cccccc;
+                                        border-radius: 6px;
+                                        padding: 20px;
+                                        text-align: center;
+                                        margin-bottom: 30px;
+                                    "
+                                >
+                                    <span
+                                        class="otp-code"
+                                        style="
+                                            font-size: 36px;
+                                            font-weight: 700;
+                                            color: #0a0a0a;
+                                            letter-spacing: 10px;
+                                        "
+                                        >{{ .OTPCode }}</span
+                                    >
+                                </div>
+
+                                <div
+                                    style="
+                                        background-color: #ffffff;
+                                        border: 1px solid #f4f2ed;
+                                        border-radius: 6px;
+                                        padding: 15px;
+                                        margin-bottom: 30px;
+                                    "
+                                >
+                                    <p
+                                        style="
+                                            margin: 0 0 5px 0;
+                                            font-size: 11px;
+                                            text-transform: uppercase;
+                                            letter-spacing: 1px;
+                                            color: #888888;
+                                            font-weight: 700;
+                                        "
+                                    >
+                                        Request Details
+                                    </p>
+                                    <p
+                                        style="
+                                            margin: 0;
+                                            font-size: 13px;
+                                            color: #0a0a0a;
+                                            line-height: 1.5;
+                                        "
+                                    >
+                                        <strong>Time:</strong> {{ .Date }}<br />
+                                        <strong>Device:</strong> Web Browser
+                                    </p>
+                                </div>
+
+                                <p
+                                    class="text-sm"
+                                    style="
+                                        margin: 0 0 15px 0;
+                                        font-size: 14px;
+                                        color: #0a0a0a;
+                                        font-weight: 600;
+                                        line-height: 1.5;
+                                    "
+                                >
+                                    Security Reminders:
+                                </p>
+                                <ul
+                                    style="
+                                        margin: 0 0 30px 0;
+                                        padding-left: 20px;
+                                        font-size: 13px;
+                                        color: #666666;
+                                        line-height: 1.6;
+                                    "
+                                >
+                                    <li>
+                                        Never share this code with anyone,
+                                        including Shikshakul staff.
+                                    </li>
+                                    <li>
+                                        This code will expire in 10 minutes.
+                                    </li>
+                                    <li>
+                                        If you did not initiate this request,
+                                        secure your account immediately.
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table
+                        role="presentation"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        style="max-width: 550px"
+                    >
+                        <tr>
+                            <td style="padding: 25px 0; text-align: center">
+                                <p
+                                    style="
+                                        margin: 0;
+                                        font-size: 12px;
+                                        color: #aaaaaa;
+                                        font-weight: 600;
+                                    "
+                                >
+                                    System Notification &bull; Powered by
+                                    Shikshakul Security
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
