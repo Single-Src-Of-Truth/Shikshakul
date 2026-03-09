@@ -79,10 +79,6 @@ func LoadConfig() {
 		AppConfig.FrontendURL = "https://apps.shikshakul.com"
 	}
 	if AppConfig.CookieDomain == "" {
-		if AppConfig.Environment == "PROD" || AppConfig.Environment == "STAGING" {
-			AppConfig.CookieDomain = ".shikshakul.com"
-		} else {
-			AppConfig.CookieDomain = "localhost"
-		}
+		AppConfig.CookieDomain = ".shikshakul.com"
 	}
 }
