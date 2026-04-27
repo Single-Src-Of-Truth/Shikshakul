@@ -1,12 +1,11 @@
 name: UI Deployment (ui)
-
 on:
+    workflow_dispatch:
     push:
         branches: ["beta"]
         paths:
             - "ui/**"
             - ".github/workflows/ui-cd.yml"
-
 jobs:
     build-and-push:
         runs-on: ubuntu-latest
@@ -15,27 +14,21 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-
             - name: Generate Image Tag
               id: generate_tag
               run: |
-                  # Format: YYYY-MM-DD-HH-MM-SS-<5-digit-sha>-staging
                   TIMESTAMP=$(date +'%Y-%m-%d-%H-%M-%S')
                   SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-5)
                   TAG="${TIMESTAMP}-${SHORT_SHA}-staging"
-
                   echo "TAG=$TAG" >> $GITHUB_OUTPUT
                   echo "Generated Tag: $TAG"
-
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
-
             - name: Login to Docker Hub
               uses: docker/login-action@v3
               with:
                   username: ${{ secrets.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
-
             - name: Build and Push
               uses: docker/build-push-action@v5
               with:
@@ -45,7 +38,6 @@ jobs:
                   tags: |
                       ${{ secrets.DOCKER_USERNAME }}/shikshakul-frontend:${{ steps.generate_tag.outputs.TAG }}
                       ${{ secrets.DOCKER_USERNAME }}/shikshakul-frontend:beta
-
     deploy-to-ec2:
         needs: build-and-push
         runs-on: ubuntu-latest
@@ -61,36 +53,22 @@ jobs:
                   envs: IMAGE_TAG
                   script: |
                       IMAGE_URI="docker.io/${{ secrets.DOCKER_USERNAME }}/shikshakul-frontend:$IMAGE_TAG"
-
-                      # 1. Pre-deployment Cleanup
                       podman image prune -f
-
-                      # 2. Pull the specific new image before stopping the old one
                       echo "Pulling $IMAGE_URI..."
                       podman pull $IMAGE_URI
-
-                      # 3. Graceful Shutdown (Nginx stops accepting new connections, finishes current ones)
                       echo "Gracefully stopping current UI service..."
                       podman stop --time 15 frontend-service || true
                       podman rm frontend-service || true
-
-                      # 4. Start the new container
                       echo "Starting new container..."
                       podman run -d \
                         --name frontend-service \
                         --restart on-failure \
                         -p 9002:80 \
                         $IMAGE_URI
-
-                      # 5. Readiness Probe
                       echo "Waiting 5 seconds for initialization..."
                       sleep 5
-
-                      # Health check on port 9002 using the /health route defined in your nginx.conf
                       if curl -f http://localhost:9002/health; then
                           echo "Deployment Successful: UI Health check passed!"
-
-                          # 6. Deep Cleanup (Only runs if successful to free up disk space)
                           echo "Running disk cleanup to remove the old image..."
                           podman image prune -a -f
                       else
