@@ -1,11 +1,24 @@
 import { Route } from '@angular/router';
 
 import { LayoutComponent } from '@shikshakul/admin/feature-shell';
+import { authGuard, authRoutes } from '@shikshakul/auth';
 
 export const appRoutes: Route[] = [
+  // ── Public Auth Routes ───────────────────────────────────────────────────
+  {
+    path: 'auth',
+    children: authRoutes,
+  },
+  {
+    path: 'forbidden',
+    redirectTo: 'auth/login',
+  },
+
+  // ── Protected App Routes (require authentication) ────────────────────────
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -56,7 +69,10 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'academics/calendar',
-        loadChildren: () => import('@shikshakul/administrator-portal/feature-calendar').then((m) => m.featureCalendarRoutes),
+        loadChildren: () =>
+          import('@shikshakul/administrator-portal/feature-calendar').then(
+            (m) => m.featureCalendarRoutes,
+          ),
       },
       {
         path: 'academics/timetable',
@@ -102,4 +118,5 @@ export const appRoutes: Route[] = [
       },
     ],
   },
+  { path: '**', redirectTo: 'auth/login' },
 ];

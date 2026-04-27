@@ -1,0 +1,16 @@
+{
+    "name": "data-access-iam",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/data-access/iam/src",
+    "prefix": "lib",
+    "projectType": "library",
+    "tags": [
+        "scope:data-access",
+        "type:iam"
+    ],
+    "targets": {
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        }
+    }
+}

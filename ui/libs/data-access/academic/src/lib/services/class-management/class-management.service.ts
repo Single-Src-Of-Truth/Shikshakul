@@ -17,11 +17,11 @@ export class ClassManagementService {
   private baseUrl = inject(ACAD_API_URL);
 
   private get classEndpoint(): string {
-    return `${this.baseUrl}/academics/setup/classes`;
+    return `${this.baseUrl}/setup/classes`;
   }
 
   private get subjectEndpoint(): string {
-    return `${this.baseUrl}/academics/setup/subjects`;
+    return `${this.baseUrl}/setup/subjects`;
   }
 
   private getSectionEndpoint(classId: string): string {
@@ -33,15 +33,15 @@ export class ClassManagementService {
   }
 
   private getClassTeacherEndpoint(sectionId: string): string {
-    return `${this.baseUrl}/academics/sections/${sectionId}/class-teacher`;
+    return `${this.baseUrl}/sections/${sectionId}/class-teacher`;
   }
 
-  private getSubjectTeacherEndpoint(sectionId: string): string {
-    return `${this.baseUrl}/academics/sections/${sectionId}/subject-teachers`;
+  private get(sectionId: string): string {
+    return `${this.baseUrl}/sections/${sectionId}/subject-teachers`;
   }
 
   private getAllocationsEndpoint(sectionId: string): string {
-    return `${this.baseUrl}/academics/sections/${sectionId}/allocations`;
+    return `${this.baseUrl}/sections/${sectionId}/allocations`;
   }
 
   getClasses(): Observable<ApiResponse<ClassGrade[]>> {
@@ -138,7 +138,7 @@ export class ClassManagementService {
       teacher_id: string;
     },
   ): Observable<any> {
-    return this.http.post(this.getSubjectTeacherEndpoint(sectionId), payload);
+    return this.http.post(`${this.baseUrl}/sections/${sectionId}/subject-teachers`, payload);
   }
 
   getAllocations(sectionId: string, academicYearId: string): Observable<any> {
@@ -166,14 +166,14 @@ export class ClassManagementService {
     data: { name: string; capacity: number },
   ): Observable<ApiResponse<Section>> {
     return this.http.put<ApiResponse<Section>>(
-      `${this.baseUrl}/academics/setup/sections/${sectionId}`,
+      `${this.baseUrl}/setup/sections/${sectionId}`,
       data,
     );
   }
 
   deleteSection(sectionId: string): Observable<void> {
     return this.http.delete<void>(
-      `${this.baseUrl}/academics/setup/sections/${sectionId}`,
+      `${this.baseUrl}/setup/sections/${sectionId}`,
     );
   }
 }

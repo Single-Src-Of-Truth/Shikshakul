@@ -84,14 +84,14 @@ export class ExamService {
 
   generateResults(data: GenerateResultRequest): Observable<ApiResponse<void>> {
     return this.http.post<ApiResponse<void>>(
-      `${this.apiUrl}/academics/results/generate`,
+      `${this.apiUrl}/results/generate`,
       data,
     );
   }
 
   publishResults(data: PublishResultRequest): Observable<ApiResponse<void>> {
     return this.http.post<ApiResponse<void>>(
-      `${this.apiUrl}/academics/results/publish`,
+      `${this.apiUrl}/results/publish`,
       data,
     );
   }
@@ -101,7 +101,7 @@ export class ExamService {
     termId: string,
   ): Observable<ApiResponse<ReportCardResponse>> {
     return this.http.get<ApiResponse<ReportCardResponse>>(
-      `${this.apiUrl}/academics/results/students/${studentId}`,
+      `${this.apiUrl}/results/students/${studentId}`,
       {
         params: { term_id: termId },
       },

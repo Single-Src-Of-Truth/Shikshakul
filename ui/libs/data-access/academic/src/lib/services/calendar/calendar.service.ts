@@ -16,31 +16,26 @@ export class CalendarService {
     private http = inject(HttpClient);
     private apiUrl = inject(ACAD_API_URL);
 
-    private get baseUrl() {
-        return `${this.apiUrl}/academics/calendar/events`;
+    private get endpoint() {
+        return `${this.apiUrl}/calendar/events`;
     }
 
     getEvents(month?: number, year?: number): Observable<ApiResponse<EventResponse[]>> {
-        let params = new HttpParams();
-        if (month !== undefined) {
-            params = params.set('month', month.toString());
-        }
-        if (year !== undefined) {
-            params = params.set('year', year.toString());
-        }
-
-        return this.http.get<ApiResponse<EventResponse[]>>(this.baseUrl, { params });
+        const params: any = {};
+        if (month) params.month = month;
+        if (year) params.year = year;
+        return this.http.get<ApiResponse<EventResponse[]>>(this.endpoint, { params });
     }
 
-    createEvent(data: CreateEventRequest): Observable<ApiResponse<EventResponse>> {
-        return this.http.post<ApiResponse<EventResponse>>(this.baseUrl, data);
+    createEvent(event: Partial<EventResponse>): Observable<ApiResponse<EventResponse>> {
+        return this.http.post<ApiResponse<EventResponse>>(this.endpoint, event);
     }
 
-    updateEvent(id: string, data: UpdateEventRequest): Observable<ApiResponse<EventResponse>> {
-        return this.http.put<ApiResponse<EventResponse>>(`${this.baseUrl}/${id}`, data);
+    updateEvent(id: string, event: Partial<EventResponse>): Observable<ApiResponse<EventResponse>> {
+        return this.http.put<ApiResponse<EventResponse>>(`${this.endpoint}/${id}`, event);
     }
 
     deleteEvent(id: string): Observable<ApiResponse<void>> {
-        return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
+        return this.http.delete<ApiResponse<void>>(`${this.endpoint}/${id}`);
     }
 }

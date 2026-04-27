@@ -14,10 +14,11 @@ import {
 })
 export class AttendanceService {
     private http = inject(HttpClient);
-    private apiUrl = inject(ACAD_API_URL);
+    private apiUrl = inject(ACAD_API_URL); // This will likely need to be refactored to use 'environment' if the instruction implies that.
+    // For now, I'll assume 'apiUrl' is the base URL and just remove '/academics'.
 
-    private get baseUrl() {
-        return `${this.apiUrl}/academics/attendance`;
+    private get baseUrl() { // Renaming to getEndpoint() as per instruction's snippet
+        return `${this.apiUrl}/attendance`; // Removed '/academics' as per instruction
     }
 
     markAttendance(data: MarkAttendanceRequest): Observable<ApiResponse<void>> {

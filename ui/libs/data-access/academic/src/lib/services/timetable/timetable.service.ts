@@ -11,8 +11,8 @@ export class TimetableService {
   private http = inject(HttpClient);
   private baseUrl = inject(ACAD_API_URL);
 
-  private get apiUrl(): string {
-    return `${this.baseUrl}/academics/timetables`;
+  private get endpoint(): string {
+    return `${this.baseUrl}/timetables`;
   }
 
   getTimetable(filters: {
@@ -20,18 +20,18 @@ export class TimetableService {
     teacher_id?: string;
     day?: string;
   }): Observable<Routine[]> {
-    return this.http.get<Routine[]>(this.apiUrl, { params: filters });
+    return this.http.get<Routine[]>(this.endpoint, { params: filters });
   }
 
   createRoutine(data: CreateRoutineRequest): Observable<any> {
-    return this.http.post<any>(this.apiUrl, data);
+    return this.http.post<any>(this.endpoint, data);
   }
 
   updateRoutine(id: string, data: CreateRoutineRequest): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
+    return this.http.put<any>(`${this.endpoint}/${id}`, data);
   }
 
   deleteRoutine(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.endpoint}/${id}`);
   }
 }

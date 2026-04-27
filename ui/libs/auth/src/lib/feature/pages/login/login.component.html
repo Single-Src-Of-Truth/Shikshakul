@@ -1,0 +1,53 @@
+<div class="skl-auth-page">
+    <div class="skl-auth-card">
+        <div class="skl-auth-header">
+            <div class="skl-logo-box">
+                <span class="material-icons">school</span>
+            </div>
+            <h1>Welcome back</h1>
+            <p>Sign in to your Shikshakul workspace</p>
+        </div>
+
+        <form class="skl-auth-form" (ngSubmit)="onSubmit()">
+            <div class="skl-field">
+                <label for="tenantId">Tenant ID</label>
+                <input id="tenantId" type="text" [(ngModel)]="tenantId" name="tenantId"
+                    placeholder="642fea1a-1c3b-463a-a5df-0311cefae3f5" autocomplete="organization" />
+            </div>
+
+            <div class="skl-field">
+                <label for="identifier">Email or Mobile</label>
+                <input id="identifier" type="text" [(ngModel)]="identifier" name="identifier"
+                    placeholder="you@school.edu" autocomplete="username" required />
+            </div>
+
+            <div class="skl-field">
+                <label for="password">Password</label>
+                <input id="password" [type]="showPassword() ? 'text' : 'password'" [(ngModel)]="password"
+                    name="password" placeholder="••••••••" autocomplete="current-password" required />
+                <button type="button" class="skl-toggle-pw" (click)="showPassword.set(!showPassword())">
+                    <span class="material-icons">{{ showPassword() ? 'visibility_off' : 'visibility' }}</span>
+                </button>
+            </div>
+
+            @if (error()) {
+            <div class="skl-auth-error">
+                <span class="material-icons">error_outline</span>
+                {{ error() }}
+            </div>
+            }
+
+            <button type="submit" class="skl-btn-primary" [disabled]="isLoading()">
+                @if (isLoading()) {
+                <span class="skl-spinner"></span>Signing in...
+                } @else {
+                Sign In
+                }
+            </button>
+        </form>
+
+        <div class="skl-auth-footer">
+            <a routerLink="/auth/forgot-password">Forgot password?</a>
+        </div>
+    </div>
+</div>

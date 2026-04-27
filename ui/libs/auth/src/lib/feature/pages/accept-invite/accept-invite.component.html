@@ -1,0 +1,55 @@
+<div class="skl-auth-page">
+    <div class="skl-auth-card">
+        <div class="skl-auth-header">
+            <div class="skl-logo-box">
+                <span class="material-icons">person_add</span>
+            </div>
+            <h1>Accept Invitation</h1>
+            <p>Complete your account setup to join Shikshakul.</p>
+        </div>
+
+        @if (!success()) {
+        <form class="skl-auth-form" (ngSubmit)="onSubmit()">
+            <div class="skl-field">
+                <label for="firstName">First Name</label>
+                <input id="firstName" type="text" [(ngModel)]="firstName" name="firstName" placeholder="Aman"
+                    required />
+            </div>
+
+            <div class="skl-field">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" type="text" [(ngModel)]="lastName" name="lastName" placeholder="Singh" />
+            </div>
+
+            <div class="skl-field">
+                <label for="password">Create Password</label>
+                <input id="password" type="password" [(ngModel)]="password" name="password"
+                    placeholder="Min. 8 characters" autocomplete="new-password" required />
+            </div>
+
+            @if (error()) {
+            <div class="skl-auth-error">
+                <span class="material-icons">error_outline</span>
+                {{ error() }}
+            </div>
+            } @if (!inviteToken) {
+            <div class="skl-auth-error">
+                <span class="material-icons">warning</span>
+                No invite token found. Please use the invite link sent to you.
+            </div>
+            }
+
+            <button type="submit" class="skl-btn-primary" [disabled]="isLoading() || !inviteToken">
+                @if (isLoading()) { <span class="skl-spinner"></span>Creating account...
+                } @else { Create Account }
+            </button>
+        </form>
+        } @else {
+        <div class="skl-auth-success">
+            <span class="material-icons">check_circle</span>
+            <p>Account created successfully! You can now sign in.</p>
+            <a routerLink="/auth/login" class="skl-btn-primary">Go to Sign In →</a>
+        </div>
+        }
+    </div>
+</div>

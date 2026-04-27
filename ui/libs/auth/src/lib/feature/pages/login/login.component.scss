@@ -1,0 +1,234 @@
+@use 'shared' as *;
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.skl-auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  padding: 1.5rem;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+  }
+}
+
+.skl-auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.skl-auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .skl-logo-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+
+    .material-icons {
+      color: white;
+      font-size: 1.5rem;
+    }
+  }
+
+  h1 {
+    font-size: 1.625rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.skl-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.skl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #cbd5e1;
+  }
+
+  input {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #f8fafc;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #475569;
+    }
+
+    &:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+  }
+
+  .skl-toggle-pw {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.65rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0;
+    display: flex;
+
+    &:hover {
+      color: #94a3b8;
+    }
+
+    .material-icons {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.skl-auth-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #fca5a5;
+  font-size: 0.875rem;
+
+  .material-icons {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+}
+
+.skl-btn-primary {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  margin-top: 0.25rem;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.skl-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skl-auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+
+  a {
+    color: #818cf8;
+    text-decoration: none;
+    font-size: 0.875rem;
+
+    &:hover {
+      color: #a5b4fc;
+      text-decoration: underline;
+    }
+  }
+}
+
+.skl-auth-success {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  color: #f8fafc;
+
+  .material-icons {
+    font-size: 3rem;
+    color: #10b981;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 1rem;
+    margin: 0;
+
+    strong {
+      color: #f8fafc;
+    }
+  }
+}
