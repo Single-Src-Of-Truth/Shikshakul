@@ -18,21 +18,21 @@ export class CertificateService {
     private http = inject(HttpClient);
     private apiUrl = inject(ACAD_API_URL);
 
-    private get baseUrl() {
-        return `${this.apiUrl}/academics/certificates`;
+    private get endpoint() {
+        return `${this.apiUrl}/certificates`;
     }
 
     getIDCards(classId: string): Observable<ApiResponse<IDCardResponse[]>> {
-        return this.http.get<ApiResponse<IDCardResponse[]>>(`${this.baseUrl}/id-cards`, {
+        return this.http.get<ApiResponse<IDCardResponse[]>>(`${this.endpoint}/id-cards`, {
             params: { class_id: classId },
         });
     }
 
     generateTC(data: IssueTCRequest): Observable<ApiResponse<TCResponse>> {
-        return this.http.post<ApiResponse<TCResponse>>(`${this.baseUrl}/tc`, data);
+        return this.http.post<ApiResponse<TCResponse>>(`${this.endpoint}/tc`, data);
     }
 
     generateBonafide(data: IssueBonafideRequest): Observable<ApiResponse<BonafideResponse>> {
-        return this.http.post<ApiResponse<BonafideResponse>>(`${this.baseUrl}/bonafide`, data);
+        return this.http.post<ApiResponse<BonafideResponse>>(`${this.endpoint}/bonafide`, data);
     }
 }

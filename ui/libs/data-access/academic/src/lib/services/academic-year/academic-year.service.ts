@@ -12,7 +12,7 @@ export class AcademicYearService {
   private baseUrl = inject(ACAD_API_URL);
 
   private get endpoint() {
-    return `${this.baseUrl}/academics/setup/academic-years`;
+    return `${this.baseUrl}/setup/academic-years`;
   }
 
   getAcademicYears(): Observable<ApiResponse<AcademicYear[]>> {

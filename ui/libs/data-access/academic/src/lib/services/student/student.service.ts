@@ -16,8 +16,8 @@ export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = inject(ACAD_API_URL);
 
-  private get apiUrl(): string {
-    return `${this.baseUrl}/academics/students`;
+  private get endpoint(): string {
+    return `${this.baseUrl}/students`;
   }
 
   getStudents(filters?: {
@@ -33,7 +33,7 @@ export class StudentService {
         params = params.set('status', filters.status);
       }
     }
-    return this.http.get<ApiResponse<any[]>>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<any[]>>(this.endpoint, { params });
   }
 
   getActiveStudents(class_id?: string): Observable<ApiResponse<any[]>> {
@@ -41,50 +41,50 @@ export class StudentService {
     if (class_id && class_id !== 'undefined') {
       params = params.set('class_id', class_id);
     }
-    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/active`, {
+    return this.http.get<ApiResponse<any[]>>(`${this.endpoint}`, {
       params,
     });
   }
 
   onboardStudent(data: StudentOnboardData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/onboard`, data);
+    return this.http.post(`${this.endpoint}/onboard`, data);
   }
 
   getStudentById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.endpoint}/${id}`);
   }
 
   updateStudent(
     id: string,
     data: Partial<StudentOnboardData>,
   ): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
+    return this.http.put<any>(`${this.endpoint}/${id}`, data);
   }
 
   approveStudent(
     id: string,
     data: { action: StudentAction; section_id?: string },
   ): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${id}/approve`, data);
+    return this.http.post<any>(`${this.endpoint}/${id}/approve`, data);
   }
 
   deleteStudent(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.endpoint}/${id}`);
   }
 
   createSchema(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/schema`, data);
+    return this.http.post<any>(`${this.endpoint}/schema`, data);
   }
 
   getActiveSchema(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/schema`);
+    return this.http.get<any>(`${this.endpoint}/schema`);
   }
 
   deleteSchema(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/schema`);
+    return this.http.delete<void>(`${this.endpoint}/schema`);
   }
 
   configureSequence(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/setup/admission-sequence`, data);
+    return this.http.post<any>(`${this.endpoint}/setup/admission-sequence`, data);
   }
 }

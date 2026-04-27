@@ -96,6 +96,9 @@
       "@shikshakul/data-access/academic": [
         "libs/data-access/academic/src/index.ts"
       ],
+      "@shikshakul/data-access/iam": [
+        "libs/data-access/iam/src/index.ts"
+      ],
       "@shikshakul/admin/feature-class-setup": [
         "libs/admin-portal/feature-class-setup/src/index.ts"
       ],

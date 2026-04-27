@@ -12,7 +12,7 @@
   </div>
 
   <nav class="skl-nav-content">
-    <div class="skl-menu-group" *ngFor="let group of menuGroups">
+    <div class="skl-menu-group" *ngFor="let group of menuGroups()">
       <div class="skl-group-label" *ngIf="group.header && !collapsed">
         {{ group.header }}
       </div>
@@ -37,13 +37,13 @@
 
   <div class="skl-sidenav-footer">
     <div class="skl-user-profile">
-      <div class="avatar">AS</div>
+      <div class="avatar">{{ initials() }}</div>
       <div class="skl-user-info" *ngIf="!collapsed">
-        <span class="name">Amaryan Singh</span>
-        <span class="role">Principal</span>
+        <span class="name">{{ displayName() }}</span>
+        <span class="role">{{ primaryRole() }}</span>
       </div>
-      <button class="skl-more-btn" *ngIf="!collapsed">
-        <span class="material-icons">more_horiz</span>
+      <button class="skl-more-btn" *ngIf="!collapsed" (click)="logout()" title="Sign out">
+        <span class="material-icons">logout</span>
       </button>
     </div>
   </div>

@@ -11,23 +11,23 @@ export class SubjectService {
   private http = inject(HttpClient);
   private baseUrl = inject(ACAD_API_URL);
 
-  private get apiUrl(): string {
-    return `${this.baseUrl}/academics/setup/subjects`;
+  private get endpoint(): string {
+    return `${this.baseUrl}/setup/subjects`;
   }
 
   getSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(this.apiUrl);
+    return this.http.get<Subject[]>(this.endpoint);
   }
 
   createSubject(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.apiUrl, subject);
+    return this.http.post<Subject>(this.endpoint, subject);
   }
 
   updateSubject(id: string, subject: Partial<Subject>): Observable<Subject> {
-    return this.http.put<Subject>(`${this.apiUrl}/${id}`, subject);
+    return this.http.put<Subject>(`${this.endpoint}/${id}`, subject);
   }
 
   deleteSubject(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.endpoint}/${id}`);
   }
 }
