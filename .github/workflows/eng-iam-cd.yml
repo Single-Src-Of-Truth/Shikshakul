@@ -61,9 +61,10 @@ jobs:
                       podman stop --time 15 iam-service || true
                       podman rm iam-service || true
                       echo "Starting new IAM container..."
+                      loginctl enable-linger ubuntu
                       podman run -d \
                         --name iam-service \
-                        --restart on-failure \
+                        --restart always \
                         -p 9000:9000 \
                         -e PORT=9000 \
                         -e ENVIRONMENT=staging \

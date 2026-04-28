@@ -61,9 +61,10 @@ jobs:
                       podman stop --time 15 academics-service || true
                       podman rm academics-service || true
                       echo "Starting new container..."
+                      loginctl enable-linger ubuntu
                       podman run -d \
                         --name academics-service \
-                        --restart on-failure \
+                        --restart always \
                         -p 9001:9001 \
                         -e PORT=9001 \
                         -e ENVIRONMENT=staging \
