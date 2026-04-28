@@ -61,9 +61,10 @@ jobs:
                       podman stop --time 15 utility-service || true
                       podman rm utility-service || true
                       echo "Starting new container..."
+                      loginctl enable-linger ubuntu
                       podman run -d \
                         --name utility-service \
-                        --restart on-failure \
+                        --restart always \
                         -p 9004:9004 \
                         -e PORT=9004 \
                         -e ENVIRONMENT=staging \
