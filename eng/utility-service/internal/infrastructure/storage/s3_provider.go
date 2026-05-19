@@ -75,8 +75,13 @@ func (p *S3Provider) InitializeInfrastructure(ctx context.Context) error {
 		},
 	})
 	if err != nil {
-		p.logger.Error("Failed to apply CORS", zap.Error(err))
-		return err
+		var apiErr smithy.APIError
+		if errors.As(err, &apiErr) && apiErr.ErrorCode() == "AccessDenied" {
+			p.logger.Warn("Access Denied when applying CORS. Ensure the bucket has correct CORS if needed.", zap.Error(err))
+		} else {
+			p.logger.Error("Failed to apply CORS", zap.Error(err))
+			return err
+		}
 	}
 
 	_, err = p.client.PutBucketLifecycleConfiguration(ctx, &s3.PutBucketLifecycleConfigurationInput{
@@ -104,8 +109,13 @@ func (p *S3Provider) InitializeInfrastructure(ctx context.Context) error {
 	})
 
 	if err != nil {
-		p.logger.Error("Failed to apply Lifecycle Rules", zap.Error(err))
-		return err
+		var apiErr smithy.APIError
+		if errors.As(err, &apiErr) && apiErr.ErrorCode() == "AccessDenied" {
+			p.logger.Warn("Access Denied when applying Lifecycle Rules. Ensure the bucket has correct rules if needed.", zap.Error(err))
+		} else {
+			p.logger.Error("Failed to apply Lifecycle Rules", zap.Error(err))
+			return err
+		}
 	}
 
 	p.logger.Info("S3 Infrastructure fully configured.")
