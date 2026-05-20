@@ -59,7 +59,7 @@ jobs:
                       podman pull $IMAGE_URI
                       echo "Gracefully stopping current service..."
                       podman stop --time 15 utility-service || true
-                      podman rm utility-service || true
+                      podman rm -f utility-service || true
                       echo "Starting new container..."
                       loginctl enable-linger ubuntu
                       podman run -d \
