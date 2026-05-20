@@ -1,0 +1,54 @@
+<div class="stats-row">
+  <div class="stat-card blue-tint">
+    <div class="top">
+      <div class="icon-box"><span class="material-icons">percent</span></div>
+      <span class="title">Overall Attendance</span>
+    </div>
+    <div class="value-row">
+      <span class="big-val">{{ overallPercentage }}%</span>
+      <span class="badge" *ngIf="overallPercentage >= 75">Good</span>
+      <span class="badge" *ngIf="overallPercentage < 75 && overallPercentage > 0"
+        style="background:#fee2e2;color:#991b1b">Low</span>
+    </div>
+    <div class="progress-bar">
+      <div class="fill" [style.width.%]="overallPercentage"></div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="top">
+      <div class="icon-box gray">
+        <span class="material-icons">calendar_month</span>
+      </div>
+      <span class="title">Working Days</span>
+    </div>
+    <div class="value-row">
+      <span class="big-val">{{ totalDays }}</span>
+    </div>
+    <div class="sub">Total Recorded</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="top">
+      <div class="icon-box green">
+        <span class="material-icons">check_circle</span>
+      </div>
+      <span class="title">Days Present</span>
+    </div>
+    <div class="value-row">
+      <span class="big-val">{{ presentDays }}</span>
+    </div>
+    <div class="sub green-text">Including Late ({{lateDays}})</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="top">
+      <div class="icon-box red"><span class="material-icons">cancel</span></div>
+      <span class="title">Days Absent</span>
+    </div>
+    <div class="value-row">
+      <span class="big-val">{{ absentDays }}</span>
+    </div>
+    <div class="sub red-text" *ngIf="absentDays > 5">Requires attention</div>
+  </div>
+</div>

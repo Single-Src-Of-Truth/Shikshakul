@@ -1,0 +1,16 @@
+{
+  "name": "feature-calendar",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/administrator-portal/feature-calendar/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": [
+    "scope:administrator-portal",
+    "type:feature"
+  ],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

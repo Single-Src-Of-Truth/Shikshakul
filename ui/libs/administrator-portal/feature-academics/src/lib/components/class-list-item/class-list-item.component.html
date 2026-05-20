@@ -1,0 +1,122 @@
+<div class="skl-data-row" [class.expanded]="isExpanded">
+  <div class="skl-row-main" (click)="toggleExpand()">
+    <div class="skl-col-name">
+      <div class="skl-name-group">
+        <span
+          class="material-icons skl-expand-icon"
+          [class.rotated]="isExpanded"
+          >chevron_right</span
+        >
+        <span class="skl-class-name">{{ classData.name }}</span>
+      </div>
+    </div>
+
+    <div class="skl-col-order">
+      <span class="skl-order-badge">#{{ classData.sort_order }}</span>
+    </div>
+
+    <div class="skl-col-stats">
+      <div class="skl-stats-group">
+        <div class="skl-stat-mini" title="Sections">
+          <span class="material-icons">grid_view</span>
+          <span>{{ classData.sections?.length || 0 }}</span>
+        </div>
+        <div class="skl-stat-mini" title="Total Students">
+          <span class="material-icons">groups</span>
+          <span>{{ classData.studentCount || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skl-col-actions" (click)="$event.stopPropagation()">
+      <div class="skl-btn-group">
+        <button
+          class="skl-action-chip"
+          (click)="onAddSection($event)"
+          title="Add Section"
+        >
+          <span class="material-icons">add_circle_outline</span>
+          <span>Section</span>
+        </button>
+        <button
+          class="skl-action-chip"
+          (click)="manageSubjects.emit()"
+          title="Manage Subjects"
+        >
+          <span class="material-icons">auto_stories</span>
+          <span>Subjects</span>
+        </button>
+        <div class="skl-action-divider"></div>
+        <button
+          class="skl-icon-btn skl-edit"
+          (click)="edit.emit()"
+          title="Edit Class"
+        >
+          <span class="material-icons">edit</span>
+        </button>
+        <button
+          class="skl-icon-btn skl-delete"
+          (click)="delete.emit()"
+          title="Delete Class"
+        >
+          <span class="material-icons">delete_outline</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expanded Section Area -->
+  <div class="skl-expanded-content" *ngIf="isExpanded">
+    <div class="skl-expanded-header" style="margin-bottom: 16px">
+      <h4
+        style="
+          margin: 0;
+          font-size: 14px;
+          color: var(--skl-text-main);
+          font-weight: 600;
+        "
+      >
+        Sections & Details
+      </h4>
+    </div>
+
+    <div
+      class="skl-sections-grid"
+      *ngIf="
+        classData.sections && classData.sections.length > 0;
+        else noSections
+      "
+    >
+      <div class="skl-section-card" *ngFor="let section of classData.sections">
+        <div class="skl-section-header">
+          <span class="skl-section-name">{{ section.name }}</span>
+          <span class="skl-section-capacity"
+            >{{ section.studentCount }}/{{ section.capacity }}</span
+          >
+        </div>
+        <div class="skl-section-progress">
+          <div
+            class="skl-progress-bar"
+            [style.width.%]="(section.studentCount / section.capacity) * 100"
+            [ngClass]="{
+              'skl-full': section.studentCount >= section.capacity,
+              'skl-near-full': section.studentCount / section.capacity > 0.8,
+            }"
+          ></div>
+        </div>
+        <button
+          class="skl-section-remove"
+          (click)="removeSection.emit(section.name); $event.stopPropagation()"
+        >
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </div>
+    <ng-template #noSections>
+      <div class="skl-empty-sections">
+        <span class="material-icons">info_outline</span>
+        <p>No sections created for this class yet.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

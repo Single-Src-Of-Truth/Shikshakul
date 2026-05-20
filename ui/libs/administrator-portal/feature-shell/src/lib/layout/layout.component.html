@@ -1,0 +1,45 @@
+<div class="skl-app-container">
+  <div class="skl-backdrop" [class.visible]="showMobileMenu" (click)="closeMobileMenu()"></div>
+
+  <shikshakul-sidenav [collapsed]="isSidebarCollapsed" [mobileActive]="showMobileMenu"
+    (toggleCollapse)="toggleSidebar()">
+  </shikshakul-sidenav>
+
+  <main class="skl-main-content">
+    <header class="skl-top-bar">
+      <div class="left-section">
+        <button class="skl-icon-btn toggle-sidebar" (click)="toggleSidebar()" title="Toggle Sidebar">
+          <span class="material-icons">menu</span>
+        </button>
+        <div class="skl-breadcrumb">
+          <span class="root">Shikshakul</span>
+          <span class="sep">/</span>
+          <span class="current">Admin Dashboard</span>
+        </div>
+      </div>
+
+      <div class="center-section">
+        <div class="skl-search-trigger">
+          <span class="material-icons">search</span>
+          <span class="placeholder">Search students, staff, or documents...</span>
+          <span class="kb-shortcut">⌘K</span>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="skl-date-badge" *ngIf="currentYear$ | async as yearRes">
+          <span class="material-icons">calendar_today</span>
+          <span>{{ yearRes.data.name }}</span>
+        </div>
+        <button class="skl-icon-btn notification">
+          <span class="material-icons">notifications</span>
+          <span class="skl-dot"></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="skl-content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

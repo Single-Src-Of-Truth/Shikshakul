@@ -1,0 +1,68 @@
+.banner {
+  background: #e8f0fe;
+  border: 1px solid #d2e3fc;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  .icon-circle {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--royal-blue);
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+  .text {
+    h3 {
+      margin: 0 0 4px 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+  }
+}
+
+.btn-download {
+  background: var(--royal-blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  &:hover {
+    background: #1557b0;
+  }
+  .material-icons {
+    font-size: 18px;
+  }
+}

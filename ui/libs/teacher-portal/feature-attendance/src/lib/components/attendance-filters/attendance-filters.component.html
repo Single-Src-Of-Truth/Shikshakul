@@ -1,0 +1,32 @@
+<div class="filters-card">
+  <div class="field-group">
+    <label>Select Class</label>
+    <div class="custom-select">
+      <select [ngModel]="selectedClassId" (ngModelChange)="onClassChange($event)">
+        <option value="" disabled>Select Class</option>
+        @for (cls of classes; track cls.id) {
+        <option [value]="cls.id">{{ cls.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>Select Section</label>
+    <div class="custom-select">
+      <select [ngModel]="selectedSectionId" (ngModelChange)="onSectionChange($event)" [disabled]="!selectedClassId">
+        <option value="" disabled>Select Section</option>
+        @for (sec of availableSections; track sec.id) {
+        <option [value]="sec.id">{{ sec.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>Select Date</label>
+    <div class="date-input">
+      <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
+    </div>
+  </div>
+</div>

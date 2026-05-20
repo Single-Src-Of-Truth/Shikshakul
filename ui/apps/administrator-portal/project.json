@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/administrator-portal",
         "browser": "apps/administrator-portal/src/main.ts",
@@ -20,20 +22,55 @@
             "input": "apps/administrator-portal/public"
           }
         ],
-        "styles": ["apps/administrator-portal/src/styles.scss"]
+        "styles": [
+          "apps/administrator-portal/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "apps/administrator-portal/src",
+            "libs/shared/styles/src/lib"
+          ]
+        }
       },
       "configurations": {
         "production": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ],
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "750kb",
+              "maximumError": "1.5mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumWarning": "10kb",
+              "maximumError": "15kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "beta": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.beta.ts"
+            }
+          ],
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "750kb",
+              "maximumError": "1.5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "10kb",
+              "maximumError": "15kb"
             }
           ],
           "outputHashing": "all"
@@ -50,7 +87,8 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "options": {
-        "port": 4200
+        "port": 4200,
+        "proxyConfig": "proxy.conf.js"
       },
       "configurations": {
         "production": {

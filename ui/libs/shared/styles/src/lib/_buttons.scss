@@ -1,0 +1,100 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.btn-primary {
+  @include btn-base;
+  background: var(--royal-blue);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: var(--royal-blue-hover);
+  }
+
+  &:disabled {
+    background: var(--text-disabled);
+    cursor: not-allowed;
+  }
+}
+
+.btn-outline {
+  @include btn-base;
+  background: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+
+  &:hover:not(:disabled) {
+    background: var(--bg-page);
+    border-color: #9aa0a6;
+  }
+}
+
+.btn-secondary {
+  @include btn-base;
+  background: white;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  
+  &:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+}
+
+.btn-text {
+  @include btn-base;
+  background: transparent;
+  color: var(--text-primary);
+  padding: 8px 12px;
+
+  &:hover {
+    background: var(--bg-page);
+  }
+
+  &.danger {
+    color: var(--color-danger);
+    &:hover {
+      background: var(--bg-danger);
+    }
+  }
+}
+
+.icon-btn-sm {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-disabled);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  .material-icons {
+    font-size: 20px;
+  }
+
+  &:hover {
+    background: var(--royal-blue-light);
+    color: var(--royal-blue);
+  }
+}
+
+.icon-btn-square {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--royal-blue);
+  }
+
+  .material-icons {
+    font-size: 20px;
+  }
+}

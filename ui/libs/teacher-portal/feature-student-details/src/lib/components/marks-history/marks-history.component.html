@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="header">
+    <h3>Subject Performance: Mathematics</h3>
+    <button class="pill-btn">Mathematics (My Subject)</button>
+  </div>
+
+  <table class="marks-table">
+    <thead>
+      <tr>
+        <th>EXAM NAME</th>
+        <th>DATE</th>
+        <th>MAX MARKS</th>
+        <th>OBTAINED</th>
+        <th>GRADE</th>
+        <th>REMARKS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let exam of exams">
+        <td class="bold">{{ exam.name }}</td>
+        <td>{{ exam.date }}</td>
+        <td>{{ exam.max }}</td>
+        <td class="bold">{{ exam.obtained }}</td>
+        <td>
+          <span class="grade-badge" [ngClass]="getGradeClass(exam.grade)">{{
+            exam.grade
+          }}</span>
+        </td>
+        <td class="remark">{{ exam.remarks }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="observation-box">
+    <h4>Teacher's Observation</h4>
+    <div class="content">
+      <div class="bar"></div>
+      <p>{{ observation }}</p>
+    </div>
+    <span class="meta">Last updated: 15 Dec 2023 by Mrs. Iyer</span>
+  </div>
+</div>

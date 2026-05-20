@@ -1,0 +1,107 @@
+@use 'shared' as *;
+
+.role-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.list-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  .badge {
+    background: var(--royal-blue-light);
+    color: var(--royal-blue);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+}
+
+.role-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--white);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+
+  &.active {
+    background: var(--royal-blue-light);
+    border-color: var(--border-subtle);
+    .icon-box {
+      background: var(--white);
+      color: var(--royal-blue);
+    }
+    .chevron {
+      opacity: 1;
+      color: var(--royal-blue);
+    }
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    @include flex-center;
+    background: var(--bg-page);
+    color: var(--text-secondary);
+    &.blue {
+      background: var(--royal-blue-light);
+      color: var(--royal-blue);
+    }
+    &.purple {
+      background: #f3e5f5;
+      color: #9c27b0;
+    }
+    &.orange {
+      background: var(--bg-warning);
+      color: var(--color-warning);
+    }
+  }
+
+  .info {
+    flex: 1;
+    .name {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+  }
+
+  .chevron {
+    font-size: 18px;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}

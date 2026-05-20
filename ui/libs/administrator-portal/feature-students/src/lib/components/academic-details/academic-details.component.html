@@ -1,0 +1,65 @@
+<div class="form-card" [formGroup]="formGroup">
+  <div class="card-header">
+    <h3 class="card-title">Academic Assignment</h3>
+    <span class="material-icons header-icon">school</span>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-field">
+      <label>Board <span class="required">*</span></label>
+      <select
+        formControlName="board"
+        [class.invalid]="
+          formGroup.get('board')?.invalid && formGroup.get('board')?.touched
+        "
+      >
+        <option value="" disabled selected>Select Board</option>
+        <option value="CBSE">CBSE</option>
+        <option value="ICSE">ICSE</option>
+        <option value="STATE">State Board</option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label>Class/Standard <span class="required">*</span></label>
+      <select
+        formControlName="class"
+        [class.invalid]="
+          formGroup.get('class')?.invalid && formGroup.get('class')?.touched
+        "
+      >
+        <option value="" disabled selected>Select Class</option>
+        <option *ngFor="let cls of classes" [value]="cls.id">
+          {{ cls.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label>Section <span class="required">*</span></label>
+      <select
+        formControlName="section"
+        [class.invalid]="
+          formGroup.get('section')?.invalid && formGroup.get('section')?.touched
+        "
+      >
+        <option value="" disabled selected>Select Section</option>
+        <option
+          *ngIf="classes.length > 0 && sections.length === 0"
+          value=""
+          disabled
+        >
+          Select a class first
+        </option>
+        <option *ngFor="let sec of sections" [value]="sec.id">
+          {{ sec.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label>Roll Number</label>
+      <input type="text" formControlName="rollNumber" placeholder="e.g. 24" />
+    </div>
+  </div>
+</div>

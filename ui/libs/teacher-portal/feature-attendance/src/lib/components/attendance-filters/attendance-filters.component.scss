@@ -1,0 +1,53 @@
+.filters-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .custom-select,
+  .date-input input {
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: white;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #b0b0b0;
+    }
+    .material-icons {
+      color: var(--text-secondary);
+    }
+  }
+
+  /* Date Input Specifics */
+  .date-input input {
+    width: 100%;
+    font-family: inherit;
+  }
+}

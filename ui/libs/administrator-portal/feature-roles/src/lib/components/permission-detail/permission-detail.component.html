@@ -1,0 +1,56 @@
+<div class="detail-card">
+  <div class="card-header">
+    <div class="text">
+      <h2>
+        Permissions for '{{ role?.name }}'
+        <span class="badge">Active Role</span>
+      </h2>
+      <p class="meta">Last updated by Admin on Oct 24, 2023</p>
+    </div>
+    <div class="actions">
+      <button class="btn-outline">Discard Changes</button>
+      <button class="btn-primary" (click)="save.emit()">
+        <span class="material-icons">save</span> Save Permissions
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll-area">
+    <div
+      class="perm-group"
+      *ngFor="let group of permissionGroups; let gIdx = index"
+    >
+      <div class="group-header">
+        <div class="title">
+          <span class="material-icons group-icon">{{ group.icon }}</span>
+          <h3>{{ group.name }}</h3>
+        </div>
+        <div class="select-all">
+          <label>Select All</label>
+          <input type="checkbox" (change)="toggleGroup(gIdx, $event)" />
+        </div>
+      </div>
+
+      <div class="toggles-grid">
+        <div
+          class="toggle-item"
+          *ngFor="let perm of group.permissions; let pIdx = index"
+        >
+          <div class="info">
+            <span class="label">{{ perm.label }}</span>
+            <span class="desc">{{ perm.description }}</span>
+          </div>
+
+          <label class="switch">
+            <input
+              type="checkbox"
+              [checked]="perm.enabled"
+              (change)="togglePermission(gIdx, pIdx)"
+            />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

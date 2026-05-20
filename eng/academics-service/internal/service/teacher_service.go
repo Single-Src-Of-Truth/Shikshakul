@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand"
 
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/domain"
 	"github.com/Modulix-IT/Shikshakul-Backend-MicroService/academics-service/internal/repository"
@@ -146,9 +145,11 @@ func (s *TeacherService) ApproveTeacher(tenantID, teacherID uuid.UUID, action st
 		return teacher, err
 	}
 
-	empID := fmt.Sprintf("EMP-%d", rand.Intn(90000)+10000)
 	teacher.Status = domain.StatusActive
-	teacher.EmployeeID = empID
+	// Future Integration Note:
+	// Here is where you will eventually add:
+	// 1. gRPC call to IAM -> Create User -> Get UserID -> teacher.UserID = userID
+	// 2. gRPC call to Ops -> Create Employee -> Get EmpID (maybe store as reference or just ignore)
 
 	err = s.Repo.UpdateTeacher(teacher)
 	return teacher, err

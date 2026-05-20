@@ -1,0 +1,49 @@
+// --- BRAND COLORS & THEME ---
+:root {
+  /* Core brand colors */
+  --royal-blue: #1a73e8;
+  --royal-blue-hover: #1557b0;
+  --royal-blue-light: #e8f0fe;
+
+  /* Neutrals & Text */
+  --text-primary: #1f1f1f;
+  --text-secondary: #5f6368;
+  --text-disabled: #dadce0;
+  --white: #ffffff;
+
+  /* Borders & Backgrounds */
+  --border-color: #e0e0e0;
+  --border-subtle: #f1f3f4;
+  --bg-app: #f0f2f5;
+  --bg-surface: #ffffff;
+  --bg-hover: #f8fbff;
+  --bg-page: #f8f9fa;
+
+  /* Feedback Colors */
+  --color-success: #188038;
+  --bg-success: #e6f4ea;
+  --color-warning: #ea8600;
+  --bg-warning: #fef7e0;
+  --color-danger: #d93025;
+  --bg-danger: #fce8e6;
+
+  /* Shikshakul Premium Aesthetic (SKL) */
+  --skl-bg-sidebar: #f7f7f5;
+  --skl-bg-content: #ffffff;
+  --skl-text-main: #37352f;
+  --skl-text-light: #787774;
+  --skl-hover: rgba(55, 53, 47, 0.08);
+  --skl-hover-active: rgba(55, 53, 47, 0.12);
+  --skl-border: rgba(55, 53, 47, 0.09);
+  --skl-radius: 6px;
+  --skl-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+// SCSS Variables for easier use in mixins/functions
+$primary: #1a73e8;
+$primary-hover: #1557b0;
+$text-primary: #1f1f1f;
+$text-secondary: #5f6368;
+$border: #e0e0e0;
+$white: #ffffff;
+$bg-app: #f0f2f5;

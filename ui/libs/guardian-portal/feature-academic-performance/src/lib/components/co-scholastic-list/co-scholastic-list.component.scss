@@ -1,0 +1,83 @@
+/* Shared Card Style */
+.card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  h3 {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+/* Chart Specifics */
+.chart-box {
+  margin-bottom: 16px;
+  .chart-content {
+    height: 120px;
+    position: relative;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 8px;
+    .point {
+      width: 8px;
+      height: 8px;
+      background: var(--royal-blue);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .point.p4 {
+      background: #fbc02d;
+    } /* Lowest highlight */
+  }
+  .labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #9aa0a6;
+    font-weight: 700;
+    padding: 0 10px;
+  }
+}
+.legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .dot.blue {
+    background: var(--royal-blue);
+  }
+  .dot.yellow {
+    background: #fbc02d;
+  }
+}
+
+/* Co-Scholastic List */
+.list .item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  &:last-child {
+    border: none;
+  }
+  span {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .grade {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+}

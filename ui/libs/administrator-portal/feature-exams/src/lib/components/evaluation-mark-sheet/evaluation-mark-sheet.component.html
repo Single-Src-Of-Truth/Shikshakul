@@ -1,0 +1,173 @@
+<div class="mark-sheet-container">
+  <header class="page-header" *ngIf="markSheet()">
+    <div class="breadcrumbs">
+      <span class="link" (click)="goBack()">Examinations</span>
+      <span class="sep">/</span> <span class="current">Entry</span>
+    </div>
+
+    <div class="header-main">
+      <div class="title-env">
+        <h1>Marks Entry Sheet</h1>
+        <p class="subtitle">
+          Enter marks for the selected examination and subject.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Mock export button for UI consistency -->
+        <button class="btn-outline">
+          <span class="material-icons">file_download</span> Export List
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats-ribbon" *ngIf="markSheet()">
+    <div class="stat-box">
+      <div class="box-header">
+        <span class="label">EXAM NAME</span>
+        <span class="material-icons icon-bg">description</span>
+      </div>
+      <div class="value">{{ markSheet()?.term_name || 'Examination' }}</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="box-header">
+        <span class="label">SUBJECT</span>
+        <span class="material-icons icon-bg">functions</span>
+      </div>
+      <div class="value">{{ markSheet()?.subject_name }}</div>
+    </div>
+
+    <div class="stat-box">
+      <div class="box-header">
+        <span class="label">CLASS/SECTION</span>
+        <span class="material-icons icon-bg">groups</span>
+      </div>
+      <div class="value">{{ markSheet()?.class_name || 'Class' }}</div>
+    </div>
+
+    <div class="stat-box highlight">
+      <div class="box-header">
+        <span class="label">MAX MARKS</span>
+        <span class="material-icons icon-bg">star_border</span>
+      </div>
+      <div class="value">{{ markSheet()?.max_marks }}</div>
+    </div>
+  </div>
+
+  <div class="grid-card" *ngIf="!loading()">
+    <div class="card-header">
+      <h2>Student List</h2>
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Search student..." />
+      </div>
+    </div>
+
+    <table class="marks-table">
+      <thead>
+        <tr>
+          <th class="col-roll">ROLL NO</th>
+          <th class="col-name">STUDENT NAME</th>
+          <th class="col-attendance">ATTENDANCE</th>
+          <th class="col-marks">OBTAINED MARKS</th>
+          <th class="col-action">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let s of markSheet()?.students; let i = index"
+          [class.absent]="s.is_absent"
+        >
+          <td class="col-roll">
+            {{ s.roll_number || (i + 1).toString().padStart(2, '0') }}
+          </td>
+          <td class="col-name">
+            <div class="student-profile">
+              <div class="avatar" [ngClass]="getAvatarColor(s.first_name)">
+                {{ getInitials(s) }}
+              </div>
+              <span class="name">{{ s.first_name }} {{ s.last_name }}</span>
+            </div>
+          </td>
+          <td class="col-attendance">
+            <div
+              class="toggle-switch"
+              [class.active]="!s.is_absent"
+              (click)="!isFinalized() && toggleAbsent(s)"
+            >
+              <div class="knob"></div>
+            </div>
+            <span
+              class="status-text"
+              [class.present]="!s.is_absent"
+              [class.absent]="s.is_absent"
+            >
+              {{ s.is_absent ? 'Absent' : 'Present' }}
+            </span>
+          </td>
+          <td class="col-marks">
+            <div class="marks-input-wrapper">
+              <input
+                type="number"
+                [ngModel]="s.marks_obtained"
+                (ngModelChange)="onMarksChange(s, $event)"
+                [disabled]="s.is_absent || isFinalized()"
+                [max]="markSheet()?.max_marks || 100"
+                min="0"
+                placeholder="--"
+                class="marks-input"
+              />
+              <span class="max-divider">/{{ markSheet()?.max_marks }}</span>
+            </div>
+          </td>
+          <td class="col-action">
+            <button class="btn-icon">
+              <span class="material-icons">more_vert</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="table-footer" *ngIf="markSheet()?.students?.length">
+      <span class="showing-text"
+        >Showing <strong>1</strong> to
+        <strong>{{ markSheet()?.students?.length }}</strong> of
+        <strong>{{ markSheet()?.students?.length }}</strong> students</span
+      >
+      <div class="pagination">
+        <button class="btn-page" disabled>Previous</button>
+        <button class="btn-page" disabled>Next</button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="markSheet()?.students?.length === 0">
+      <span class="material-icons">people_outline</span>
+      <p>No students enrolled for this examination.</p>
+    </div>
+  </div>
+
+  <div class="bottom-action-bar" *ngIf="markSheet()">
+    <div class="info">
+      <span class="material-icons">info_outline</span>
+      Unsaved changes will be lost.
+      {{ isFinalized() ? 'This sheet is locked.' : '' }}
+    </div>
+
+    <div class="actions" *ngIf="!isFinalized()">
+      <button class="btn-draft" (click)="save(false)" [disabled]="submitting()">
+        Save as Draft
+      </button>
+      <button class="btn-submit" (click)="save(true)" [disabled]="submitting()">
+        <span class="material-icons">check_circle</span> Final Submit
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading()">
+    <span class="material-icons spin">refresh</span>
+    <p>Loading mark sheet...</p>
+  </div>
+</div>

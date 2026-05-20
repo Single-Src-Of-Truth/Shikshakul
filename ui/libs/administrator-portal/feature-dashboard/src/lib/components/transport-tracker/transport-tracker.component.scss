@@ -1,0 +1,108 @@
+@use 'shared' as *;
+
+.tracker-container {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.widget-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+.route-list {
+  padding: 8px 0;
+  flex: 1;
+}
+
+.route-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  &:hover {
+    background: var(--bg-hover);
+  }
+
+  .icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: var(--bg-page);
+    color: var(--text-secondary);
+    @include flex-center;
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+
+  .info {
+    flex: 1;
+    .route-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .status-row {
+      font-size: 11px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      &.success {
+        color: var(--color-success);
+      }
+      &.warning {
+        color: var(--color-warning);
+      }
+      &.neutral {
+        color: var(--text-secondary);
+      }
+      .detail {
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+    }
+  }
+
+  .plate-badge {
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-secondary);
+    background: var(--bg-page);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+}
+
+.view-map-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  background: #fafafa;
+  color: var(--royal-blue);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background: var(--royal-blue-light);
+  }
+}

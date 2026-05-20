@@ -1,0 +1,103 @@
+@use 'shared' as *;
+
+.skl-calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.skl-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.skl-today-btn {
+  background: white;
+  border: 1px solid var(--skl-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--skl-text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--skl-bg-sidebar);
+    border-color: #cbd5e1;
+  }
+}
+
+.skl-nav-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.skl-icon-btn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--skl-text-light);
+  cursor: pointer;
+
+  &:hover {
+    background: #e2e8f0;
+    color: var(--skl-text-main);
+  }
+
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+.skl-current-month {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--skl-text-main);
+  min-width: 150px;
+}
+
+.skl-custom-datepicker-wrapper {
+  ::ng-deep {
+    .skl-datepicker-container {
+      width: 160px;
+    }
+
+    .skl-datepicker-trigger {
+      background: #fbfbfc;
+      border: 1px solid var(--skl-border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      height: 32px;
+
+      &:hover {
+        border-color: var(--skl-text-light);
+        background: white;
+      }
+
+      .skl-date-text {
+        font-size: 13px;
+        color: var(--skl-text-main);
+        font-weight: 500;
+      }
+
+      .material-icons {
+        font-size: 16px;
+      }
+    }
+
+    .skl-calendar-popover {
+      left: auto !important;
+      right: 0 !important;
+      transform-origin: top right;
+    }
+  }
+}

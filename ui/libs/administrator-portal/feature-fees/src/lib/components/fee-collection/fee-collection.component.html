@@ -1,0 +1,242 @@
+<div class="skl-section-container">
+  <div class="skl-directory-view" *ngIf="viewMode === 'DIRECTORY'">
+    <div class="skl-card skl-search-section">
+      <div class="skl-card-body">
+        <div class="skl-search-toolbar">
+          <div class="skl-search-box-wrapper full-width">
+            <span class="material-icons">search</span>
+            <input
+              type="text"
+              placeholder="Search by Student Name or Admission No..."
+              [(ngModel)]="searchQuery"
+              (keyup.enter)="searchStudent()"
+            />
+            <button
+              *ngIf="searchQuery"
+              class="skl-icon-btn"
+              (click)="searchQuery = ''; students = []"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <button class="skl-btn-primary search-btn" (click)="searchStudent()">
+            Find Student
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="skl-card skl-mt-24" *ngIf="students.length > 0">
+      <div class="skl-card-header">
+        <h3 class="skl-card-title">Student Directory</h3>
+      </div>
+      <div class="skl-table-wrapper">
+        <table class="skl-data-table">
+          <thead>
+            <tr>
+              <th>Admission No</th>
+              <th>Student Name</th>
+              <th>Class-Section</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of students">
+              <td class="skl-td-bold">{{ s.admission_no || '---' }}</td>
+              <td>
+                <div class="skl-student-cell">
+                  <div class="skl-mini-avatar">
+                    {{ s.first_name.charAt(0).toUpperCase() }}
+                  </div>
+                  <span>{{ s.first_name }} {{ s.last_name }}</span>
+                </div>
+              </td>
+              <td>
+                {{ s.class?.name || '---' }} - {{ s.section?.name || '---' }}
+              </td>
+              <td>
+                <button class="skl-btn-collect" (click)="selectStudent(s)">
+                  <span class="material-icons">payments</span>
+                  Collect Fee
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="skl-card-footer">
+        <span class="skl-hint">Showing {{ students.length }} results</span>
+      </div>
+    </div>
+
+    <div class="skl-welcome-state" *ngIf="students.length === 0">
+      <div class="skl-welcome-icon">
+        <span class="material-icons">person_search</span>
+      </div>
+      <h2>Find a Student</h2>
+      <p>
+        Search for a student by their name or admission number to start
+        collecting fees and viewing payment history.
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="skl-collector-view"
+    *ngIf="viewMode === 'COLLECTOR' && selectedStudent"
+  >
+    <div class="skl-navigation-bar">
+      <button class="back-btn" (click)="backToDirectory()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Directory</span>
+      </button>
+    </div>
+
+    <div class="skl-content-grid">
+      <div class="skl-card">
+        <div class="skl-card-header">
+          <h3 class="skl-card-title">
+            <span class="material-icons">payments</span>
+            Transaction Details
+          </h3>
+        </div>
+
+        <div class="skl-card-body">
+          <div class="skl-form-grid">
+            <div class="skl-form-group">
+              <label>Paying Amount (₹) <span class="skl-req">*</span></label>
+              <input
+                type="number"
+                [(ngModel)]="paymentAmount"
+                class="skl-amount-input"
+                placeholder="0"
+              />
+              <span class="skl-hint"
+                >Full outstanding amount selected by default</span
+              >
+            </div>
+            <div class="skl-form-group">
+              <label>Payment Date</label>
+              <input
+                type="text"
+                [value]="todayDate | date: 'dd/MM/yyyy'"
+                disabled
+              />
+            </div>
+          </div>
+
+          <div class="skl-form-group mb-24">
+            <label>Payment Mode <span class="skl-req">*</span></label>
+            <div class="skl-mode-grid">
+              <div
+                class="skl-mode-tile"
+                [class.active]="paymentMode === 'CASH'"
+                (click)="paymentMode = 'CASH'"
+              >
+                <span class="material-icons">payments</span>
+                <span>Cash</span>
+              </div>
+              <div
+                class="skl-mode-tile"
+                [class.active]="paymentMode === 'ONLINE'"
+                (click)="paymentMode = 'ONLINE'"
+              >
+                <span class="material-icons">qr_code_scanner</span>
+                <span>Online</span>
+              </div>
+              <div
+                class="skl-mode-tile"
+                [class.active]="paymentMode === 'UPI'"
+                (click)="paymentMode = 'UPI'"
+              >
+                <span class="material-icons">smartphone</span>
+                <span>UPI</span>
+              </div>
+              <div
+                class="skl-mode-tile"
+                [class.active]="paymentMode === 'CHEQUE'"
+                (click)="paymentMode = 'CHEQUE'"
+              >
+                <span class="material-icons">account_balance</span>
+                <span>Cheque</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skl-form-group mb-24" *ngIf="paymentMode !== 'CASH'">
+            <label
+              >{{
+                paymentMode === 'CHEQUE'
+                  ? 'Cheque Number'
+                  : paymentMode === 'UPI'
+                    ? 'UPI ID / UTR'
+                    : 'Transaction ID'
+              }}
+              <span class="skl-req">*</span></label
+            >
+            <input type="text" placeholder="Enter reference number" />
+          </div>
+
+          <div class="skl-form-group full-width">
+            <label>Remarks (Optional)</label>
+            <textarea
+              rows="3"
+              placeholder="Any notes regarding this payment..."
+              [(ngModel)]="remarks"
+            ></textarea>
+          </div>
+
+          <div class="skl-form-footer">
+            <button class="skl-btn-collect" (click)="submitPayment()">
+              <span class="material-icons">print</span>
+              <span>Collect & Print Receipt</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="skl-summary-stack">
+        <div class="skl-stat-summary outstanding">
+          <span class="skl-label">Total Outstanding</span>
+          <div class="skl-amount">₹{{ totalDue | number }}</div>
+          <div class="skl-alert-tag" *ngIf="totalDue > 0">
+            <span class="material-icons">warning</span>
+            <span>Due since last month</span>
+          </div>
+        </div>
+
+        <div class="skl-profile-mini">
+          <div class="skl-avatar-lg">
+            {{ selectedStudent.first_name.charAt(0).toUpperCase() }}
+          </div>
+          <h3>
+            {{ selectedStudent.first_name }} {{ selectedStudent.last_name }}
+          </h3>
+          <span class="skl-badge"
+            >Adm: {{ selectedStudent.admission_no || '---' }}</span
+          >
+
+          <div class="skl-info-list">
+            <div class="skl-info-row">
+              <span class="skl-label">Class & Section</span>
+              <span class="skl-val"
+                >{{ selectedStudent.class?.name }} -
+                {{ selectedStudent.section?.name }}</span
+              >
+            </div>
+            <div class="skl-info-row">
+              <span class="skl-label">Father's Name</span>
+              <span class="skl-val">{{
+                selectedStudent.profile_data?.father_name
+              }}</span>
+            </div>
+            <div class="skl-info-row">
+              <span class="skl-label">Contact</span>
+              <span class="skl-val">{{ selectedStudent.mobile }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

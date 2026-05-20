@@ -1,0 +1,43 @@
+<div class="skl-calendar-grid-container">
+  <div class="skl-grid-header">
+    <div *ngFor="let day of weekDays" class="skl-header-cell">
+      {{ day.substring(0, 3) }}
+    </div>
+  </div>
+
+  <div class="skl-grid-body">
+    <div
+      *ngFor="let day of calendarDays()"
+      class="skl-day-cell"
+      [class.skl-not-current]="!day.isCurrentMonth"
+      [class.skl-selected-cell]="day.isSelected"
+    >
+      <div class="skl-date-header">
+        <span class="skl-day-number" [class.skl-today]="day.isToday">
+          {{ day.date.getDate() }}
+        </span>
+        <button
+          *ngIf="!day.isPast"
+          class="skl-add-event-btn"
+          (click)="$event.stopPropagation(); addClick.emit(day.date)"
+          title="Add event on this day"
+        >
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+
+      <div class="skl-events-stack">
+        <div
+          *ngFor="let event of day.events"
+          class="skl-event-pill"
+          [ngClass]="getEventClass(event.event_type)"
+          (click)="eventClick.emit(event)"
+          [title]="event.title"
+        >
+          <div class="skl-event-dot"></div>
+          <span class="skl-event-title">{{ event.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

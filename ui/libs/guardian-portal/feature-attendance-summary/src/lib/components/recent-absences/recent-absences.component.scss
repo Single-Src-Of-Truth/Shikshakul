@@ -1,0 +1,61 @@
+.widget-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+}
+
+.absence-item {
+  background: #fce8e6;
+  border: 1px solid #fad2cf;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  .icon-sq {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .material-icons {
+      font-size: 18px;
+      color: #d93025;
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    .date {
+      font-size: 13px;
+      font-weight: 700;
+      color: #c5221f;
+    }
+    .reason {
+      font-size: 11px;
+      color: #a50e0e;
+    }
+  }
+}
+
+.link-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  color: var(--royal-blue);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 8px;
+}

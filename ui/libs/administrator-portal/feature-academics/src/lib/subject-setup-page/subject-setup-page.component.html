@@ -1,0 +1,177 @@
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-content">
+      <div class="skl-page-title-group">
+        <h1 class="skl-page-title">Subject Setup</h1>
+        <p class="skl-page-subtitle">
+          Manage and configure academic subjects for the institution.
+        </p>
+      </div>
+      <div class="skl-header-actions">
+        <button class="skl-btn-primary" (click)="openAddDialog()">
+          <span class="material-icons">add</span>
+          <span>New Subject</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="skl-page-content">
+    <shikshakul-subject-stats
+      [total]="stats.total"
+      [theory]="stats.theory"
+      [practical]="stats.practical"
+      [other]="stats.other"
+    >
+    </shikshakul-subject-stats>
+
+    <div class="skl-card skl-mt-24">
+      <div class="skl-card-header">
+        <div class="skl-card-title-group">
+          <h3 class="skl-card-title">All Subjects</h3>
+        </div>
+        <div
+          class="skl-card-actions"
+          style="display: flex; gap: 12px; align-items: center"
+        >
+          <div class="skl-search-box">
+            <span class="material-icons">search</span>
+            <input
+              type="text"
+              placeholder="Search subjects..."
+              (input)="onSearch($event)"
+              [value]="searchQuery"
+            />
+          </div>
+          <button
+            class="skl-btn-ghost"
+            (click)="loadSubjects()"
+            [disabled]="loading"
+          >
+            <span class="material-icons" [class.skl-spin]="loading"
+              >refresh</span
+            >
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="skl-table-wrapper">
+        <div class="skl-linear-loader" *ngIf="loading">
+          <div class="skl-loader-progress"></div>
+        </div>
+
+        <div
+          class="skl-list-header"
+          style="
+            display: flex;
+            padding: 12px 24px;
+            border-bottom: 2px solid var(--skl-border-light, #f1f1f1);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--skl-text-lighter, #94a3b8);
+            text-transform: uppercase;
+          "
+        >
+          <div style="width: 40%">SUBJECT NAME</div>
+          <div style="width: 20%">CODE</div>
+          <div style="width: 20%">TYPE</div>
+          <div style="width: 20%; text-align: right">ACTIONS</div>
+        </div>
+
+        <div class="skl-list-body">
+          <div class="skl-data-row" *ngFor="let sub of filteredSubjects">
+            <div
+              class="skl-row-main"
+              style="
+                display: flex;
+                align-items: center;
+                padding: 12px 24px;
+                min-height: 56px;
+              "
+            >
+              <div
+                class="col-name"
+                style="
+                  width: 40%;
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                "
+              >
+                <span
+                  class="skl-name-text"
+                  style="
+                    font-weight: 600;
+                    color: var(--skl-text-main);
+                    font-size: 14px;
+                  "
+                  >{{ sub.name }}</span
+                >
+              </div>
+
+              <div class="col-code" style="width: 20%">
+                <span class="code-badge">{{ sub.code }}</span>
+              </div>
+
+              <div class="col-type" style="width: 20%">
+                <span
+                  class="type-badge"
+                  [class.theory]="sub.type === 'THEORY'"
+                  [class.practical]="
+                    sub.type === 'PRACTICAL' || sub.type === 'LAB'
+                  "
+                >
+                  {{ sub.type | titlecase }}
+                </span>
+              </div>
+
+              <div
+                class="col-actions"
+                style="width: 20%; display: flex; justify-content: flex-end"
+              >
+                <div class="skl-btn-group" style="display: flex; gap: 8px">
+                  <button
+                    class="skl-btn-action-edit"
+                    (click)="editSubject(sub)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="skl-btn-action-delete"
+                    (click)="deleteSubject(sub.id, sub.name)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="filteredSubjects.length === 0 && !loading"
+            class="skl-empty-state"
+            style="padding: 48px; text-align: center"
+          >
+            <span
+              class="material-icons"
+              style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px"
+              >search_off</span
+            >
+            <p style="color: #64748b">
+              No subjects found matching your criteria.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <shikshakul-subject-drawer
+    [isOpen]="showDialog"
+    [subject]="selectedSubject"
+    [isEditMode]="isEditMode"
+    (close)="closeDialog()"
+    (save)="onSave($event)"
+  ></shikshakul-subject-drawer>
+</div>

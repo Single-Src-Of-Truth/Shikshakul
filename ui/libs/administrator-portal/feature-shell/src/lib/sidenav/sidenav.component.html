@@ -1,0 +1,50 @@
+<aside class="skl-sidenav" [class.collapsed]="collapsed" [class.mobile-active]="mobileActive">
+  <div class="skl-sidenav-header">
+    <div class="skl-brand">
+      <div class="skl-logo-box">
+        <span class="material-icons">school</span>
+      </div>
+      <div class="skl-brand-text" *ngIf="!collapsed">
+        <h3 class="name">Shikshakul</h3>
+        <span class="portal">ADMIN</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="skl-nav-content">
+    <div class="skl-menu-group" *ngFor="let group of menuGroups()">
+      <div class="skl-group-label" *ngIf="group.header && !collapsed">
+        {{ group.header }}
+      </div>
+
+      <div class="skl-group-divider" *ngIf="collapsed && group.header"></div>
+
+      <ul class="skl-menu-list">
+        <li class="skl-menu-item" *ngFor="let item of group.items">
+          <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <span class="material-icons">{{ item.icon }}</span>
+            <span class="label" *ngIf="!collapsed">{{ item.label }}</span>
+
+            <!-- Instant Custom Tooltip -->
+            <div class="skl-tooltip" *ngIf="collapsed">
+              {{ item.label }}
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="skl-sidenav-footer">
+    <div class="skl-user-profile">
+      <div class="avatar">{{ initials() }}</div>
+      <div class="skl-user-info" *ngIf="!collapsed">
+        <span class="name">{{ displayName() }}</span>
+        <span class="role">{{ primaryRole() }}</span>
+      </div>
+      <button class="skl-more-btn" *ngIf="!collapsed" (click)="logout()" title="Sign out">
+        <span class="material-icons">logout</span>
+      </button>
+    </div>
+  </div>
+</aside>

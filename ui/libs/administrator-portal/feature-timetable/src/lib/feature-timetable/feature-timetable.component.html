@@ -1,0 +1,159 @@
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-title-group">
+      <h1 class="skl-page-title">Timetable Management</h1>
+      <p class="skl-page-subtitle">
+        Efficient schedule management for academic sections
+      </p>
+    </div>
+    <div class="skl-header-actions">
+      <button class="skl-btn-primary" (click)="openAddRoutine()">
+        <span class="material-icons">add</span>
+        <span>Add Routine</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="skl-page-content">
+    <div class="skl-card skl-filter-card">
+      <div class="skl-filter-grid">
+        <div class="skl-filter-item">
+          <label class="skl-label">Class</label>
+          <shikshakul-select
+            [(ngModel)]="selectedClassId"
+            [options]="classOptions()"
+            placeholder="Select Class"
+            (onSelect)="onClassChange()"
+          ></shikshakul-select>
+        </div>
+
+        <div class="skl-filter-item">
+          <label class="skl-label">Section</label>
+          <shikshakul-select
+            [(ngModel)]="selectedSectionId"
+            [options]="sectionOptions()"
+            placeholder="Select Section"
+            [disabled]="!selectedClassId"
+            (onSelect)="onSectionChange()"
+          ></shikshakul-select>
+        </div>
+
+        <div class="skl-filter-divider">
+          <span>OR</span>
+        </div>
+
+        <div class="skl-filter-item">
+          <label class="skl-label">Teacher</label>
+          <shikshakul-select
+            [(ngModel)]="selectedTeacherId"
+            [options]="teacherOptions()"
+            placeholder="Select Teacher"
+            (onSelect)="onTeacherChange()"
+          ></shikshakul-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="skl-card skl-timetable-card">
+      <div class="skl-linear-loader" *ngIf="loading()">
+        <div class="skl-loader-progress"></div>
+      </div>
+
+      <div
+        class="skl-timetable-grid"
+        *ngIf="!loading() && routines().length > 0"
+      >
+        <div class="skl-grid-corner"></div>
+        <div class="skl-day-header" *ngFor="let day of days">
+          {{
+            (day === 'WEDNESDAY' ? 'Wed' : (day | titlecase)).substring(0, 3)
+          }}
+        </div>
+
+        <ng-container *ngFor="let time of timeSlots">
+          <div class="skl-time-label">
+            <span class="skl-time-val">{{ time.split(' ')[0] }}</span>
+            <span class="skl-time-ampm">{{ time.split(' ')[1] }}</span>
+          </div>
+
+          <ng-container *ngIf="!time.includes('BREAK')">
+            <div class="skl-grid-cell" *ngFor="let day of days">
+              <div
+                class="skl-routine-card"
+                *ngIf="getRoutineForSlot(day, time) as r"
+                [ngClass]="'skl-routine-color-' + (r.subject_name.length % 6)"
+              >
+                <div class="skl-routine-subject">{{ r.subject_name }}</div>
+                <div class="skl-routine-meta">
+                  <span class="skl-routine-room" *ngIf="r.room_number"
+                    >Room {{ r.room_number }}</span
+                  >
+                  <span class="skl-routine-time"
+                    >{{ r.start_time }} - {{ r.end_time }}</span
+                  >
+                </div>
+                <div class="skl-routine-actions">
+                  <button
+                    class="skl-routine-action skl-edit"
+                    (click)="editRoutine(r)"
+                    title="Edit Slot"
+                  >
+                    <span class="material-icons">edit</span>
+                  </button>
+                  <button
+                    class="skl-routine-action skl-delete"
+                    (click)="deleteRoutine(r.id)"
+                    title="Remove Slot"
+                  >
+                    <span class="material-icons">close</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="skl-break-row" *ngIf="time.includes('BREAK')">
+            <div class="skl-break-content">
+              <span class="material-icons">restaurant</span>
+              LUNCH BREAK
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Empty States inside the card for better layout -->
+      <div
+        *ngIf="
+          !loading() &&
+          routines().length === 0 &&
+          (selectedSectionId || selectedTeacherId)
+        "
+        class="skl-empty-state"
+      >
+        <span class="material-icons">event_busy</span>
+        <p>No routines scheduled for this view.</p>
+      </div>
+
+      <div
+        *ngIf="
+          !loading() &&
+          routines().length === 0 &&
+          !selectedSectionId &&
+          !selectedTeacherId
+        "
+        class="skl-empty-state"
+      >
+        <span class="material-icons">manage_search</span>
+        <p>Select a Section or Teacher to view schedule.</p>
+      </div>
+    </div>
+  </div>
+
+  <shikshakul-add-routine-drawer
+    [isOpen]="showAddDrawer"
+    [currentYear]="currentYear()"
+    [editData]="selectedRoutineForEdit"
+    (close)="showAddDrawer = false; selectedRoutineForEdit = null"
+    (saved)="loadTimetable()"
+  ></shikshakul-add-routine-drawer>
+</div>

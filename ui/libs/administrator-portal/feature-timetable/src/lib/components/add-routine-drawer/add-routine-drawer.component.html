@@ -1,0 +1,242 @@
+<div
+  class="skl-drawer-backdrop"
+  (click)="close.emit()"
+  [class.open]="isOpen"
+></div>
+
+<div class="skl-floating-drawer" [class.open]="isOpen">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">Add Routine Slot</h2>
+      <p class="skl-drawer-subtitle">Assign subject and teacher to a section</p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button class="skl-icon-btn" (click)="onReset()" title="Reset Form">
+        <span class="material-icons">restart_alt</span>
+      </button>
+      <button class="skl-icon-btn" (click)="close.emit()" title="Close Drawer">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="skl-drawer-body">
+    <form [formGroup]="routineForm" class="skl-drawer-form">
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Class & Section</h3>
+        <div class="skl-form-row">
+          <div class="skl-form-group">
+            <label class="skl-label">Class</label>
+            <shikshakul-select
+              formControlName="class_id"
+              [options]="classOptions()"
+              placeholder="Select Class"
+              (onSelect)="onClassChange()"
+              [hasError]="
+                !!(
+                  routineForm.get('class_id')?.invalid &&
+                  routineForm.get('class_id')?.touched
+                )
+              "
+            ></shikshakul-select>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('class_id')?.invalid &&
+                routineForm.get('class_id')?.touched
+              "
+            >
+              Class is required.
+            </span>
+          </div>
+
+          <div class="skl-form-group">
+            <label class="skl-label">Section</label>
+            <shikshakul-select
+              formControlName="section_id"
+              [options]="sectionOptions()"
+              placeholder="Select Section"
+              [disabled]="!routineForm.get('class_id')?.value"
+              [hasError]="
+                !!(
+                  routineForm.get('section_id')?.invalid &&
+                  routineForm.get('section_id')?.touched
+                )
+              "
+            ></shikshakul-select>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('section_id')?.invalid &&
+                routineForm.get('section_id')?.touched
+              "
+            >
+              Section is required.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Subject & Teacher</h3>
+        <div class="skl-form-group">
+          <label class="skl-label">Subject</label>
+          <shikshakul-select
+            formControlName="subject_id"
+            [options]="subjectOptions()"
+            placeholder="Select Subject"
+            [hasError]="
+              !!(
+                routineForm.get('subject_id')?.invalid &&
+                routineForm.get('subject_id')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('subject_id')?.invalid &&
+              routineForm.get('subject_id')?.touched
+            "
+          >
+            Subject is required.
+          </span>
+        </div>
+
+        <div class="skl-form-group">
+          <label class="skl-label">Teacher</label>
+          <shikshakul-select
+            formControlName="teacher_id"
+            [options]="teacherOptions()"
+            placeholder="Select Teacher"
+            [hasError]="
+              !!(
+                routineForm.get('teacher_id')?.invalid &&
+                routineForm.get('teacher_id')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('teacher_id')?.invalid &&
+              routineForm.get('teacher_id')?.touched
+            "
+          >
+            Teacher is required.
+          </span>
+        </div>
+      </div>
+
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Schedule</h3>
+        <div class="skl-form-group">
+          <label class="skl-label">Day</label>
+          <shikshakul-select
+            formControlName="day_of_week"
+            [options]="dayOptions()"
+            placeholder="Select Day"
+            [hasError]="
+              !!(
+                routineForm.get('day_of_week')?.invalid &&
+                routineForm.get('day_of_week')?.touched
+              )
+            "
+          ></shikshakul-select>
+          <span
+            class="skl-error-text"
+            *ngIf="
+              routineForm.get('day_of_week')?.invalid &&
+              routineForm.get('day_of_week')?.touched
+            "
+          >
+            Day is required.
+          </span>
+        </div>
+
+        <div class="skl-form-row">
+          <div class="skl-form-group">
+            <label class="skl-label">Start Time</label>
+            <shikshakul-time-picker
+              formControlName="start_time"
+              placeholder="09:00 AM"
+              [hasError]="
+                !!(
+                  routineForm.get('start_time')?.invalid &&
+                  routineForm.get('start_time')?.touched
+                )
+              "
+            ></shikshakul-time-picker>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('start_time')?.invalid &&
+                routineForm.get('start_time')?.touched
+              "
+            >
+              Start time is required.
+            </span>
+          </div>
+
+          <div class="skl-form-group">
+            <label class="skl-label">End Time</label>
+            <shikshakul-time-picker
+              formControlName="end_time"
+              placeholder="10:00 AM"
+              defaultHour="10"
+              [hasError]="
+                !!(
+                  routineForm.get('end_time')?.invalid &&
+                  routineForm.get('end_time')?.touched
+                )
+              "
+            ></shikshakul-time-picker>
+            <span
+              class="skl-error-text"
+              *ngIf="
+                routineForm.get('end_time')?.invalid &&
+                routineForm.get('end_time')?.touched
+              "
+            >
+              End time is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="skl-form-group">
+          <label class="skl-label">Room Number</label>
+          <input
+            type="text"
+            class="skl-input"
+            formControlName="room_number"
+            placeholder="e.g. 101"
+            [class.has-error]="
+              routineForm.get('room_number')?.invalid &&
+              routineForm.get('room_number')?.touched
+            "
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="skl-drawer-footer">
+    <button
+      type="button"
+      class="skl-btn-ghost"
+      (click)="close.emit()"
+      [disabled]="submitting"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="skl-btn-primary"
+      (click)="onSubmit()"
+      [disabled]="submitting"
+    >
+      <span *ngIf="!submitting">Publish Routine</span>
+      <div class="skl-spinner" *ngIf="submitting"></div>
+    </button>
+  </div>
+</div>

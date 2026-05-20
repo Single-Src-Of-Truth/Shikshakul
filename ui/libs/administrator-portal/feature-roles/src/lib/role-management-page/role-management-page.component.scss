@@ -1,0 +1,20 @@
+@use 'shared' as *;
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}

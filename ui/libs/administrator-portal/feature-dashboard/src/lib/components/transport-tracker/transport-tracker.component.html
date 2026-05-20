@@ -1,0 +1,29 @@
+<div class="tracker-container">
+  <div class="widget-header">
+    <h3>Live Transport</h3>
+    <button class="icon-btn">
+      <span class="material-icons">refresh</span>
+    </button>
+  </div>
+
+  <div class="route-list">
+    <div class="route-item" *ngFor="let route of routes">
+      <div class="icon-box">
+        <span class="material-icons">directions_bus</span>
+      </div>
+
+      <div class="info">
+        <h4 class="route-name">{{ route.name }}</h4>
+        <div class="status-row" [ngClass]="route.state">
+          <span class="status-text">{{ route.status }}</span>
+          <span class="dot" *ngIf="route.detail">•</span>
+          <span class="detail">{{ route.detail }}</span>
+        </div>
+      </div>
+
+      <div class="plate-badge">{{ route.vehicleNo }}</div>
+    </div>
+  </div>
+
+  <button class="view-map-btn">View Fleet Map</button>
+</div>

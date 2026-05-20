@@ -1,0 +1,19 @@
+<div class="chart-wrapper">
+  <div class="chart-header">
+    <div class="text-group">
+      <h3>Weekly Attendance</h3>
+      <span class="subtitle">Student vs Staff (Last 7 Days)</span>
+    </div>
+    <button class="view-report-btn">View Report</button>
+  </div>
+
+  <div class="canvas-container">
+    <canvas
+      baseChart
+      [data]="barChartData"
+      [options]="barChartOptions"
+      [type]="barChartType"
+    >
+    </canvas>
+  </div>
+</div>

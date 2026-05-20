@@ -1,0 +1,62 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="title-group">
+      <div class="breadcrumbs">
+        Home <span class="separator">/</span> Students
+        <span class="separator">/</span> Create Profile
+      </div>
+      <h1 class="page-title">Create Student Profile</h1>
+      <p class="page-subtitle">Register a new student into the system.</p>
+    </div>
+
+    <div class="action-buttons">
+      <button
+        class="btn btn-outline"
+        (click)="onCancel()"
+        [disabled]="isSubmitting"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="onSubmit()"
+        [disabled]="isSubmitting"
+      >
+        <span class="material-icons" *ngIf="!isSubmitting">save</span>
+        <span class="material-icons spin" *ngIf="isSubmitting">sync</span>
+        {{ isSubmitting ? 'Saving...' : 'Save Student' }}
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="studentForm" class="form-layout">
+    <div class="left-column">
+      <shikshakul-student-photo
+        [parentForm]="studentForm"
+      ></shikshakul-student-photo>
+      <shikshakul-admission-details
+        [formGroup]="getGroup('admission')"
+      ></shikshakul-admission-details>
+    </div>
+
+    <div class="right-column">
+      <shikshakul-personal-details
+        [formGroup]="getGroup('personal')"
+      ></shikshakul-personal-details>
+
+      <shikshakul-academic-details
+        [formGroup]="getGroup('academic')"
+        [classes]="classes"
+        [sections]="sections"
+      >
+      </shikshakul-academic-details>
+
+      <shikshakul-guardian-details
+        [formGroup]="getGroup('guardian')"
+      ></shikshakul-guardian-details>
+      <shikshakul-address-details
+        [formGroup]="getGroup('address')"
+      ></shikshakul-address-details>
+    </div>
+  </form>
+</div>

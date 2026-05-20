@@ -19,10 +19,12 @@ type Application struct {
 	AttCtrl       *controller.AttendanceController
 	CertCtrl      *controller.CertificateController
 	CalendarCtrl  *controller.CalendarController
+	HealthCtrl    *controller.HealthController
 }
 
 func InitializeApp() *Application {
 	database.ConnectDB()
+	database.ConnectRedis()
 	db := database.DB
 
 	acadRepo := repository.NewAcademicRepository(db)
@@ -61,5 +63,6 @@ func InitializeApp() *Application {
 		AttCtrl:       controller.NewAttendanceController(attService),
 		CertCtrl:      controller.NewCertificateController(certService),
 		CalendarCtrl:  controller.NewCalendarController(calService),
+		HealthCtrl:    controller.NewHealthController(),
 	}
 }

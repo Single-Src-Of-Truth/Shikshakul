@@ -1,0 +1,143 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text-group">
+      <h1>Class Attendance</h1>
+      <p class="subtitle">View daily attendance registers</p>
+    </div>
+  </header>
+
+  <div class="form-card mb-24">
+    <div class="form-grid three-col">
+      <div class="form-group">
+        <label>Class</label>
+        <select
+          [ngModel]="selectedClassId()"
+          (ngModelChange)="onClassChange($event)"
+        >
+          <option value="" disabled>Select Class</option>
+          @for (cls of classes(); track cls.id) {
+            <option [value]="cls.id">{{ cls.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Section</label>
+        <select
+          [ngModel]="selectedSectionId()"
+          (ngModelChange)="selectedSectionId.set($event); onFilterChange()"
+          [disabled]="!selectedClassId()"
+        >
+          <option value="" disabled>Select Section</option>
+          @for (sec of availableSections(); track sec.id) {
+            <option [value]="sec.id">{{ sec.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Date</label>
+        <input
+          type="date"
+          [ngModel]="selectedDate()"
+          (ngModelChange)="selectedDate.set($event); onFilterChange()"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-icons spin">refresh</span>
+      <div>Loading attendance...</div>
+    </div>
+  } @else if (selectedClassId() && selectedSectionId() && selectedDate()) {
+    @if (records().length === 0) {
+      <div class="empty-state">
+        <span class="material-icons">event_busy</span>
+        <div>No attendance recorded for this date.</div>
+      </div>
+    } @else {
+      <div class="summary-section p-0 mb-24">
+        <div class="summary-card">
+          <div class="card-content">
+            <span class="label">Total</span>
+            <span class="val">{{ total() }}</span>
+          </div>
+          <div class="icon-circle blue">
+            <span class="material-icons">groups</span>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="card-content">
+            <span class="label">Present</span>
+            <span class="val text-success">{{ present() }}</span>
+          </div>
+          <div class="icon-circle green">
+            <span class="material-icons">check_circle</span>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="card-content">
+            <span class="label">Absent</span>
+            <span class="val text-danger">{{ absent() }}</span>
+          </div>
+          <div
+            class="icon-circle red"
+            style="background: var(--bg-danger); color: var(--color-danger)"
+          >
+            <span class="material-icons">cancel</span>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="card-content">
+            <span class="label">Late</span>
+            <span class="val text-warning">{{ late() }}</span>
+          </div>
+          <div class="icon-circle yellow">
+            <span class="material-icons">schedule</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table fee-table">
+          <thead>
+            <tr>
+              <th>Roll No</th>
+              <th>Student Name</th>
+              <th>Status</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of records(); track student.student_id) {
+              <tr>
+                <td>{{ student.rollNo || 'N/A' }}</td>
+                <td>
+                  <div class="student-info">
+                    <div class="avatar">{{ student.initials }}</div>
+                    <span class="main">{{ student.name }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="student.status.toLowerCase()">
+                    {{ student.status }}
+                  </span>
+                </td>
+                <td style="color: var(--text-secondary)">
+                  {{ student.remark || '-' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  } @else {
+    <div class="empty-state">
+      <span class="material-icons">rule</span>
+      <div>Select a class, section, and date to view attendance.</div>
+    </div>
+  }
+</div>

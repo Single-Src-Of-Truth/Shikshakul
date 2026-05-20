@@ -1,0 +1,106 @@
+<div class="certificate-preview-container">
+  <div class="no-print controls">
+    <button class="btn-secondary" (click)="close.emit()">
+      <span class="material-icons">arrow_back</span> Back to Management
+    </button>
+    <button class="btn-primary" (click)="printCertificate()">
+      <span class="material-icons">print</span> Print Certificate
+    </button>
+  </div>
+
+  <div
+    class="certificate-paper"
+    [class.tc-bg]="type === 'TC'"
+    [class.bonafide-bg]="type === 'BONAFIDE'"
+  >
+    <div class="certificate-border">
+      <!-- HEADER -->
+      <div class="school-header">
+        <h1>SHIKSHAKUL PUBLIC SCHOOL</h1>
+        <p class="sub">Affiliated to CBSE, New Delhi</p>
+        <p class="address">123, Education Lane, Knowledge City - 560001</p>
+      </div>
+
+      <div class="cert-title">
+        <h2 *ngIf="type === 'TC'">TRANSFER CERTIFICATE</h2>
+        <h2 *ngIf="type === 'BONAFIDE'">BONAFIDE CERTIFICATE</h2>
+      </div>
+
+      <div class="cert-body" *ngIf="data">
+        <!-- TC CONTENT -->
+        <div *ngIf="isTC(data) && type === 'TC'" class="tc-content">
+          <p class="cert-no">
+            Certificate No: <strong>{{ data.certificate_no }}</strong>
+          </p>
+
+          <div class="content-row">
+            This is to certify that <strong>{{ data.student_name }}</strong>
+          </div>
+          <div class="content-row">
+            Son/Daughter of <strong>{{ data.father_name }}</strong> and
+            <strong>{{ data.mother_name }}</strong>
+          </div>
+          <div class="content-row">
+            was a student of this school with Admission No:
+            <strong>{{ data.admission_no }}</strong>
+          </div>
+          <div class="content-row">
+            Date of Birth (as per records): <strong>{{ data.dob }}</strong>
+          </div>
+          <div class="content-row">
+            Nationality: <strong>{{ data.nationality }}</strong>
+          </div>
+          <div class="content-row">
+            He/She has passed/left the
+            <strong>{{ data.last_class }}</strong> class.
+          </div>
+          <div class="content-row">
+            Date of Leaving School: <strong>{{ data.issue_date }}</strong>
+          </div>
+          <div class="content-row">
+            Reason for leaving: <strong>{{ data.reason }}</strong>
+          </div>
+          <div class="content-row">
+            Conduct and Character: <strong>{{ data.conduct }}</strong>
+          </div>
+        </div>
+
+        <!-- BONAFIDE CONTENT -->
+        <div
+          *ngIf="isBonafide(data) && type === 'BONAFIDE'"
+          class="bonafide-content"
+        >
+          <p class="cert-no">
+            Certificate No: <strong>{{ data.certificate_no }}</strong>
+          </p>
+          <p class="date">Date: {{ data.issue_date }}</p>
+
+          <p class="main-text">
+            This is to certify that <strong>{{ data.student_name }}</strong
+            >, bearing Admission No: <strong>{{ data.admission_no }}</strong
+            >, is a bonafide student of
+            <strong>{{ data.class_details }}</strong> in our school during the
+            academic year <strong>{{ data.academic_year }}</strong
+            >.
+          </p>
+
+          <p class="purpose">
+            This certificate is issued at his/her request for the purpose of:
+            <br />
+            <strong>{{ data.purpose }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="cert-footer">
+        <div class="sig-section">
+          <div class="sig-line">Class Teacher</div>
+        </div>
+        <div class="sig-section">
+          <div class="sig-line">Principal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

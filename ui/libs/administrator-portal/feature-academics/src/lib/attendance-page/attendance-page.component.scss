@@ -1,0 +1,43 @@
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.present,
+  &.p {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  &.absent,
+  &.a {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  &.late,
+  &.l {
+    background: #fef3c7;
+    color: #92400e;
+  }
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e0e7ff;
+    color: #4f46e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}

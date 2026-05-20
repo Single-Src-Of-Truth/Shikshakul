@@ -1,0 +1,79 @@
+<div class="skl-sidebar-drawer-content">
+  <div class="skl-sidebar-section">
+    <h3 class="skl-section-label">Event Categories</h3>
+    <div class="skl-category-list">
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-red"></div>
+          <span>Holidays</span>
+        </div>
+        <span class="skl-count">{{ categoryCounts().holidays }}</span>
+      </div>
+
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-amber"></div>
+          <span>Exams</span>
+        </div>
+        <span class="skl-count">{{ categoryCounts().exams }}</span>
+      </div>
+
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-purple"></div>
+          <span>PTM</span>
+        </div>
+        <span class="skl-count">{{ categoryCounts().ptm }}</span>
+      </div>
+
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-emerald"></div>
+          <span>Cultural</span>
+        </div>
+        <span class="skl-count">{{ categoryCounts().cultural }}</span>
+      </div>
+
+      <div class="skl-category-item">
+        <div class="skl-category-label">
+          <div class="skl-dot dot-slate"></div>
+          <span>Other</span>
+        </div>
+        <span class="skl-count">{{ categoryCounts().other }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="skl-divider"></div>
+
+  <div class="skl-sidebar-section">
+    <div class="skl-section-header">
+      <h3 class="skl-section-label">Upcoming Events</h3>
+      <button class="skl-text-btn">View All</button>
+    </div>
+
+    <div *ngIf="upcomingEvents().length === 0" class="skl-empty-state">
+      <span class="material-icons">event_busy</span>
+      <p>No upcoming events.</p>
+    </div>
+
+    <div class="skl-upcoming-list">
+      <div *ngFor="let ev of upcomingEvents()" class="skl-upcoming-card">
+        <div class="skl-card-date">
+          <span class="day">{{
+            formatDateShort(ev.start_date).split(' ')[1]
+          }}</span>
+          <span class="month">{{
+            formatDateShort(ev.start_date).split(' ')[0]
+          }}</span>
+        </div>
+        <div class="skl-card-details">
+          <div class="title">{{ ev.title }}</div>
+          <div class="time">
+            {{ formatTimeRange(ev.start_date, ev.end_date) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

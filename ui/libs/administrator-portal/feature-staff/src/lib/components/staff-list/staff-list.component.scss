@@ -1,0 +1,35 @@
+@use 'shared' as *;
+
+.data-table {
+  .col.name {
+    flex: 0 0 30%;
+    min-width: 250px;
+  }
+  .col.role {
+    flex: 0 0 25%;
+  }
+  .col.status {
+    flex: 0 0 15%;
+  }
+  .col.mobile {
+    flex: 0 0 20%;
+  }
+  .col.actions {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .table-row .col.name {
+    gap: 16px;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal-blue-light);
+      color: var(--royal-blue);
+      @include flex-center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+  }
+}

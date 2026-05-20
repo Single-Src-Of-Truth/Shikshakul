@@ -1,0 +1,94 @@
+<div class="result-management-container">
+  <header class="section-header">
+    <div class="text-group">
+      <h1>Results & Report Cards</h1>
+      <p class="subtitle">
+        Generate, publish, and manage student performance reports.
+      </p>
+    </div>
+  </header>
+
+  <div class="management-card">
+    <div class="card-header">
+      <span class="material-icons">settings</span>
+      <h2>Process Results</h2>
+    </div>
+
+    <div class="controls-grid">
+      <div class="input-group">
+        <label for="term-select">Exam Term</label>
+        <select
+          id="term-select"
+          [(ngModel)]="selectedTermId"
+          class="form-select"
+        >
+          <option value="">Select Exam Term</option>
+          @for (term of examTerms(); track term.id) {
+            <option [value]="term.id">{{ term.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="class-select">Class</label>
+        <select
+          id="class-select"
+          [(ngModel)]="selectedClassId"
+          class="form-select"
+        >
+          <option value="">Select Class</option>
+          @for (cls of classes(); track cls.id) {
+            <option [value]="cls.id">{{ cls.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="actions-footer">
+      <button
+        class="btn-primary"
+        [disabled]="processing() || !selectedTermId() || !selectedClassId()"
+        (click)="generateResults()"
+      >
+        @if (!processing()) {
+          <span class="material-icons">auto_awesome</span>
+        } @else {
+          <span class="material-icons spin">sync</span>
+        }
+        Generate Results
+      </button>
+
+      <div class="divider"></div>
+
+      <div class="publish-group">
+        <button
+          class="btn-outline success"
+          [disabled]="processing() || !selectedTermId() || !selectedClassId()"
+          (click)="publishResults(true)"
+        >
+          <span class="material-icons">publish</span>
+          Publish
+        </button>
+        <button
+          class="btn-outline danger"
+          [disabled]="processing() || !selectedTermId() || !selectedClassId()"
+          (click)="publishResults(false)"
+        >
+          <span class="material-icons">visibility_off</span>
+          Unpublish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <span class="material-icons">info</span>
+    <div class="content">
+      <p>
+        <strong>Note:</strong> Generating results will automatically calculate
+        totals, percentages, and grades based on the recorded evaluation marks
+        for all students in the selected class and term.
+      </p>
+    </div>
+  </div>
+</div>

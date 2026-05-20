@@ -1,0 +1,32 @@
+<div class="app-container">
+  <shikshakul-guardian-sidenav
+    [collapsed]="isSidebarCollapsed"
+    (toggleCollapse)="toggleSidebar()"
+  >
+  </shikshakul-guardian-sidenav>
+
+  <main class="main-content" [class.expanded]="isSidebarCollapsed">
+    <header class="top-bar">
+      <h2 class="page-title">Guardian Dashboard</h2>
+
+      <div class="search-bar">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Search for fees, notices..." />
+      </div>
+
+      <div class="top-actions">
+        <button class="icon-btn">
+          <span class="material-icons">notifications</span>
+          <span class="notification-dot"></span>
+        </button>
+        <button class="icon-btn">
+          <span class="material-icons">help_outline</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-scrollable">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

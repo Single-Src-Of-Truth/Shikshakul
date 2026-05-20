@@ -1,0 +1,96 @@
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    .icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e8f0fe;
+      color: var(--royal-blue);
+      &.gray {
+        background: #f8f9fa;
+        color: var(--text-secondary);
+      }
+      &.green {
+        background: #e6f4ea;
+        color: #137333;
+      }
+      &.red {
+        background: #fce8e6;
+        color: #d93025;
+      }
+      .material-icons {
+        font-size: 18px;
+      }
+    }
+    .title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+  }
+
+  .value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+    .big-val {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .badge {
+      background: #e6f4ea;
+      color: #137333;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+  }
+
+  .sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .sub.green-text {
+    color: #137333;
+    font-weight: 600;
+  }
+  .sub.red-text {
+    color: #d93025;
+    font-weight: 600;
+  }
+
+  /* Progress Bar for first card */
+  .progress-bar {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+    .fill {
+      height: 100%;
+      background: var(--royal-blue);
+      border-radius: 2px;
+    }
+  }
+}

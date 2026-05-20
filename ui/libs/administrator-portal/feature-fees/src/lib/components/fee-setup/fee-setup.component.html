@@ -1,0 +1,410 @@
+<div>
+  <div class="skl-card skl-mt-24">
+    <div class="skl-card-header">
+      <div class="skl-card-title-group">
+        <h3 class="skl-card-title">Fee Structure Setup</h3>
+      </div>
+
+      <div class="skl-card-actions">
+        <span class="skl-label">Configuring For:</span>
+        <shikshakul-select
+          [options]="classOptions"
+          [(ngModel)]="selectedClassId"
+          (onSelect)="onClassChange($event)"
+          placeholder="Select Class"
+          style="width: 200px; display: block"
+        >
+        </shikshakul-select>
+      </div>
+    </div>
+
+    <div class="skl-settings-grid" *ngIf="selectedClassId">
+      <div class="skl-stat-card skl-active">
+        <div class="skl-stat-icon-box">
+          <span class="material-icons">check_circle</span>
+        </div>
+        <div class="skl-stat-content">
+          <span class="skl-stat-label">Active Fees</span>
+          <span class="skl-stat-value">{{ currentStructure.length }}</span>
+        </div>
+      </div>
+
+      <div class="skl-stat-card skl-heads">
+        <div class="skl-stat-icon-box">
+          <span class="material-icons">category</span>
+        </div>
+        <div class="skl-stat-content">
+          <span class="skl-stat-label">Total Heads</span>
+          <span class="skl-stat-value">{{ feeHeads.length }}</span>
+        </div>
+      </div>
+
+      <div class="skl-stat-card skl-projected">
+        <div class="skl-stat-icon-box">
+          <span class="material-icons">savings</span>
+        </div>
+        <div class="skl-stat-content">
+          <span class="skl-stat-label">Projected Total</span>
+          <span class="skl-stat-value">₹{{ calculateTotal() | number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skl-table-toolbar">
+      <div class="skl-toolbar-info">
+        <p class="skl-toolbar-text" *ngIf="selectedClassId">
+          Manage the fee structure for
+          <strong>{{ getSelectedClassName() }}</strong>
+        </p>
+      </div>
+
+      <div class="skl-toolbar-actions">
+        <button class="skl-btn-ghost" (click)="showHeadModal = true">
+          <span class="material-icons">list</span>
+          <span>Fee Types</span>
+        </button>
+
+        <button
+          class="skl-btn-primary"
+          (click)="showAddModal = true"
+          [disabled]="!selectedClassId"
+        >
+          <span class="material-icons">add</span>
+          <span>Assign Fee</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="skl-empty-state" *ngIf="!selectedClassId">
+      <span class="material-icons">class</span>
+      <p>
+        Select a class from the top right to view and configure its fee
+        structure.
+      </p>
+    </div>
+
+    <div class="skl-table-wrapper" *ngIf="selectedClassId">
+      <table class="skl-data-table">
+        <thead>
+          <tr>
+            <th class="skl-w-40">FEE NAME</th>
+            <th class="skl-w-20">FREQUENCY</th>
+            <th class="skl-w-20">STATUS</th>
+            <th class="skl-w-15 skl-text-right">AMOUNT (₹)</th>
+            <th class="skl-text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of currentStructure">
+            <td>
+              <div class="skl-year-info">
+                <span class="skl-year-name">{{ s.fee_head?.name }}</span>
+                <span class="skl-year-label">Standard Fee</span>
+              </div>
+            </td>
+            <td>
+              <span
+                class="skl-status-tag"
+                style="
+                  background: #f1f5f9;
+                  color: #475569;
+                  border: 1px solid #e2e8f0;
+                  font-size: 10px;
+                "
+                >{{ s.frequency }}</span
+              >
+            </td>
+            <td>
+              <span
+                class="skl-status-tag"
+                style="
+                  background: #e6fffa;
+                  color: #047481;
+                  border: 1px solid #b2f5ea;
+                "
+                ><span class="skl-dot"></span>Active</span
+              >
+            </td>
+            <td class="skl-text-right">
+              <span class="skl-amount-text">₹{{ s.amount | number }}</span>
+            </td>
+            <td>
+              <div class="skl-action-group skl-justify-right">
+                <button
+                  class="skl-icon-btn"
+                  (click)="openEditStructureModal(s)"
+                  title="Edit"
+                >
+                  <span class="material-icons">edit</span>
+                </button>
+                <button
+                  class="skl-icon-btn skl-danger"
+                  (click)="deleteStructure(s.id)"
+                  title="Remove"
+                >
+                  <span class="material-icons">delete_outline</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="currentStructure.length === 0">
+            <td colspan="5" class="skl-empty-state">
+              <span class="material-icons">receipt_long</span>
+              <p>
+                No fees configured for this class yet. Click "Assign Fee" to add
+                one.
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div
+  class="skl-drawer-backdrop"
+  [class.open]="showAddModal"
+  (click)="closeStructureModal()"
+></div>
+
+<div class="skl-floating-drawer" [class.open]="showAddModal">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">
+        {{ editingStructure ? 'Edit Fee Assignment' : 'Assign New Fee' }}
+      </h2>
+      <p class="skl-drawer-subtitle">
+        Configure the fee amount and frequency for the selected class.
+      </p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button
+        class="skl-icon-btn"
+        (click)="closeStructureModal()"
+        title="Close"
+      >
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="skl-drawer-body">
+    <form
+      [formGroup]="structureForm"
+      (ngSubmit)="addStructure()"
+      class="skl-drawer-form"
+    >
+      <div class="skl-form-content">
+        <div class="skl-form-group">
+          <label class="skl-label"
+            >Fee Type <span class="skl-required">*</span></label
+          >
+          <shikshakul-select
+            formControlName="fee_head_id"
+            [options]="feeHeadOptions"
+            placeholder="Select a fee type..."
+            [hasError]="
+              !!(
+                structureForm.get('fee_head_id')?.invalid &&
+                structureForm.get('fee_head_id')?.touched
+              )
+            "
+          >
+          </shikshakul-select>
+          <div
+            class="skl-error-text"
+            *ngIf="
+              structureForm.get('fee_head_id')?.touched &&
+              structureForm.get('fee_head_id')?.invalid
+            "
+          >
+            Fee type is required.
+          </div>
+        </div>
+
+        <div class="skl-form-group">
+          <label class="skl-label"
+            >Amount (₹) <span class="skl-required">*</span></label
+          >
+          <input
+            type="number"
+            formControlName="amount"
+            placeholder="0.00"
+            class="skl-input-number"
+            [class.has-error]="
+              structureForm.get('amount')?.invalid &&
+              structureForm.get('amount')?.touched
+            "
+          />
+          <div
+            class="skl-error-text"
+            *ngIf="
+              structureForm.get('amount')?.touched &&
+              structureForm.get('amount')?.invalid
+            "
+          >
+            Please enter a valid amount (min 1).
+          </div>
+        </div>
+
+        <div class="skl-form-group">
+          <label class="skl-label"
+            >Frequency <span class="skl-required">*</span></label
+          >
+          <shikshakul-select
+            formControlName="frequency"
+            [options]="frequencyOptions"
+            placeholder="Select frequency"
+            [hasError]="
+              !!(
+                structureForm.get('frequency')?.invalid &&
+                structureForm.get('frequency')?.touched
+              )
+            "
+          >
+          </shikshakul-select>
+          <div
+            class="skl-error-text"
+            *ngIf="
+              structureForm.get('frequency')?.touched &&
+              structureForm.get('frequency')?.invalid
+            "
+          >
+            Frequency is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="skl-form-actions">
+        <button
+          type="button"
+          class="skl-btn-ghost skl-delete-btn"
+          *ngIf="editingStructure"
+          (click)="deleteStructure(editingStructure.id); closeStructureModal()"
+        >
+          Remove Fee
+        </button>
+        <button
+          type="button"
+          class="skl-btn-ghost"
+          (click)="closeStructureModal()"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="skl-btn-primary">
+          {{ editingStructure ? 'Update Fee' : 'Assign Fee' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  class="skl-drawer-backdrop"
+  [class.open]="showHeadModal"
+  (click)="showHeadModal = false"
+></div>
+
+<div class="skl-floating-drawer" [class.open]="showHeadModal">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">Manage Fee Types</h2>
+      <p class="skl-drawer-subtitle">
+        Create and edit reusable fee heads (e.g., Tuition, Transport).
+      </p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button
+        class="skl-icon-btn"
+        (click)="showHeadModal = false"
+        title="Close"
+      >
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="skl-drawer-body list-view">
+    <form
+      [formGroup]="headForm"
+      (ngSubmit)="addFeeHead()"
+      class="skl-quick-form"
+    >
+      <div class="skl-form-group">
+        <label class="skl-label">Fee Name</label>
+        <input
+          placeholder="e.g. Tuition Fee, Library Fee..."
+          formControlName="name"
+          class="skl-input-text"
+          [class.has-error]="
+            headForm.get('name')?.invalid && headForm.get('name')?.touched
+          "
+        />
+        <div
+          class="skl-error-text"
+          *ngIf="headForm.get('name')?.touched && headForm.get('name')?.invalid"
+        >
+          Please enter a fee name.
+        </div>
+      </div>
+
+      <div class="skl-form-row">
+        <div class="skl-form-group flex-1">
+          <label class="skl-label">Payment Type</label>
+          <shikshakul-select
+            formControlName="type"
+            [options]="paymentTypeOptions"
+            placeholder="Select Type"
+            [hasError]="
+              !!(headForm.get('type')?.invalid && headForm.get('type')?.touched)
+            "
+          >
+          </shikshakul-select>
+          <div
+            class="skl-error-text"
+            *ngIf="
+              headForm.get('type')?.touched && headForm.get('type')?.invalid
+            "
+          >
+            Payment type is required.
+          </div>
+        </div>
+
+        <button type="submit" class="skl-btn-primary submit-btn">
+          {{ editingHead ? 'Update' : 'Add New' }}
+        </button>
+        <button
+          *ngIf="editingHead"
+          type="button"
+          class="skl-btn-ghost cancel-btn"
+          (click)="cancelEditFeeHead()"
+        >
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+    </form>
+
+    <div class="skl-list-content">
+      <h4 class="skl-list-title">Existing Types</h4>
+
+      <div *ngFor="let head of feeHeads" class="skl-list-item">
+        <div class="skl-item-info">
+          <span class="skl-item-name">{{ head.name }}</span>
+          <span class="skl-status-tag mini">{{ head.type }}</span>
+        </div>
+        <div class="skl-item-actions">
+          <button class="skl-icon-btn" (click)="editFeeHead(head)" title="Edit">
+            <span class="material-icons">edit</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="skl-empty-state mini" *ngIf="feeHeads.length === 0">
+        <span class="material-icons">category</span>
+        <p>No fee types created yet.</p>
+      </div>
+    </div>
+  </div>
+</div>

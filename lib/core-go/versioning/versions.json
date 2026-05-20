@@ -1,0 +1,11 @@
+{
+    "default": "2026-03-06-8338",
+    "versions": [
+        {
+            "id": "2026-03-06-8338",
+            "description": "Initial date-based versioning release",
+            "status": "ACTIVE",
+            "released_at": "2026-03-06T16:28:01+05:30"
+        }
+    ]
+}

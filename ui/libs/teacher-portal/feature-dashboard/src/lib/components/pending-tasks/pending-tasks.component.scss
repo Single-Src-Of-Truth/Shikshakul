@@ -1,0 +1,85 @@
+.tasks-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: #1f1f1f;
+  }
+}
+
+.task-item {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  &:last-child {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .icon {
+    color: #5f6368;
+    margin-top: 2px;
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f1f1f;
+    margin-bottom: 2px;
+  }
+  .sub {
+    font-size: 11px;
+    color: #5f6368;
+    margin-bottom: 8px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    button {
+      background: none;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+    }
+    .link {
+      color: #1a73e8;
+    }
+  }
+
+  /* Urgent Style */
+  &.urgent {
+    background: #fce8e6;
+    border: 1px solid #fad2cf;
+    border-radius: 8px;
+    padding: 12px;
+    .icon {
+      color: #d93025;
+    }
+    .due {
+      color: #d93025;
+      font-weight: 600;
+    }
+    button {
+      color: #1a73e8;
+    }
+  }
+}

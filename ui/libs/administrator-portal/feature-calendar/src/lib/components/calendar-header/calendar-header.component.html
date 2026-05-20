@@ -1,0 +1,29 @@
+<div class="skl-calendar-toolbar">
+  <div class="skl-nav-group">
+    <button class="skl-today-btn" (click)="goToday()">Today</button>
+    <div class="skl-nav-controls">
+      <button
+        class="skl-icon-btn"
+        (click)="previousMonth()"
+        title="Previous Month"
+      >
+        <span class="material-icons">chevron_left</span>
+      </button>
+      <button class="skl-icon-btn" (click)="nextMonth()" title="Next Month">
+        <span class="material-icons">chevron_right</span>
+      </button>
+    </div>
+    <h2 class="skl-current-month">{{ monthYear }}</h2>
+  </div>
+
+  <div class="skl-actions-group">
+    <div class="skl-custom-datepicker-wrapper">
+      <shikshakul-datepicker
+        [(ngModel)]="jumpDate"
+        (ngModelChange)="onJumpDateChange($event)"
+        placeholder="Jump to date"
+      >
+      </shikshakul-datepicker>
+    </div>
+  </div>
+</div>

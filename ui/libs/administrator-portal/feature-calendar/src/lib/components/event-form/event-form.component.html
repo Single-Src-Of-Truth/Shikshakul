@@ -1,0 +1,185 @@
+<div
+  class="skl-drawer-backdrop"
+  [class.open]="mode !== 'view'"
+  (click)="cancel.emit()"
+></div>
+
+<div class="skl-floating-drawer" [class.open]="mode !== 'view'">
+  <div class="skl-drawer-header">
+    <div class="skl-header-title-group">
+      <h2 class="skl-drawer-title">
+        {{ mode === 'add' ? 'Add New Event' : 'Edit Event' }}
+      </h2>
+      <p class="skl-drawer-subtitle">
+        Schedule holidays, exams, or other activities
+      </p>
+    </div>
+    <div class="skl-drawer-actions">
+      <button class="skl-icon-btn" (click)="resetForm()" title="Reset Form">
+        <span class="material-icons">restart_alt</span>
+      </button>
+      <button class="skl-icon-btn" (click)="cancel.emit()" title="Close Drawer">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="skl-drawer-body">
+    <form [formGroup]="eventForm" class="skl-drawer-form">
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Event Information</h3>
+
+        <div class="skl-form-group">
+          <label class="skl-label"
+            >Event Title <span class="required-star">*</span></label
+          >
+          <input
+            type="text"
+            class="skl-input"
+            formControlName="title"
+            placeholder="e.g. Annual Sports Day"
+            [class.has-error]="
+              eventForm.get('title')?.touched && eventForm.get('title')?.invalid
+            "
+          />
+          <div
+            class="skl-error-text"
+            *ngIf="
+              eventForm.get('title')?.touched && eventForm.get('title')?.invalid
+            "
+          >
+            Title is required.
+          </div>
+        </div>
+
+        <div class="skl-form-row">
+          <div class="skl-form-group">
+            <label class="skl-label"
+              >Event Type <span class="required-star">*</span></label
+            >
+            <shikshakul-select
+              formControlName="event_type"
+              [options]="eventTypeOptions"
+              placeholder="Select Type"
+              [hasError]="
+                !!(
+                  eventForm.get('event_type')?.touched &&
+                  eventForm.get('event_type')?.invalid
+                )
+              "
+            >
+            </shikshakul-select>
+          </div>
+
+          <div class="skl-form-group skl-flex-center">
+            <label class="skl-checkbox-container">
+              <input type="checkbox" formControlName="is_holiday" />
+              <span class="skl-checkbox-checkmark"></span>
+              <span class="skl-checkbox-label">Mark as Holiday</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Schedule</h3>
+
+        <!-- Start Date & Time -->
+        <div class="skl-schedule-stacked-row">
+          <div class="skl-form-group">
+            <label class="skl-label"
+              >Start Date <span class="required-star">*</span></label
+            >
+            <shikshakul-datepicker
+              formControlName="start_date"
+              placeholder="Select start date"
+              [hasError]="
+                !!(
+                  eventForm.get('start_date')?.invalid &&
+                  eventForm.get('start_date')?.touched
+                )
+              "
+            >
+            </shikshakul-datepicker>
+          </div>
+          <div class="skl-form-group">
+            <label class="skl-label">Start Time</label>
+            <shikshakul-time-picker
+              formControlName="start_time"
+              placeholder="09:00 AM"
+            >
+            </shikshakul-time-picker>
+          </div>
+        </div>
+
+        <!-- End Date & Time -->
+        <div class="skl-schedule-stacked-row">
+          <div class="skl-form-group">
+            <label class="skl-label"
+              >End Date <span class="required-star">*</span></label
+            >
+            <shikshakul-datepicker
+              formControlName="end_date"
+              placeholder="Select end date"
+              [hasError]="
+                !!(
+                  eventForm.get('end_date')?.invalid &&
+                  eventForm.get('end_date')?.touched
+                )
+              "
+            >
+            </shikshakul-datepicker>
+          </div>
+          <div class="skl-form-group">
+            <label class="skl-label">End Time</label>
+            <shikshakul-time-picker
+              formControlName="end_time"
+              placeholder="10:00 AM"
+            >
+            </shikshakul-time-picker>
+          </div>
+        </div>
+      </div>
+
+      <div class="skl-form-section">
+        <h3 class="skl-section-title">Details</h3>
+        <div class="skl-form-group">
+          <label class="skl-label">Description</label>
+          <textarea
+            class="skl-textarea"
+            formControlName="description"
+            rows="4"
+            placeholder="Provide additional context for this event..."
+          ></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="skl-drawer-footer">
+    <button
+      *ngIf="mode === 'edit'"
+      type="button"
+      class="skl-btn-ghost text-danger"
+      (click)="onDelete()"
+    >
+      Delete Event
+    </button>
+    <div class="skl-footer-actions-right">
+      <button type="button" class="skl-btn-ghost" (click)="cancel.emit()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="skl-btn-primary"
+        [disabled]="submitting"
+        (click)="onSubmit()"
+      >
+        <span *ngIf="!submitting">{{
+          mode === 'add' ? 'Create Event' : 'Save Changes'
+        }}</span>
+        <div class="skl-spinner" *ngIf="submitting"></div>
+      </button>
+    </div>
+  </div>
+</div>

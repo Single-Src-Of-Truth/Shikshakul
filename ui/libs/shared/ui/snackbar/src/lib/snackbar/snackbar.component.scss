@@ -1,0 +1,156 @@
+@use 'shared' as *;
+
+.snackbar-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.snackbar-card {
+  pointer-events: auto;
+  min-width: 360px;
+  max-width: 520px;
+  background-color: var(--skl-bg-sidebar);
+  border: 1px solid var(--skl-border);
+  border-left-width: 4px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 18px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
+  animation: sklToastSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
+
+  &.success {
+    border-left-color: #047481;
+  }
+
+  &.error {
+    border-left-color: #d93025;
+  }
+
+  &.info {
+    border-left-color: var(--royal-blue);
+  }
+
+  &.warning {
+    border-left-color: #9c4221;
+  }
+
+  .icon-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    margin-right: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid var(--skl-border);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+
+    .icon {
+      font-size: 18px;
+    }
+  }
+
+  &.success .icon {
+    color: #047481;
+  }
+
+  &.error .icon {
+    color: #d93025;
+  }
+
+  &.info .icon {
+    color: var(--royal-blue);
+  }
+
+  &.warning .icon {
+    color: #9c4221;
+  }
+
+  .text-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+
+    .title {
+      color: var(--skl-text-main);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .message {
+      color: var(--skl-text-light);
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+  }
+
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: var(--skl-text-light);
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 8px;
+    margin-top: -2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--skl-hover);
+      color: var(--skl-text-main);
+    }
+
+    .material-icons {
+      font-size: 16px;
+    }
+  }
+
+  &:hover {
+    .close-btn {
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .snackbar-container {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .snackbar-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@keyframes sklToastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

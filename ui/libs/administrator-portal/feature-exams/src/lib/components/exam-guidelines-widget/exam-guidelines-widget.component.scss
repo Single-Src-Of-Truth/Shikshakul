@@ -1,0 +1,20 @@
+@use 'shared' as *;
+
+/* --- EXAM GUIDELINES WIDGET UNIQUE STYLES --- */
+.guidelines-card {
+  background: var(--royal-blue-light);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+
+  .icon-box {
+    color: var(--royal-blue);
+    .material-icons { font-size: 24px; }
+  }
+
+  .content {
+    h4 { margin: 0 0 6px 0; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); }
+  }
+}

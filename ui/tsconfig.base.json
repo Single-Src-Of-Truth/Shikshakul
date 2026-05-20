@@ -10,15 +10,135 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shikshakul/auth": ["libs/auth/src/index.ts"],
-      "@shikshakul/ui-kit": ["libs/ui-kit/src/index.ts"],
-      "@shikshakul/data-access": ["libs/data-access/src/index.ts"]
+      "@shikshakul/auth": [
+        "libs/auth/src/index.ts"
+      ],
+      "@shikshakul/ui-kit": [
+        "libs/ui-kit/src/index.ts"
+      ],
+      "@shikshakul/data-access": [
+        "libs/data-access/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-shell": [
+        "libs/administrator-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-dashboard": [
+        "libs/administrator-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-students": [
+        "libs/administrator-portal/feature-students/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-academics": [
+        "libs/administrator-portal/feature-academics/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-staff": [
+        "libs/administrator-portal/feature-staff/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-exams": [
+        "libs/administrator-portal/feature-exams/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-roles": [
+        "libs/administrator-portal/feature-roles/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-settings": [
+        "libs/administrator-portal/feature-settings/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-shell": [
+        "libs/teacher-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-dashboard": [
+        "libs/teacher-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-classes": [
+        "libs/teacher-portal/feature-classes/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-attendance": [
+        "libs/teacher-portal/feature-attendance/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-marks-entry": [
+        "libs/teacher-portal/feature-marks-entry/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-student-details": [
+        "libs/teacher-portal/feature-student-details/src/index.ts"
+      ],
+      "@shikshakul/teacher/feature-my-students": [
+        "libs/teacher-portal/feature-my-students/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-shell": [
+        "libs/guardian-portal/feature-shell/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-dashboard": [
+        "libs/guardian-portal/feature-dashboard/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-student-profile": [
+        "libs/guardian-portal/feature-student-profile/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-attendance-summary": [
+        "libs/guardian-portal/feature-attendance-summary/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-academic-performance": [
+        "libs/guardian-portal/feature-academic-performance/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-exam-schedule": [
+        "libs/guardian-portal/feature-exam-schedule/src/index.ts"
+      ],
+      "@shikshakul/guardian/feature-class-teacher": [
+        "libs/guardian-portal/feature-class-teacher/src/index.ts"
+      ],
+      "@shikshakul/data-access/academic": [
+        "libs/data-access/academic/src/index.ts"
+      ],
+      "@shikshakul/data-access/iam": [
+        "libs/data-access/iam/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-class-setup": [
+        "libs/admin-portal/feature-class-setup/src/index.ts"
+      ],
+      "@shikshakul/administrator/feature-class-setup": [
+        "libs/administrator-portal/feature-class-setup/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/snackbar": [
+        "libs/shared/ui/snackbar/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-student-management": [
+        "libs/administrator-portal/feature-student-management/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/datepicker": [
+        "libs/shared/ui/datepicker/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/select": [
+        "libs/shared/ui/select/src/index.ts"
+      ],
+      "@shikshakul/shared/ui/time-picker": [
+        "libs/shared/ui/time-picker/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-fees": [
+        "libs/administrator-portal/feature-fees/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-timetable": [
+        "libs/administrator-portal/feature-timetable/src/index.ts"
+      ],
+      "@shikshakul/shared/environments": [
+        "libs/shared/environments/src/index.ts"
+      ],
+      "@shikshakul/admin/feature-certificates": [
+        "libs/administrator-portal/feature-certificates/src/index.ts"
+      ],
+      "@shikshakul/administrator-portal/feature-calendar": [
+        "libs/administrator-portal/feature-calendar/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

@@ -8,7 +8,9 @@
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/teacher-portal",
         "browser": "apps/teacher-portal/src/main.ts",
@@ -20,10 +22,44 @@
             "input": "apps/teacher-portal/public"
           }
         ],
-        "styles": ["apps/teacher-portal/src/styles.scss"]
+        "styles": [
+          "apps/teacher-portal/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/shared/styles/src/lib"
+          ]
+        }
       },
       "configurations": {
         "production": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.prod.ts"
+            }
+          ],
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "beta": {
+          "fileReplacements": [
+            {
+              "replace": "libs/shared/environments/src/lib/environment.ts",
+              "with": "libs/shared/environments/src/lib/environment.beta.ts"
+            }
+          ],
           "budgets": [
             {
               "type": "initial",
@@ -50,7 +86,8 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "options": {
-        "port": 4201
+        "port": 4201,
+        "proxyConfig": "proxy.conf.js"
       },
       "configurations": {
         "production": {

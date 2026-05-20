@@ -1,0 +1,59 @@
+<div class="list-card">
+  <div class="card-header">
+    <h3>Student List</h3>
+    <div class="toggle-wrapper">
+      <span class="label">Mark All Present</span>
+      <label class="switch">
+        <input type="checkbox" checked (change)="markAllPresent($event)" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="table-header">
+    <div class="col-roll">ROLL NO</div>
+    <div class="col-name">STUDENT NAME</div>
+    <div class="col-status">STATUS</div>
+    <div class="col-remark">REMARKS</div>
+  </div>
+
+  @for (student of students; track student.student_id) {
+  <div class="student-row">
+    <div class="col-roll">{{ student.rollNo }}</div>
+
+    <div class="col-name">
+      <div class="avatar">{{ student.initials }}</div>
+      <span class="name">{{ student.name }}</span>
+    </div>
+
+    <div class="col-status">
+      <div class="status-group">
+        <button class="status-btn p-btn" [class.active]="student.status === 'PRESENT' || student.status === 'P'"
+          (click)="setStatus(student, 'PRESENT')">
+          P
+        </button>
+
+        <button class="status-btn a-btn" [class.active]="student.status === 'ABSENT' || student.status === 'A'"
+          (click)="setStatus(student, 'ABSENT')">
+          A
+        </button>
+
+        <button class="status-btn l-btn" [class.active]="student.status === 'LATE' || student.status === 'L'"
+          (click)="setStatus(student, 'LATE')">
+          L
+        </button>
+      </div>
+    </div>
+
+    <div class="col-remark">
+      <input type="text" placeholder="Add note..." [value]="student.remark || ''"
+        (input)="student.remark = $any($event.target).value; statusChange.emit()" [class.has-text]="student.remark" />
+    </div>
+  </div>
+  }
+
+  <div class="list-footer">
+    View all {{ students.length }} students
+    <span class="material-icons">expand_more</span>
+  </div>
+</div>

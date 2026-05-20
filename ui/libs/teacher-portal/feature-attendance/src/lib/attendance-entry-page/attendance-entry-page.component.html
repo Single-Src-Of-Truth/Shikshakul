@@ -1,0 +1,26 @@
+<div class="page-container">
+  <header class="page-header">
+    <div class="text">
+      <div class="breadcrumbs">
+        Home <span class="sep">/</span> My Classes
+        <span class="sep">/</span> Class 10-A Attendance
+      </div>
+      <h1>Attendance Entry</h1>
+      <p class="subtitle">Manage daily attendance for Class 10-A</p>
+    </div>
+    <div class="badge">Academic Year 2023-24</div>
+  </header>
+
+  <shikshakul-attendance-filters [classes]="classes()" [availableSections]="availableSections()"
+    [selectedClassId]="selectedClassId()" [selectedSectionId]="selectedSectionId()" [selectedDate]="selectedDate()"
+    (filterChange)="onFilterChange($event)"></shikshakul-attendance-filters>
+
+  <shikshakul-student-list [students]="students()" (statusChange)="updateStats()">
+  </shikshakul-student-list>
+
+  <shikshakul-attendance-footer [total]="total()" [present]="present()" [absent]="absent()" [late]="late()"
+    (save)="onSave()">
+  </shikshakul-attendance-footer>
+
+  <div style="height: 80px"></div>
+</div>

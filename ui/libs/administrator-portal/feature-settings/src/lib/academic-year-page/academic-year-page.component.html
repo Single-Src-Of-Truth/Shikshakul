@@ -1,0 +1,144 @@
+<div class="skl-page-container">
+  <header class="skl-page-header">
+    <div class="skl-header-content">
+      <div class="skl-page-title-group">
+        <h1 class="skl-page-title">Academic Year Management</h1>
+        <p class="skl-page-subtitle">
+          Manage current and future academic sessions. Only one year can be
+          active at a time.
+        </p>
+      </div>
+      <div class="skl-header-actions">
+        <button class="skl-btn-primary" (click)="toggleDrawer()">
+          <span class="material-icons">add</span>
+          <span>New Year</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="skl-page-content">
+    <shikshakul-academic-year-stats
+      [currentYear]="years()"
+      [loading]="loading()"
+    ></shikshakul-academic-year-stats>
+
+    <div class="skl-card skl-mt-24">
+      <div class="skl-card-header">
+        <div class="skl-card-title-group">
+          <h3 class="skl-card-title">All Academic Years</h3>
+        </div>
+        <div class="skl-card-actions">
+          <button
+            class="skl-btn-ghost"
+            (click)="loadYears()"
+            [disabled]="loading()"
+          >
+            <span class="material-icons" [class.skl-spin]="loading()"
+              >refresh</span
+            >
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="skl-table-wrapper">
+        <div class="skl-linear-loader" *ngIf="loading()">
+          <div class="skl-loader-progress"></div>
+        </div>
+
+        <table class="skl-data-table">
+          <thead>
+            <tr>
+              <th class="skl-w-40">ACADEMIC YEAR</th>
+              <th class="skl-hide-mobile">START DATE</th>
+              <th class="skl-hide-tablet">END DATE</th>
+              <th class="skl-w-20">STATUS</th>
+              <th class="skl-text-right skl-w-15">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let year of years()">
+              <td>
+                <div class="skl-year-info">
+                  <span class="skl-year-name">{{ year.name }}</span>
+                  <span class="skl-current-badge" *ngIf="year.is_current"
+                    >Current Session</span
+                  >
+                </div>
+              </td>
+              <td class="skl-date-cell skl-hide-mobile">
+                {{ year.start_date | date: 'mediumDate' }}
+              </td>
+              <td class="skl-date-cell skl-hide-tablet">
+                {{ year.end_date | date: 'mediumDate' }}
+              </td>
+              <td>
+                <span class="skl-status-tag" [ngClass]="getStatusClass(year)">
+                  <span class="skl-dot" *ngIf="!year.is_current"></span>
+                  {{ getStatusLabel(year) }}
+                </span>
+              </td>
+              <td>
+                <div class="skl-action-group skl-justify-right">
+                  <button
+                    class="skl-icon-btn skl-success"
+                    *ngIf="!year.is_current"
+                    (click)="activateYear(year.id)"
+                    title="Activate Year"
+                  >
+                    <span class="material-icons">check_circle</span>
+                  </button>
+                  <button
+                    class="skl-icon-btn skl-danger"
+                    (click)="deleteYear(year.id)"
+                    title="Delete Year"
+                  >
+                    <span class="material-icons">delete_outline</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="years().length === 0 && !loading()">
+              <td colspan="5" class="skl-empty-state">
+                <span class="material-icons">inbox</span>
+                <p>
+                  No academic years found. Create your first session to get
+                  started.
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="skl-alert skl-info skl-mt-32">
+      <span class="material-icons">info</span>
+      <div class="skl-alert-content">
+        <p>
+          Activating a new academic year will automatically archive the current
+          one. This action affects all student records, fee structures, and
+          attendance modules.
+        </p>
+      </div>
+    </div>
+
+    <div class="skl-settings-grid skl-mt-32">
+      <lib-student-schema-config></lib-student-schema-config>
+      <lib-staff-schema-config></lib-staff-schema-config>
+      <lib-admission-sequence-config
+        class="skl-grid-full-width"
+      ></lib-admission-sequence-config>
+    </div>
+  </div>
+
+  <!-- Floating Slider Form Component -->
+  <shikshakul-academic-year-form
+    [isOpen]="showDrawer()"
+    (closeDrawer)="toggleDrawer()"
+    (yearCreated)="loadYears()"
+  >
+  </shikshakul-academic-year-form>
+</div>

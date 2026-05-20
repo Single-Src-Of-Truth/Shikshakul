@@ -1,0 +1,111 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  .breadcrumbs {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    .dropdown {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0 12px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--royal-blue);
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+  }
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Fake Chart Styles */
+.trend-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .fake-chart {
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 20px;
+    .bar {
+      width: 40px;
+      background: #00c853;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      span {
+        position: absolute;
+        bottom: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11px;
+        color: #9aa0a6;
+        font-weight: 600;
+      }
+      &.empty {
+        background: #f5f5f5;
+      }
+    }
+  }
+}
