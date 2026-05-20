@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -75,8 +76,7 @@ func (p *S3Provider) InitializeInfrastructure(ctx context.Context) error {
 		},
 	})
 	if err != nil {
-		var apiErr smithy.APIError
-		if errors.As(err, &apiErr) && apiErr.ErrorCode() == "AccessDenied" {
+		if strings.Contains(err.Error(), "AccessDenied") {
 			p.logger.Warn("Access Denied when applying CORS. Ensure the bucket has correct CORS if needed.", zap.Error(err))
 		} else {
 			p.logger.Error("Failed to apply CORS", zap.Error(err))
@@ -109,8 +109,7 @@ func (p *S3Provider) InitializeInfrastructure(ctx context.Context) error {
 	})
 
 	if err != nil {
-		var apiErr smithy.APIError
-		if errors.As(err, &apiErr) && apiErr.ErrorCode() == "AccessDenied" {
+		if strings.Contains(err.Error(), "AccessDenied") {
 			p.logger.Warn("Access Denied when applying Lifecycle Rules. Ensure the bucket has correct rules if needed.", zap.Error(err))
 		} else {
 			p.logger.Error("Failed to apply Lifecycle Rules", zap.Error(err))
